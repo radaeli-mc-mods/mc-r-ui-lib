@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.8.0] - 2026-10-28
+
+### Added
+
+- Added radio buttons and vertical radio groups with hints, disabled options and keyboard navigation.
+- Added steppers for bounded numbers and option lists, with arrows, mouse wheel and keyboard.
+- Added compact information boxes that display help tooltips.
+- Added position-aware tooltips, so a component can show its tooltip on part of its area.
+
 ## [0.7.0] - 2026-10-26
 
 ### Added
