@@ -1,0 +1,27 @@
+{
+  "$schema": "https://raw.githubusercontent.com/radaeli-mc-mods/mc-ci/v1/schemas/mod-pipeline.schema.json",
+  "displayName": "R-Ui Lib",
+  "java": [17, 21],
+  "checks": ["buildAll", "verifyArtifacts"],
+  "curseforge": {"projectId": "1731287", "releaseType": "beta"},
+  "targets": [
+    {
+      "id": "forge-1.20.1",
+      "task": ":forge:build",
+      "files": ["forge/build/libs/r-ui-lib-forge-*.jar"],
+      "loaders": ["forge"],
+      "gameVersions": ["1.20.1"],
+      "java": 17,
+      "dependencies": []
+    },
+    {
+      "id": "neoforge-1.21.1",
+      "task": ":neoforge:build",
+      "files": ["neoforge/build/libs/r-ui-lib-neoforge-*.jar"],
+      "loaders": ["neoforge"],
+      "gameVersions": ["1.21.1"],
+      "java": 21,
+      "dependencies": []
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+name: CI
+on:
+  pull_request:
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  ci:
+    uses: radaeli-mc-mods/mc-ci/.github/workflows/mod-ci.yml@main

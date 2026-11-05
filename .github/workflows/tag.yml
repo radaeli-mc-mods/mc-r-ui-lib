@@ -1,0 +1,10 @@
+name: Tag
+on:
+  push:
+    branches: [main]
+permissions: {contents: read}
+jobs:
+  tag:
+    uses: radaeli-mc-mods/mc-ci/.github/workflows/mod-tag.yml@main
+    secrets:
+      RELEASE_APP_PRIVATE_KEY: '${{ secrets.RELEASE_APP_PRIVATE_KEY }}'
