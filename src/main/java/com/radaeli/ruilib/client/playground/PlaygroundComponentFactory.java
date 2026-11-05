@@ -72,6 +72,13 @@ final class PlaygroundComponentFactory {
                 new com.radaeli.ruilib.ui.SegmentedControl.Option<>(2, Component.literal("Color"), node.enabled)),
                 Math.floorMod(node.selectedTab,3), value -> {node.selectedTab=value;onButtonClick.accept(node);});
             case "card" -> new Card(Component.literal(node.text), new Column(node.gap)).setSelected(node.selected);
+            case "radio" -> new com.radaeli.ruilib.ui.Radio(Component.literal(node.text), node.selected,
+                    () -> onSelectionChange.accept(node, true));
+            case "radiogroup" -> new com.radaeli.ruilib.ui.RadioGroup<>(List.of(
+                new com.radaeli.ruilib.ui.RadioGroup.Option<>(0, Component.literal("Free")),
+                new com.radaeli.ruilib.ui.RadioGroup.Option<>(1, Component.literal("Block"), Component.literal("default"), true),
+                new com.radaeli.ruilib.ui.RadioGroup.Option<>(2, Component.literal("Color"), Component.literal("soon"), false)),
+                Math.floorMod(node.selectedTab,3), value -> {node.selectedTab=value;onButtonClick.accept(node);});
             case "toggle" -> new Toggle(Component.literal(node.text), node.selected,
                     selected -> onSelectionChange.accept(node, selected));
             case "chip" -> new Chip(Component.literal(node.text), node.selected,
@@ -79,6 +86,13 @@ final class PlaygroundComponentFactory {
             case "textfield" -> textField(node, false);
             case "searchfield" -> textField(node, true);
             case "slider" -> createSlider(node);
+            // "percentage" switches the example to the option list.
+            case "stepper" -> !node.percentage ? com.radaeli.ruilib.ui.Stepper.ofRange(Component.literal(node.text),
+                    (int) node.minimum, (int) node.maximum, (int) Math.max(1, node.step), (int) node.value,
+                    value -> Component.literal(value + " m"), value -> { node.value = value; onButtonClick.accept(node); })
+                    : com.radaeli.ruilib.ui.Stepper.ofOptions(Component.literal(node.text),
+                    List.of("Front", "Rear", "Left", "Right"), null, Component::literal, Component.literal("Not set"),
+                    true, value -> onButtonClick.accept(node));
             case "progressbar" -> new ProgressBar(node.minimum, node.maximum, node.value)
                     .setPercentage(node.percentage)
                     .setFormatter(node.percentage ? null : value -> Component.literal(

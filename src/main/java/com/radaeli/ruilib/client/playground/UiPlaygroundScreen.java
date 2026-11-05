@@ -6,6 +6,7 @@ import com.google.gson.JsonParseException;
 import com.radaeli.ruilib.ui.AbsoluteLayout;
 import com.radaeli.ruilib.ui.Alignment;
 import com.radaeli.ruilib.ui.Bounds;
+import com.radaeli.ruilib.ui.Tooltip;
 import com.radaeli.ruilib.ui.Button;
 import com.radaeli.ruilib.ui.Column;
 import com.radaeli.ruilib.ui.Label;
@@ -59,8 +60,8 @@ public final class UiPlaygroundScreen extends UiScreen {
             new BuiltInLayout("status", "Status — Status components"),
             new BuiltInLayout("scroll", "Scroll — Scroll components"));
     private static final List<PaletteCategory> PALETTE_CATEGORIES = List.of(
-            new PaletteCategory("Basic", List.of("label", "button", "iconbutton", "toggle", "chip")),
-            new PaletteCategory("Input", List.of("textfield", "searchfield", "slider", "segmented", "colorswatch", "colorpicker")),
+            new PaletteCategory("Basic", List.of("label", "button", "iconbutton", "toggle", "chip", "radio")),
+            new PaletteCategory("Input", List.of("textfield", "searchfield", "slider", "stepper", "segmented", "radiogroup", "colorswatch", "colorpicker")),
             new PaletteCategory("Layout", List.of("panel", "card", "divider", "row", "column", "stack",
                     "absolute", "grid", "spacer")),
             new PaletteCategory("Data", List.of("selectablecard", "itemcard", "itemslot", "itemgrid", "table", "tabs", "itempreview")),
@@ -346,8 +347,9 @@ public final class UiPlaygroundScreen extends UiScreen {
         if (modal() != null) modal().render(context);
         renderCarriedItem(graphics, mouseX, mouseY);
         UiComponent hovered = (modal() == null ? root() : modal()).hitTest(mouseX, mouseY);
-        if (hovered != null && hovered.tooltip() != null) {
-            UiPaint.tooltip(context, hovered.tooltip(), mouseX, mouseY);
+        Tooltip hoveredTooltip = hovered == null ? null : hovered.tooltipAt(mouseX, mouseY);
+        if (hoveredTooltip != null) {
+            UiPaint.tooltip(context, hoveredTooltip, mouseX, mouseY);
         }
     }
 
@@ -834,6 +836,7 @@ public final class UiPlaygroundScreen extends UiScreen {
                     clickCount++;
                     status = node.type.equals("toggle")
                             ? "Toggle " + node.text + (selected ? " ativado" : " desativado")
+                            : node.type.equals("radio") ? "Radio " + node.text + " selecionado"
                             : "Chip " + node.text + (selected ? " selecionado" : " desmarcado");
                 });
         List<UiComponent> newChildren = new ArrayList<>(rebuiltRoot.children());
@@ -1088,7 +1091,7 @@ public final class UiPlaygroundScreen extends UiScreen {
         textField.setValue(hasSelection && (selected.type.equals("label") || selected.type.equals("button")
                 || selected.type.equals("iconbutton") || selected.type.equals("panel")
                 || selected.type.equals("card") || selected.type.equals("divider")
-                || selected.type.equals("toggle") || selected.type.equals("chip")
+                || selected.type.equals("toggle") || selected.type.equals("chip") || selected.type.equals("radio")
                 || selected.type.equals("textfield") || selected.type.equals("searchfield")
                 || selected.type.equals("itemcard") || selected.type.equals("table")
                 || selected.type.equals("radial"))
@@ -1126,7 +1129,7 @@ public final class UiPlaygroundScreen extends UiScreen {
         boolean textEditable = hasSelection && (selected.type.equals("label") || selected.type.equals("button")
                 || selected.type.equals("iconbutton") || selected.type.equals("panel")
                 || selected.type.equals("card") || selected.type.equals("divider")
-                || selected.type.equals("toggle") || selected.type.equals("chip")
+                || selected.type.equals("toggle") || selected.type.equals("chip") || selected.type.equals("radio")
                 || selected.type.equals("textfield") || selected.type.equals("searchfield")
                 || selected.type.equals("itemcard") || selected.type.equals("table")
                 || selected.type.equals("radial"));
@@ -1155,7 +1158,7 @@ public final class UiPlaygroundScreen extends UiScreen {
             Alignment vertical = hasSelection ? selected.verticalAlignment : Alignment.STRETCH;
             horizontalAlignmentButton.setMessage(Component.literal(alignmentLabel("H", horizontal)));
             verticalAlignmentButton.setMessage(Component.literal(alignmentLabel("V", vertical)));
-            boolean selectable = hasSelection && (selected.type.equals("toggle")
+            boolean selectable = hasSelection && (selected.type.equals("toggle") || selected.type.equals("radio")
                     || selected.type.equals("chip") || selected.type.equals("card"));
             enabledButton.setMessage(Component.literal(selected != null && selected.type.equals("progressbar")
                     ? "Format: " + (selected.percentage ? "Percent" : "Value")
@@ -1350,7 +1353,7 @@ public final class UiPlaygroundScreen extends UiScreen {
             if (selected.type.equals("label") || selected.type.equals("button")
                     || selected.type.equals("iconbutton") || selected.type.equals("panel")
                     || selected.type.equals("card") || selected.type.equals("divider")
-                    || selected.type.equals("toggle") || selected.type.equals("chip")
+                    || selected.type.equals("toggle") || selected.type.equals("chip") || selected.type.equals("radio")
                     || selected.type.equals("textfield") || selected.type.equals("searchfield")
                     || selected.type.equals("itemcard") || selected.type.equals("table")
                     || selected.type.equals("radial")) {
@@ -1425,7 +1428,7 @@ public final class UiPlaygroundScreen extends UiScreen {
         } else if (selected.type.equals("spacer")) {
             selected.flexible = !selected.flexible;
         } else if (selected.type.equals("toggle") || selected.type.equals("chip")
-                || selected.type.equals("card")) {
+                || selected.type.equals("radio") || selected.type.equals("card")) {
             selected.selected = !selected.selected;
         } else {
             selected.enabled = !selected.enabled;

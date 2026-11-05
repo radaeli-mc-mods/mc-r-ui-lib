@@ -70,6 +70,10 @@ final class PlaygroundNode {
                 node.height = 90;
             }
             case "segmented" -> { node.text="Mode"; node.width=240; node.height=26; }
+            case "radio" -> { node.text = "Radio"; node.width = 112; node.height = 16; }
+            case "radiogroup" -> { node.text = "Mode"; node.width = 160; node.height = 54; }
+            case "stepper" -> { node.text = "Range"; node.width = 160; node.height = 12; node.maximum = 32;
+                node.value = 4; }
             case "toggle" -> {
                 node.text = "Toggle";
                 node.width = 112;

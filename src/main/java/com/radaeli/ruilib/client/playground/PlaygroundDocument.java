@@ -39,6 +39,7 @@ final class PlaygroundDocument {
         if (!(node.type.equals("segmented") || node.type.equals("itempreview") || node.type.equals("colorswatch") || node.type.equals("colorpicker") || node.type.equals("label") || node.type.equals("button")
                 || node.type.equals("iconbutton") || node.type.equals("divider")
                 || node.type.equals("toggle") || node.type.equals("chip")
+                || node.type.equals("radio") || node.type.equals("radiogroup") || node.type.equals("stepper")
                 || node.type.equals("textfield") || node.type.equals("searchfield")
                 || node.type.equals("slider") || node.type.equals("progressbar")
                 || node.type.equals("radial") || node.type.equals("itemcard") || node.type.equals("itemslot")

@@ -80,8 +80,9 @@ public class UiScreen extends UiPlatformScreen {
         }
         UiComponent hovered = closingModal == null ? activeRoot().hitTest(mouseX, mouseY) : null;
         if (hovered instanceof ItemPreview preview) preview.renderTooltip(context);
-        if (hovered != null && hovered.tooltip() != null) {
-            UiPaint.tooltip(context, hovered.tooltip(), mouseX, mouseY);
+        Tooltip hoveredTooltip = hovered == null ? null : hovered.tooltipAt(mouseX, mouseY);
+        if (hoveredTooltip != null) {
+            UiPaint.tooltip(context, hoveredTooltip, mouseX, mouseY);
         }
     }
 

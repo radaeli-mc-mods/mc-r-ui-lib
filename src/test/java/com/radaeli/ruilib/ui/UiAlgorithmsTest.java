@@ -42,4 +42,16 @@ public class UiAlgorithmsTest {
         assertThrows(IllegalArgumentException.class, () -> UiColor.hex("#GG1234"));
         assertThrows(IllegalArgumentException.class, () -> new UiMotion(-1, UiEasing.LINEAR));
     }
+
+    @Test public void stepperRangesHoldTheirBoundsAndOptionsStartFromNothing() {
+        assertEquals(5, Stepper.stepRange(4, 1, 0, 32));
+        assertEquals(32, Stepper.stepRange(30, 10, 0, 32));
+        assertEquals(0, Stepper.stepRange(3, -10, 0, 32));
+        assertEquals(Integer.MAX_VALUE, Stepper.stepRange(Integer.MAX_VALUE - 1, 10, 0, Integer.MAX_VALUE));
+        assertEquals(0, Stepper.stepIndex(-1, 1, 4, true));
+        assertEquals(3, Stepper.stepIndex(-1, -1, 4, true));
+        assertEquals(0, Stepper.stepIndex(3, 1, 4, true));
+        assertEquals(3, Stepper.stepIndex(3, 1, 4, false));
+        assertEquals(0, Stepper.stepIndex(0, -1, 4, false));
+    }
 }

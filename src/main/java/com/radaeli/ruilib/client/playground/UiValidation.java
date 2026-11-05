@@ -203,6 +203,18 @@ public final class UiValidation extends UiScreen {
             new SegmentedControl.Option<>(0,Component.literal("Free")),
             new SegmentedControl.Option<>(1,Component.literal("Disabled"),false),
             new SegmentedControl.Option<>(2,Component.literal("Color"))),0,v->childActions[0]++),new Bounds(300,240,250,26));
+        int[] radioChanges={0};
+        RadioGroup<Integer> radios=root.addAt(new RadioGroup<>(List.of(
+            new RadioGroup.Option<>(0,Component.literal("Free")),
+            new RadioGroup.Option<>(1,Component.literal("Disabled"),false),
+            new RadioGroup.Option<>(2,Component.literal("Color"))),null,v->radioChanges[0]++),new Bounds(300,280,200,54));
+        Radio radio=root.addAt(new Radio(Component.literal("Radio"),false,()->radioChanges[0]++),new Bounds(520,280,100,16));
+        int[] stepperValue={-1};
+        Stepper<Integer> stepper=root.addAt(Stepper.ofRange(Component.literal("Near"),0,8,1,7,v->Component.literal(v+" m"),
+            v->stepperValue[0]=v),new Bounds(300,340,160,12));
+        Stepper<String> sides=root.addAt(Stepper.ofOptions(Component.literal("Looks at"),List.of("Front","Rear"),null,
+            Component::literal,Component.literal("Not set"),true,v->{}),new Bounds(300,356,160,12));
+        stepper.tooltip(Component.literal("Range help"));
         layoutRoot(theme());
         var hit=card.hitTest(child.bounds().centerX(),child.bounds().centerY());
         hit.mouseClicked(child.bounds().centerX(),child.bounds().centerY(),0);hit.mouseReleased(child.bounds().centerX(),child.bounds().centerY(),0);
@@ -215,6 +227,23 @@ public final class UiValidation extends UiScreen {
         segments.mouseClicked(420,250,0);segments.mouseReleased(420,250,0);
         check(segments.value()==2,"segmented disabled option rejects click");
         segments.keyPressed(GLFW.GLFW_KEY_HOME,0,0);check(segments.value()==0,"segmented home selects first enabled option");
+        check(radios.value()==null,"radio group may start empty");
+        radios.mouseClicked(310,280+27,0);radios.mouseReleased(310,280+27,0);
+        check(radios.value()==null&&radioChanges[0]==0,"radio group disabled option rejects click");
+        radios.mouseClicked(310,280+45,0);radios.mouseReleased(310,280+45,0);
+        check(radios.value()==2&&radioChanges[0]==1,"radio group mouse selects on release");
+        radios.keyPressed(GLFW.GLFW_KEY_UP,0,0);check(radios.value()==0,"radio group arrows skip disabled option");
+        radios.keyPressed(GLFW.GLFW_KEY_END,0,0);check(radios.value()==2,"radio group end selects last enabled option");
+        radios.setValue(0);check(radioChanges[0]==3,"radio group setValue skips callback");
+        radio.mouseClicked(525,285,0);radio.mouseReleased(525,285,0);
+        check(radio.isSelected()&&radioChanges[0]==4,"radio mouse selects");
+        radio.mouseClicked(525,285,0);radio.mouseReleased(525,285,0);
+        check(radio.isSelected()&&radioChanges[0]==4,"radio click never clears selection");
+        stepper.mouseScrolled(380,346,0,1);check(stepperValue[0]==8,"stepper wheel steps up");
+        stepper.mouseScrolled(380,346,0,1);check(stepper.value()==8&&stepperValue[0]==8,"stepper holds at its maximum");
+        check(stepper.tooltipAt(301,346)!=null&&stepper.tooltipAt(455,346)==null,"stepper tooltip stays on the label");
+        sides.mouseScrolled(380,362,0,-1);check("Rear".equals(sides.value()),"option stepper starts backwards at the last option");
+        sides.mouseScrolled(380,362,0,1);check("Front".equals(sides.value()),"option stepper wraps");
                 focusComponent(segments);check(focusedComponent()==segments&&segments.isFocused(),"screen exposes focus for tree replacement");
         focusComponent(card);check(card.isFocused()&&!segments.isFocused(),"screen transfers visible focus to replacement");
         for(var layout:UiPlaygroundScreen.builtInLayouts()){

@@ -197,4 +197,9 @@ public abstract class UiComponent {
     public Tooltip tooltip() {
         return tooltip;
     }
+
+    /** Tooltip for the mouse position; components override it to show tooltips on part of their area. */
+    public Tooltip tooltipAt(double mouseX, double mouseY) {
+        return tooltip();
+    }
 }

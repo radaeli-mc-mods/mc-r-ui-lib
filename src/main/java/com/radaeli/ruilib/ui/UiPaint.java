@@ -174,6 +174,25 @@ public final class UiPaint {
                 enabled ? palette.text() : palette.mutedText(), context.theme().tokens().radii().pill());
     }
 
+    public static void radio(UiContext context, Bounds indicator, boolean selected, boolean hovered,
+                             boolean enabled, boolean focused) {
+        radio(context, indicator, selected ? 1 : 0, hovered ? 1 : 0, enabled, focused ? 1 : 0);
+    }
+
+    /** Round radio mark. Selection only fills the ring, so the mark never changes size. */
+    public static void radio(UiContext context, Bounds indicator, double selected, double hovered,
+                             boolean enabled, double focused) {
+        UiPalette palette = context.theme().palette();
+        int radius = Math.min(indicator.width(), indicator.height()) / 2;
+        int ring = !enabled ? palette.disabled()
+                : mixColor(mixColor(mixColor(palette.mutedText(), palette.text(), hovered), palette.text(), selected),
+                palette.focus(), focused);
+        if (selected > 0) {
+            roundedRect(context, indicator, withAlpha(enabled ? palette.text() : palette.disabled(), selected), radius);
+        }
+        roundedOutline(context, indicator, ring, radius);
+    }
+
     public static void chip(UiContext context, Bounds bounds, boolean selected, boolean hovered,
                             boolean enabled, boolean focused) {
         chip(context, bounds, selected ? 1 : 0, hovered ? 1 : 0, enabled, focused ? 1 : 0);
