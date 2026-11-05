@@ -1,5 +1,11 @@
 # Color and preview components (0.6.0)
 
+`InfoBox` displays a compact question mark with a tooltip for inline help:
+
+```java
+InfoBox help = new InfoBox(Component.literal("Choose a value for this setting"));
+```
+
 Shared API for Forge 1.20.1 / Java 17 and NeoForge 1.21.1 / Java 21:
 
 ```java
@@ -52,3 +58,33 @@ vector icons and do not depend on the Minecraft font containing emoji.
 
 Screens that rebuild their trees can read `focusedComponent()` and use
 `focusComponent(replacement)` after layout to preserve visible keyboard focus.
+
+## Radio choices (0.8.0)
+
+`RadioGroup<T>(options, value, onChange)` is the vertical counterpart of
+`SegmentedControl`: one exclusive value, shown as rows with a round mark. The value may
+be `null` until the player picks. Options carry a value, label, optional right-aligned
+hint and enabled flag. Mouse commits on release; Up/Down skip disabled options and
+commit immediately, Home/End select the first/last enabled option. `setValue` updates
+without invoking callbacks. An optional `gap` separates rows.
+
+`Radio(label, [hint], selected, onSelect)` is a single row for layouts that interleave
+options with other content. Clicking selects but never clears it; the caller clears the
+siblings. The mark is `Radio.INDICATOR` (8 px) in both states: selection fills the ring
+instead of swapping glyphs, so labels never shift. `UiPaint.radio(...)` draws the same
+mark for immediate-mode screens.
+
+## Stepper (0.8.0)
+
+`Stepper<T>` is a one-line picker: muted label on the left, the value against the right edge
+between `‹` and `›`. `Stepper.ofRange(label, min, max, step, value, format, onChange)` moves a
+bounded integer (Shift multiplies by `setShiftMultiplier`, 10 by default);
+`Stepper.ofOptions(label, options, value, format, empty, wrap, onChange)` cycles a list and may
+start at `null` (shown as `empty`) until the player picks: forward picks the first option,
+backward the last. Arrows, the mouse wheel anywhere on the row and Left/Right/Up/Down (when
+focused) step the value; `setValue` skips the callback. The tooltip only shows over the label
+(`tooltipAt`), so it never covers the value or the arrows. Immediate-mode screens draw the
+same row with `Stepper.paint(...)` and take click areas from `Stepper.layout(...)`.
+
+`UiComponent.tooltipAt(mouseX, mouseY)` lets any component limit its tooltip to part of its
+area; screens use it instead of `tooltip()`.

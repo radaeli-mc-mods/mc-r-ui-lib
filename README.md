@@ -42,6 +42,17 @@ R-Ui Lib is a library: it adds no standalone screens, items, or blocks. You see 
 - Use color swatches and scalable item previews in a screen.
 - Scroll through wide groups of components without crowding the screen.
 
+### Developer documentation
+
+**Build your mod's interface with the library's guides and examples.**
+
+- [Integrate R-Ui Lib into a mod](https://mods.radaeli.dev/en/mods/r-ui-lib/technical/integration).
+- [Browse an example for each component](https://mods.radaeli.dev/en/mods/r-ui-lib/technical/component-examples).
+- [Learn about components and themes](https://mods.radaeli.dev/en/mods/r-ui-lib/technical/components-and-themes).
+- [Try the development playground](https://mods.radaeli.dev/en/mods/r-ui-lib/technical/playground).
+- [Check supported loaders and validation](https://mods.radaeli.dev/en/mods/r-ui-lib/technical/loaders-and-validation).
+- Read the [Português (Brasil) documentation](https://mods.radaeli.dev/pt-BR/mods/r-ui-lib/).
+
 ---
 
 <p align="center" style="background-color: #F4ECD0; text-align: center;"><img src="https://raw.githubusercontent.com/radaelilucca/mc-r-ui-lib/main/docs/gallery/section-titles/how-do-i-use-it.png" alt="HOW DO I USE IT?" width="371"></p>
@@ -73,4 +84,4 @@ Install R-Ui Lib alongside a mod that uses it, with matching Minecraft and loade
 
 ---
 
-*Developing a mod with R-Ui Lib? See the [integration guide](https://github.com/radaelilucca/mc-r-ui-lib/blob/main/docs/using-r-ui-lib.md), [technical documentation](https://github.com/radaelilucca/mc-r-ui-lib/blob/main/docs/README.md), and [changelog](https://github.com/radaelilucca/mc-r-ui-lib/blob/main/CHANGELOG.md).*
+*See the [changelog](https://github.com/radaelilucca/mc-r-ui-lib/blob/main/CHANGELOG.md).*
