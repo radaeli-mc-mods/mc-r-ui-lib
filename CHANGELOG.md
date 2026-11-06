@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.9.0] - 2026-11-06
+
+### Added
+
+- Added default spacing around horizontal and vertical dividers, keeping them clear of neighboring content.
+
 ## [0.8.0] - 2026-10-28
 
 ### Added
