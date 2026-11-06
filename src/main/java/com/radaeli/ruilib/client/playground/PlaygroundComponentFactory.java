@@ -59,7 +59,8 @@ final class PlaygroundComponentFactory {
             case "iconbutton" -> !node.iconSymbol.isBlank() ? new IconButton(Component.literal(node.text), IconButton.Symbol.valueOf(node.iconSymbol), () -> onButtonClick.accept(node)) : new IconButton(Component.literal(node.text),
                     Component.literal(node.text.isBlank() ? "?" : node.text.substring(0, 1)),
                     () -> onButtonClick.accept(node));
-            case "divider" -> new Divider(Divider.Orientation.HORIZONTAL, Math.max(1, node.height), null);
+            // Default spacing: the node's height is the whole area, the rule is 1 px inside 5 px of air.
+            case "divider" -> new Divider(Divider.Orientation.HORIZONTAL);
             case "panel" -> new Panel(new Column(node.gap)).setBackground(node.background);
             case "colorswatch" -> new com.radaeli.ruilib.ui.ColorSwatch(node.color, node.selected, () -> onButtonClick.accept(node));
             case "colorpicker" -> new com.radaeli.ruilib.ui.ColorPicker(node.color, color -> {node.color=color;onButtonClick.accept(node);}, () -> onButtonClick.accept(node));
