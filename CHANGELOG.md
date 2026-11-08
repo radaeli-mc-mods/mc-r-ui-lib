@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.10.0] - 2026-11-08
+
+### Added
+
+- Added interactive curve charts with draggable control points and tangent handles, point editing, axes, grid, and customizable tooltips.
+
+### Fixed
+
+- Fixed option steppers that start with no value crashing on the first step.
+- Fixed stepper arrows and label-only tooltips not responding until the stepper had been drawn once.
+
 ## [0.9.0] - 2026-11-06
 
 ### Added

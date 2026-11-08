@@ -43,7 +43,7 @@ final class PlaygroundDocument {
                 || node.type.equals("textfield") || node.type.equals("searchfield")
                 || node.type.equals("slider") || node.type.equals("progressbar")
                 || node.type.equals("radial") || node.type.equals("itemcard") || node.type.equals("itemslot")
-                || node.type.equals("table")
+                || node.type.equals("table") || node.type.equals("curvechart")
                 || node.type.equals("spacer") || node.isContainer())) {
             throw new IllegalArgumentException("Unsupported component type: " + node.type);
         }
@@ -89,6 +89,10 @@ final class PlaygroundDocument {
             if (node.maximum > node.minimum) {
                 node.value = Math.max(node.minimum, Math.min(node.maximum, node.value));
             }
+        }
+        if (node.type.equals("curvechart")) {
+            node.text = PlaygroundComponentFactory.formatCurvePoints(
+                    PlaygroundComponentFactory.parseCurvePoints(node.text));
         }
         node.parent = parent;
         for (PlaygroundNode child : node.children) normalizeNode(child, node, depth + 1, count);

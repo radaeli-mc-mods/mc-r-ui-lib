@@ -20,7 +20,8 @@ import java.util.List;
 public final class UiValidation extends UiScreen {
     private static final String[] TYPES = {"label", "button", "iconbutton", "divider", "panel", "card",
             "toggle", "chip", "textfield", "searchfield", "slider", "progressbar", "radial", "itemcard",
-            "itemslot", "spacer", "row", "column", "stack", "tabs", "scroll", "clip", "grid", "itemgrid", "table", "absolute"};
+            "itemslot", "spacer", "row", "column", "stack", "tabs", "scroll", "clip", "grid", "itemgrid", "table", "absolute",
+            "curvechart"};
     private static boolean started;
     private final List<String> checks = new ArrayList<>();
     private final List<String> captures = new ArrayList<>();
@@ -171,6 +172,43 @@ public final class UiValidation extends UiScreen {
         }
     }
 
+    private void curveChartChecks() {
+        List<List<CurvePoint>> commits = new ArrayList<>();
+        CurveChart chart = new CurveChart(List.of(new CurvePoint(0, 0, 0), new CurvePoint(100, 1, 0)),
+                new CurveViewport(0, 100, 0, 1)).setOnCommit(commits::add);
+        chart.layout(font, UiTheme.DARK, new Bounds(20, 20, 240, 150));
+        Bounds plot = chart.plotBounds();
+        CurveViewport view = chart.viewport();
+        double startX = view.toScreenX(100, plot);
+        double startY = view.toScreenY(1, plot);
+        double targetY = view.toScreenY(0.5, plot);
+        check(chart.mouseClicked(startX, startY, 0) && chart.selectedIndex() == 1, "curve chart selects a point");
+        chart.mouseDragged(startX, targetY, 0, 0, targetY - startY);
+        chart.mouseReleased(startX, targetY, 0);
+        check(commits.size() == 1 && Math.abs(chart.points().get(1).y() - 0.5) < 0.02
+                && chart.points().get(1).x() == 100, "curve chart drags a point and commits once");
+        double midX = view.toScreenX(50, plot);
+        double midY = view.toScreenY(chart.valueAt(50), plot) - 20;
+        chart.mouseClicked(midX, midY, 0);
+        chart.mouseClicked(midX, midY, 0);
+        check(chart.points().size() == 3 && chart.selectedIndex() == 1, "curve chart double-click adds a point");
+        CurvePoint added = chart.points().get(1);
+        check(chart.mouseClicked(view.toScreenX(added.x(), plot), view.toScreenY(added.y(), plot), 1)
+                && chart.points().size() == 2, "curve chart right-click removes a point");
+        chart.mouseClicked(view.toScreenX(0, plot), view.toScreenY(0, plot), 1);
+        check(chart.points().size() == 2, "curve chart keeps the minimum point count");
+        double pointX = view.toScreenX(100, plot);
+        double pointY = view.toScreenY(chart.points().get(1).y(), plot);
+        check(chart.tooltipAt(pointX, pointY).lines().get(0).getString().equals("x: 100"),
+                "curve chart tooltip defaults to x/y names");
+        chart.setAxisLabels(Component.literal("Y"), Component.literal("Y"));
+        chart.setTooltipLabels(Component.literal("Altitude"), Component.literal("Pressure"), Component.literal("Slope"));
+        Tooltip labelled = chart.tooltipAt(pointX, pointY);
+        check(labelled.lines().get(0).getString().startsWith("Altitude: ")
+                && labelled.lines().get(1).getString().startsWith("Pressure: ")
+                && labelled.lines().get(2).getString().startsWith("Slope: "), "curve chart tooltip uses custom labels");
+    }
+
     private void colorControlChecks() {
         AbsoluteLayout root=(AbsoluteLayout)root();
         for(var child:List.copyOf(root.children()))root.remove(child);
@@ -283,7 +321,7 @@ public final class UiValidation extends UiScreen {
                 Files.createDirectories(output);
                 Files.deleteIfExists(output.resolve("failure.txt"));
                 Files.deleteIfExists(output.resolve("results.json"));
-                inputChecks(); colorControlChecks(); tested = true;
+                curveChartChecks(); inputChecks(); colorControlChecks(); tested = true;
             }
             if (frame < 18) {
                 int page = frame % 3;
@@ -334,6 +372,8 @@ public final class UiValidation extends UiScreen {
                 capture(graphics, "cursor-" + (frame - 29));
             } else if(frame < 35) {
                 newControlsCapture(graphics,frame-32);
+            } else if (frame < 37) {
+                curveChartCapture(graphics, frame - 35);
             } else {
                 Files.writeString(output.resolve("results.json"), new GsonBuilder().setPrettyPrinting().create()
                         .toJson(java.util.Map.of("passed", true, "checks", checks, "captures", captures)));
@@ -344,6 +384,28 @@ public final class UiValidation extends UiScreen {
             try { Files.createDirectories(output); Files.writeString(output.resolve("failure.txt"), error.toString()); } catch (Exception ignored) { }
             throw new IllegalStateException("R-UI runtime validation failed", error);
         }
+    }
+
+    /** Selected point with tangent handles and a custom-labelled tooltip, in both themes. */
+    private void curveChartCapture(GuiGraphics graphics, int step) throws Exception {
+        UiTheme theme = step == 0 ? UiTheme.DARK : UiTheme.LIGHT;
+        graphics.fill(0, 0, width, height, theme.palette().screen() | 0xFF000000);
+        CurveChart chart = new CurveChart(List.of(new CurvePoint(-38, 1.5, -0.006), new CurvePoint(63, 1, -0.004),
+                new CurvePoint(280, 0.4, -0.0016), new CurvePoint(320, 0, -0.02)), new CurveViewport(-80, 360, -0.1, 1.7))
+                .setAxisLabels(Component.literal("Altitude"), Component.literal("Y"))
+                .setTooltipLabels(null, Component.literal("Pressure"), null);
+        chart.layout(font, theme, new Bounds(40, 40, 400, 240));
+        Bounds plot = chart.plotBounds();
+        double x = chart.viewport().toScreenX(63, plot);
+        double y = chart.viewport().toScreenY(1, plot);
+        chart.mouseClicked(x, y, 0);
+        chart.mouseReleased(x, y, 0);
+        check(chart.selectedIndex() == 1, "curve chart capture selects a point");
+        UiContext context = new UiContext(graphics, font, theme, x, y, width, height, 0);
+        chart.render(context);
+        chart.render(new UiContext(graphics, font, theme, x, y, width, height, 1_000_000_000L));
+        UiPaint.tooltip(context, chart.tooltipAt(x, y), (int) x, (int) y);
+        capture(graphics, "curve-chart-" + (step == 0 ? "dark" : "light"));
     }
 
     private void capture(GuiGraphics graphics, String name) throws Exception {

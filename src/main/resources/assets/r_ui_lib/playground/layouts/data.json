@@ -106,6 +106,22 @@
         ]
       },
       {
+        "type": "label",
+        "text": "Curve chart: drag points and tangent handles, double-click to add, right-click to remove",
+        "x": 16,
+        "y": 318,
+        "width": 480,
+        "height": 16
+      },
+      {
+        "type": "curvechart",
+        "text": "-38:1.5:-0.006; 63:1:-0.004; 280:0.4:-0.0016; 320:0:-0.02",
+        "x": 16,
+        "y": 338,
+        "width": 400,
+        "height": 200
+      },
+      {
         "type": "itempreview",
         "itemId": "minecraft:oak_log",
         "x": 340,
