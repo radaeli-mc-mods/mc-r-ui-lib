@@ -100,6 +100,7 @@ final class PlaygroundComponentFactory {
                             java.math.BigDecimal.valueOf(value)
                                     .setScale(0, java.math.RoundingMode.HALF_UP).toPlainString()));
             case "radial" -> createRadialMenu(node, onButtonClick);
+            case "curvechart" -> createCurveChart(node, onButtonClick);
             case "itemcard" -> createItemCard(node, onButtonClick);
             case "itemslot" -> createItemSlot(node, onButtonClick);
             case "spacer" -> node.flexible ? Spacer.flex() : Spacer.fixed(node.width, node.height);
@@ -245,6 +246,58 @@ final class PlaygroundComponentFactory {
             rows.add(row);
         }
         return table.setRows(rows).setOnRowClicked((index, row) -> onClick.accept(node));
+    }
+
+    private static com.radaeli.ruilib.ui.CurveChart createCurveChart(PlaygroundNode node,
+                                                                    Consumer<PlaygroundNode> onCommit) {
+        List<com.radaeli.ruilib.ui.CurvePoint> points;
+        try {
+            points = parseCurvePoints(node.text);
+        } catch (IllegalArgumentException invalidWhileTyping) {
+            points = parseCurvePoints(PlaygroundNode.create("curvechart", 0, 0).text);
+        }
+        return new com.radaeli.ruilib.ui.CurveChart(points)
+                .setPointCountRange(2, MAX_CURVE_POINTS)
+                .setOnCommit(edited -> {
+                    node.text = formatCurvePoints(edited);
+                    onCommit.accept(node);
+                });
+    }
+
+    static final int MAX_CURVE_POINTS = 32;
+
+    /** Parses "x:y:slope; x:y:slope" (slope optional) into curve points. */
+    static List<com.radaeli.ruilib.ui.CurvePoint> parseCurvePoints(String text) {
+        List<com.radaeli.ruilib.ui.CurvePoint> points = new ArrayList<>();
+        for (String entry : (text == null ? "" : text).split(";")) {
+            if (entry.isBlank()) continue;
+            String[] parts = entry.trim().split(":");
+            if (parts.length < 2 || parts.length > 3) {
+                throw new IllegalArgumentException("Curve points use x:y or x:y:slope separated by ';'");
+            }
+            try {
+                points.add(new com.radaeli.ruilib.ui.CurvePoint(Double.parseDouble(parts[0].trim()),
+                        Double.parseDouble(parts[1].trim()),
+                        parts.length == 3 ? Double.parseDouble(parts[2].trim()) : 0));
+            } catch (NumberFormatException exception) {
+                throw new IllegalArgumentException("Curve point values must be numbers", exception);
+            }
+        }
+        if (points.size() < 2 || points.size() > MAX_CURVE_POINTS) {
+            throw new IllegalArgumentException("Curve chart needs 2 to " + MAX_CURVE_POINTS + " points");
+        }
+        return com.radaeli.ruilib.ui.CurveMath.sorted(points);
+    }
+
+    static String formatCurvePoints(List<com.radaeli.ruilib.ui.CurvePoint> points) {
+        StringBuilder text = new StringBuilder();
+        for (com.radaeli.ruilib.ui.CurvePoint point : points) {
+            if (!text.isEmpty()) text.append("; ");
+            text.append(com.radaeli.ruilib.ui.CurveMath.format(point.x(), 3)).append(':')
+                    .append(com.radaeli.ruilib.ui.CurveMath.format(point.y(), 4)).append(':')
+                    .append(com.radaeli.ruilib.ui.CurveMath.format(point.slope(), 6));
+        }
+        return text.toString();
     }
 
     private static RadialMenu createRadialMenu(PlaygroundNode node, Consumer<PlaygroundNode> onClick) {

@@ -109,6 +109,11 @@ final class PlaygroundNode {
                 node.width = 144;
                 node.height = 144;
             }
+            case "curvechart" -> {
+                node.text = "-38:1.5:-0.006; 63:1:-0.004; 280:0.4:-0.0016; 320:0:-0.02";
+                node.width = 320;
+                node.height = 180;
+            }
             case "itempreview" -> { node.width=64; node.height=64; }
             case "colorswatch" -> { node.width=28; node.height=28; }
             case "colorpicker" -> { node.width=220; node.height=210; }

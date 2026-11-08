@@ -64,7 +64,8 @@ public final class UiPlaygroundScreen extends UiScreen {
             new PaletteCategory("Input", List.of("textfield", "searchfield", "slider", "stepper", "segmented", "radiogroup", "colorswatch", "colorpicker")),
             new PaletteCategory("Layout", List.of("panel", "card", "divider", "row", "column", "stack",
                     "absolute", "grid", "spacer")),
-            new PaletteCategory("Data", List.of("selectablecard", "itemcard", "itemslot", "itemgrid", "table", "tabs", "itempreview")),
+            new PaletteCategory("Data", List.of("selectablecard", "itemcard", "itemslot", "itemgrid", "table", "tabs", "itempreview",
+                    "curvechart")),
             new PaletteCategory("Status", List.of("progressbar", "radial")),
             new PaletteCategory("Scroll", List.of("scroll", "clip", "hscroll")));
 
@@ -456,6 +457,7 @@ public final class UiPlaygroundScreen extends UiScreen {
         if (selected.type.equals("itemcard")) return "Item label";
         if (selected.type.equals("table")) return "Headers (CSV)";
         if (selected.type.equals("radial")) return "Segments (CSV)";
+        if (selected.type.equals("curvechart")) return "Points (x:y:slope; ...)";
         return "Text / label";
     }
 
@@ -1094,7 +1096,7 @@ public final class UiPlaygroundScreen extends UiScreen {
                 || selected.type.equals("toggle") || selected.type.equals("chip") || selected.type.equals("radio")
                 || selected.type.equals("textfield") || selected.type.equals("searchfield")
                 || selected.type.equals("itemcard") || selected.type.equals("table")
-                || selected.type.equals("radial"))
+                || selected.type.equals("radial") || selected.type.equals("curvechart"))
                 ? selected.text : "");
         colorField.setValue(!hasSelection ? "FFFFFFFF"
                 : selected.usesItemStack() ? selected.itemId : String.format("%08X", selected.color));
@@ -1132,7 +1134,7 @@ public final class UiPlaygroundScreen extends UiScreen {
                 || selected.type.equals("toggle") || selected.type.equals("chip") || selected.type.equals("radio")
                 || selected.type.equals("textfield") || selected.type.equals("searchfield")
                 || selected.type.equals("itemcard") || selected.type.equals("table")
-                || selected.type.equals("radial"));
+                || selected.type.equals("radial") || selected.type.equals("curvechart"));
         textField.setEditable(textEditable);
         textField.visible = textEditable && !previewMode;
         boolean colorEditable = hasSelection && (selected.type.equals("label") || selected.usesItemStack());
@@ -1356,7 +1358,7 @@ public final class UiPlaygroundScreen extends UiScreen {
                     || selected.type.equals("toggle") || selected.type.equals("chip") || selected.type.equals("radio")
                     || selected.type.equals("textfield") || selected.type.equals("searchfield")
                     || selected.type.equals("itemcard") || selected.type.equals("table")
-                    || selected.type.equals("radial")) {
+                    || selected.type.equals("radial") || selected.type.equals("curvechart")) {
                 selected.text = nextText;
             }
             selected.itemId = nextItemId;

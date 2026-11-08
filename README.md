@@ -16,6 +16,7 @@ R-Ui Lib is a library: it adds no standalone screens, items, or blocks. You see 
 
 - Arrange content in rows, columns, grids, tabs, cards, and scrollable areas.
 - Use panels, labels, progress bars, and tables to make screens easier to scan.
+- Show curve charts whose points and slopes players can drag to reshape the curve.
 - Choose a Dark or Light theme and adjust colors, spacing, and other visual settings.
 
 ### Controls and feedback
