@@ -88,3 +88,50 @@ same row with `Stepper.paint(...)` and take click areas from `Stepper.layout(...
 
 `UiComponent.tooltipAt(mouseX, mouseY)` lets any component limit its tooltip to part of its
 area; screens use it instead of `tooltip()`.
+
+## Curve chart (unreleased)
+
+`CurveChart` plots a function defined by `CurvePoint(x, y, slope)` control points and a
+`CurveModel`. `CurveModel.HERMITE` (default) draws a piecewise cubic Hermite spline that
+passes through every point with its slope and holds the first/last y beyond the outer
+points; `CurveModel.LINEAR` joins points with straight segments. Any pure
+`(points, x) -> y` lambda can be supplied as a custom model.
+
+```java
+CurveChart pressure = new CurveChart(List.of(
+        new CurvePoint(-38, 1.5, -0.006),
+        new CurvePoint(63, 1, -0.004),
+        new CurvePoint(280, 0.4, -0.0016),
+        new CurvePoint(320, 0, -0.02)),
+        new CurveViewport(-80, 360, -0.1, 1.8))
+    .setLimits(-64, 320, 0, 1.6)
+    .setAxisLabels(Component.literal("Altitude"), Component.literal("Pressure"))
+    .addReferenceCurve(x -> defaultPressure(x), null)
+    .setSnap(1, 0)
+    .setOnCommit(points -> savePressureCurve(points));
+```
+
+- Editing: drag a point; drag the selected point's tangent handles to change its slope;
+  double-click the plot to add a point (y and slope follow the current curve);
+  right-click a point or press Delete/Backspace to remove it. Keyboard: Ctrl+Left/Right
+  selects points, arrows nudge (Shift x10), `+`/`-` change the slope, Escape deselects.
+- `setOnChange` fires on every edit (each drag frame); `setOnCommit` fires once per
+  finished edit (drag release, add, remove, key nudge). `setPoints` never fires callbacks.
+- `setLimits` bounds dragging (default: the viewport). `setMinimumGap`, `setSnap`,
+  `setAxisLock`, `setSlopeRange` and `setPointCountRange` (default 2-32) constrain edits;
+  `setEditable(false)`, `setSlopeHandles(false)` and `setAllowAddRemove(false)` turn
+  features off. Points keep their x order: a dragged point stops before its neighbours.
+- Ticks use 1-2-5 steps. `setFormatters` replaces tick and tooltip text per axis.
+  Hovering the plot shows the curve value; hovering a point shows x, y and `dy/dx`.
+  `setTooltipLabels(x, y, slope)` renames those tooltip lines (e.g. "Altitude",
+  "Pressure"); a null x/y label falls back to the axis label, then to `x`/`y`, and a
+  null slope label keeps `dy/dx`.
+- The selected point keeps its accent ring and gets a contrasting centre while it is
+  editable; `setSelectedPointColor` changes that fill (default: the theme text color).
+- Curves, points and handles are rasterised at the window's real pixel density so they
+  stay smooth at any GUI scale. `CurveMath` exposes the evaluation, tick and constraint
+  helpers for code that needs the same results without a chart.
+
+The playground Data category includes `curvechart`; its text field takes
+`x:y:slope; x:y:slope` and is rewritten after each committed edit. The validation
+suite drags a point, adds one by double-click and removes one by right-click.

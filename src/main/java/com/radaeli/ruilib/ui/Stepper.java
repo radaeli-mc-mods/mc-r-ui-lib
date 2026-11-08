@@ -41,6 +41,8 @@ public final class Stepper<T> extends UiComponent {
     private int shiftMultiplier = 10;
     private T value;
     private Layout layout;
+    private Font layoutFont;
+    private UiTheme layoutTheme;
 
     public Stepper(Component label, T value, Model<T> model, Consumer<T> onChange) {
         this.label = Objects.requireNonNull(label, "label");
@@ -75,7 +77,8 @@ public final class Stepper<T> extends UiComponent {
         Objects.requireNonNull(empty, "empty");
         return new Stepper<>(label, value, new Model<>() {
             @Override public T step(T current, int delta) {
-                return choices.get(stepIndex(choices.indexOf(current), Integer.signum(delta), choices.size(), wrap));
+                int index = current == null ? -1 : choices.indexOf(current);
+                return choices.get(stepIndex(index, Integer.signum(delta), choices.size(), wrap));
             }
 
             @Override public Component format(T current) {
@@ -106,6 +109,7 @@ public final class Stepper<T> extends UiComponent {
     /** Updates the value without invoking the callback. */
     public void setValue(T value) {
         this.value = value;
+        refreshLayout();
     }
 
     /** How many steps one Shift step makes; 1 turns the multiplier off (options always move by one). */
@@ -122,6 +126,7 @@ public final class Stepper<T> extends UiComponent {
         T next = model.step(value, delta);
         if (Objects.equals(next, value)) return;
         value = next;
+        refreshLayout();
         onChange.accept(next);
     }
 
@@ -132,6 +137,18 @@ public final class Stepper<T> extends UiComponent {
         return new UiSize(UiText.width(font, label, theme) + gap * 2 + arrows
                 + UiText.width(font, model.format(value), theme), UiText.height(font, theme) + 2)
                 .constrain(maxWidth, maxHeight);
+    }
+
+    @Override
+    protected void layoutChildren(Font font, UiTheme theme) {
+        layoutFont = font;
+        layoutTheme = theme;
+        refreshLayout();
+    }
+
+    /** Keeps arrow and label hit areas valid between layout and the first frame, and after value changes. */
+    private void refreshLayout() {
+        if (layoutFont != null) layout = layout(layoutFont, layoutTheme, bounds(), label, model.format(value));
     }
 
     @Override
