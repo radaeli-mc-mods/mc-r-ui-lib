@@ -26,3 +26,7 @@ Reference image reopened and reviewed. Added consistent inset inventory/ghost sl
 ## Phase 5 — navigation and viewports
 
 Reference image reopened and reviewed. Added icon side tabs within complete input bounds, keyboard direction and per-tab help, shared scrollbar materials and gutters, and Style dialog for surface/overflow/icons/tab placement. ClipStack remains transparent with native scissor nesting. Next: Phase 6.
+
+## Phase 6 — progress, charts and radial
+
+Reference image reopened and reviewed. Added inset progress preserving read-only behavior, dark plot/grid and native labels, square point/tangent handles with dashed tangents, and stepped radial edge material. Mathematical models, editing and custom curve colors preserved. Next: Phase 7.

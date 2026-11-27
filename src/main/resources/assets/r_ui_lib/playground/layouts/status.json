@@ -1,12 +1,86 @@
 {
   "version": 1,
   "name": "status-components",
-  "root": { "type": "absolute", "width": 0, "height": 0, "children": [
-    { "type": "label", "text": "Status components", "x": 16, "y": 12, "width": 200, "height": 16 },
-    { "type": "label", "text": "Download", "x": 16, "y": 48, "width": 90, "height": 14 },
-    { "type": "progressbar", "text": "Download progress", "minimum": 0, "maximum": 100, "value": 68, "percentage": true, "x": 16, "y": 68, "width": 240, "height": 18 },
-    { "type": "label", "text": "Indeterminate preview", "x": 16, "y": 102, "width": 180, "height": 14 },
-    { "type": "progressbar", "text": "Progress cycle", "minimum": 0, "maximum": 100, "value": 38, "x": 16, "y": 122, "width": 240, "height": 18 },
-    { "type": "radial", "text": "North, East, South, West, Up, Down, Center, Back", "x": 300, "y": 44, "width": 160, "height": 160 }
-  ] }
+  "root": {
+    "type": "absolute",
+    "width": 0,
+    "height": 0,
+    "children": [
+      {
+        "type": "label",
+        "text": "Status components",
+        "x": 16,
+        "y": 12,
+        "width": 200,
+        "height": 16
+      },
+      {
+        "type": "label",
+        "text": "Download",
+        "x": 16,
+        "y": 48,
+        "width": 90,
+        "height": 14
+      },
+      {
+        "type": "progressbar",
+        "text": "Download progress",
+        "minimum": 0,
+        "maximum": 100,
+        "value": 68,
+        "percentage": true,
+        "x": 16,
+        "y": 68,
+        "width": 240,
+        "height": 18
+      },
+      {
+        "type": "label",
+        "text": "Indeterminate preview",
+        "x": 16,
+        "y": 102,
+        "width": 180,
+        "height": 14
+      },
+      {
+        "type": "progressbar",
+        "text": "Progress cycle",
+        "minimum": 0,
+        "maximum": 100,
+        "value": 38,
+        "x": 16,
+        "y": 122,
+        "width": 240,
+        "height": 18
+      },
+      {
+        "type": "radial",
+        "text": "North, East, South, West, Up, Down, Center, Back",
+        "x": 300,
+        "y": 44,
+        "width": 160,
+        "height": 160
+      },
+      {
+        "type": "progressbar",
+        "text": "Workshop progress",
+        "x": 16,
+        "y": 395,
+        "width": 180,
+        "height": 12,
+        "minimum": 0,
+        "maximum": 100,
+        "value": 64,
+        "percentage": false
+      },
+      {
+        "type": "radial",
+        "text": "Actions",
+        "x": 220,
+        "y": 390,
+        "width": 140,
+        "height": 140
+      }
+    ]
+  }
 }

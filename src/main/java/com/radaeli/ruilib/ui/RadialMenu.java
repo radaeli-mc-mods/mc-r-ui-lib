@@ -122,6 +122,10 @@ public final class RadialMenu extends UiComponent {
                 : UiPaint.mixColor(baseColor, palette.accent(), hoverProgress[segmentIndex]);
         UiPaint.rect(context, new Bounds(start, y, endExclusive - start, 1),
                 UiPaint.withAlpha(color, openProgress));
+        if(context.theme().skin().pixelated()){
+            UiPaint.rect(context,new Bounds(start,y,1,1),WorkshopSkin.EDGE_LIGHT);
+            UiPaint.rect(context,new Bounds(endExclusive-1,y,1,1),WorkshopSkin.EDGE_DARK);
+        }
     }
 
     private void drawCenter(UiContext context, RadialGeometry.Point center, double innerRadius,

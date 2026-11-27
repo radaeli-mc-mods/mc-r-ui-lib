@@ -116,6 +116,11 @@ public final class ProgressBar extends UiComponent {
         int fillWidth = (int) Math.round(bounds.width() * displayedProgress);
         if (fillWidth > 0) UiPaint.roundedRect(context,
                 new Bounds(bounds.x(), y, Math.min(trackBounds.width(), fillWidth), height), fill, radius);
+        if(context.theme().skin().pixelated()){
+            context.theme().skin().surface(context,trackBounds,SurfaceVariant.INSET,track);
+            Bounds inner=trackBounds.inset(Insets.all(height>=6?2:1));
+            UiPaint.rect(context,new Bounds(inner.x(),inner.y(),(int)Math.round(inner.width()*displayedProgress),inner.height()),fill);
+        }
         if (percentage || formatter != null) {
             double displayedValue = minimum + displayedProgress * (maximum - minimum);
             Component label = percentage

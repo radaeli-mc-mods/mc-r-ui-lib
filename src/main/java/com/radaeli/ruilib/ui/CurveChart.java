@@ -355,9 +355,9 @@ public final class CurveChart extends UiComponent {
         if (xLabel != null) UiPaint.text(context, xLabel,
                 plot.right() - UiText.width(context, xLabel), bounds().y(), labelColor);
 
-        UiPaint.rect(context, plot, palette.card());
-        int grid = UiPaint.mixColor(palette.card(), palette.divider(), 0.7);
-        int axis = UiPaint.mixColor(palette.card(), palette.mutedText(), 0.75);
+        if(!context.theme().skin().surface(context,plot,SurfaceVariant.INSET,WorkshopSkin.PLOT))UiPaint.rect(context, plot, palette.card());
+        int grid = context.theme().skin().pixelated()?WorkshopSkin.PLOT_GRID:UiPaint.mixColor(palette.card(), palette.divider(), 0.7);
+        int axis = context.theme().skin().pixelated()?WorkshopSkin.INPUT_TEXT:UiPaint.mixColor(palette.card(), palette.mutedText(), 0.75);
         for (double tick : xTicks) {
             int x = (int) Math.round(viewport.toScreenX(tick, plot));
             if (x < plot.x() || x >= plot.right()) continue;
@@ -406,7 +406,7 @@ public final class CurveChart extends UiComponent {
             boolean active = i == hovered || i == selected || dragTarget == DragTarget.POINT && i == selected;
             double halo = animate(context, "halo:" + i, active ? 1 : 0);
             if (!plotContainsLoosely(sx, sy)) continue;
-            if (halo > 0.01) {
+            if (halo > 0.01 && !context.theme().skin().pixelated()) {
                 int haloColor = isFocused() && i == selected ? palette.focus() : curve;
                 raster.disk(sx, sy, POINT_RADIUS + (HALO_RADIUS - POINT_RADIUS) * halo,
                         UiPaint.withAlpha(haloColor, 0.3 * halo));
@@ -418,12 +418,16 @@ public final class CurveChart extends UiComponent {
             double sy = viewport.toScreenY(point.y(), plot);
             double[] offset = handleOffset(point);
             int lineColor = UiPaint.mixColor(palette.card(), palette.text(), 0.6);
-            raster.line(sx - offset[0], sy - offset[1], sx + offset[0], sy + offset[1], lineColor, 0.75);
+            if(context.theme().skin().pixelated()){
+                for(int d=0;d<16;d+=2){double a=d/16.0,b=(d+1)/16.0;
+                    raster.line(sx-offset[0]+offset[0]*2*a,sy-offset[1]+offset[1]*2*a,sx-offset[0]+offset[0]*2*b,sy-offset[1]+offset[1]*2*b,WorkshopSkin.INPUT_TEXT,1);
+                }
+            }else raster.line(sx - offset[0], sy - offset[1], sx + offset[0], sy + offset[1], lineColor, 0.75);
             for (int sign = -1; sign <= 1; sign += 2) {
                 double hx = sx + offset[0] * sign;
                 double hy = sy + offset[1] * sign;
-                raster.disk(hx, hy, HANDLE_RADIUS, curve);
-                raster.disk(hx, hy, HANDLE_RADIUS - 1, palette.card());
+                if(context.theme().skin().pixelated())raster.square(hx,hy,HANDLE_RADIUS,WorkshopSkin.EDGE_LIGHT);
+                else {raster.disk(hx, hy, HANDLE_RADIUS, curve);raster.disk(hx, hy, HANDLE_RADIUS - 1, palette.card());}
             }
         }
         int selectedFill = selectedPointColor != null ? selectedPointColor : palette.text();
@@ -432,10 +436,13 @@ public final class CurveChart extends UiComponent {
             double sx = viewport.toScreenX(point.x(), plot);
             double sy = viewport.toScreenY(point.y(), plot);
             if (!plotContainsLoosely(sx, sy)) continue;
-            raster.disk(sx, sy, POINT_RADIUS, curve);
+            if(context.theme().skin().pixelated()){
+                raster.square(sx,sy,POINT_RADIUS,context.theme().palette().border());
+                raster.square(sx,sy,POINT_RADIUS-1,i==selected?context.theme().palette().focus():WorkshopSkin.EDGE_LIGHT);
+            }else raster.disk(sx, sy, POINT_RADIUS, curve);
             // Accent ring with a contrasting centre marks the point being manipulated.
             double edit = animate(context, "edit:" + i, i == selected && editable && isEnabled() ? 1 : 0);
-            if (edit > 0.01) raster.disk(sx, sy, (POINT_RADIUS - 1) * edit, selectedFill);
+            if (edit > 0.01 && !context.theme().skin().pixelated()) raster.disk(sx, sy, (POINT_RADIUS - 1) * edit, selectedFill);
         }
     }
 
@@ -776,6 +783,10 @@ public final class CurveChart extends UiComponent {
             graphics.pose().popPose();
         }
 
+        private void square(double x,double y,double radius,int color){
+            int left=(int)Math.round((Math.round(x)-radius)*scale),top=(int)Math.round((Math.round(y)-radius)*scale);
+            int side=Math.max(1,(int)Math.round(radius*2*scale));fillClipped(left,top,left+side,top+side,color);
+        }
         private void fill(int x0, int y0, int x1, int y1, int color) {
             if (x1 > x0 && y1 > y0) graphics.fill(x0, y0, x1, y1, UiPaint.withAlpha(color, context.opacity()));
         }
