@@ -20,6 +20,9 @@ public final class SearchField extends TextField {
 
     @Override
     protected void renderPrefix(UiContext context) {
+        if(context.theme().skin().pixelated()){
+            UiIcons.SEARCH.render(context,bounds().x()+6,bounds().centerY()-3,context.theme().skin().inputText(context.theme(),isEnabled()));return;
+        }
         GuiGraphics graphics = context.graphics();
         int x = bounds().x() + 7;
         int y = bounds().centerY() - 5;

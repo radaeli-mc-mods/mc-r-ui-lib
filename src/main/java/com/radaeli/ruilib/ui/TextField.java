@@ -14,6 +14,8 @@ public class TextField extends UiComponent {
     private Consumer<String> responder = ignored -> { };
     private UiEditBox editBox;
     private float textScale = 1;
+    private boolean invalid;
+    public TextField setInvalid(boolean invalid){this.invalid=invalid;return this;}
 
     public TextField() {
         this(Component.empty());
@@ -101,8 +103,9 @@ public class TextField extends UiComponent {
         boolean hovered = isEnabled() && bounds().contains(context.mouseX(), context.mouseY());
         UiPaint.input(context, bounds(), animate(context, "hover", hovered ? 1 : 0), isEnabled(),
                 animate(context, "focus", isFocused() ? 1 : 0));
-        editBox.setTextColor(UiPaint.withAlpha(context.theme().palette().text(), context.opacity()));
+        editBox.setTextColor(UiPaint.withAlpha(context.theme().skin().inputText(context.theme(),isEnabled()), context.opacity()));
         editBox.setTextColorUneditable(UiPaint.withAlpha(context.theme().palette().mutedText(), context.opacity()));
+        if(invalid)UiPaint.outline(context,bounds().inset(Insets.all(1)),context.theme().palette().error());
         renderPrefix(context);
         var pose = context.graphics().pose();
         pose.pushPose();

@@ -49,6 +49,7 @@ public final class ColorPicker extends UiContainer {
           if (syncing) return;
           boolean valid = text.matches("#[0-9a-fA-F]{6}");
           apply.setEnabled(valid);
+          hex.setInvalid(!valid);
           if (valid) {
             value = Integer.parseInt(text.substring(1), 16);
             sync();

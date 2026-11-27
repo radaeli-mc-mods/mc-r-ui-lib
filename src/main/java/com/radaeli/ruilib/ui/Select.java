@@ -25,6 +25,7 @@ public final class Select<T> extends UiComponent {
     private int firstVisible;
     private int visibleRows;
     private int rowHeight;
+    private int popupInset=1;
     private boolean open;
     private boolean pressed;
     private Bounds popupBounds = Bounds.EMPTY;
@@ -78,35 +79,32 @@ public final class Select<T> extends UiComponent {
     public void render(UiContext context) {
         boolean hovered = bounds().contains(context.mouseX(), context.mouseY());
         UiPaint.button(context, bounds(), hovered && isEnabled(), pressed || open, isEnabled(), isFocused());
-        int color = isEnabled() ? context.theme().palette().text() : context.theme().palette().mutedText();
+        int color = context.theme().skin().buttonText(context.theme(),isEnabled(),false);
         drawLabel(context, options.get(selectedIndex).label(), bounds(), 20, color);
+        if(context.theme().skin().pixelated()) { (open?UiIcons.UP:UiIcons.DOWN).render(context,bounds().right()-12,bounds().centerY()-2,color);return; }
         UiPaint.textCentered(context, Component.literal(open ? "^" : "v"), bounds().right() - 9,
                 bounds().centerY() - UiText.height(context) / 2, color);
     }
 
     private static void drawLabel(UiContext context, Component label, Bounds area, int rightInset, int color) {
-        String text = label.getString();
-        int available = Math.max(0, area.width() - 8 - rightInset);
-        if (UiText.width(context, text) > available) {
-            int end = text.length();
-            while (end > 0 && UiText.width(context, text.substring(0, end) + "...") > available) end--;
-            text = end == 0 ? "" : text.substring(0, end) + "...";
-        }
-        UiPaint.text(context, text, area.x() + 8, area.centerY() - UiText.height(context) / 2, color);
+        int available = Math.max(0,area.width()-8-rightInset);
+        UiPaint.text(context,UiText.ellipsize(context.font(),label,(int)(available/context.theme().tokens().typography().bodyScale())),
+            area.x()+8,area.centerY()-UiText.height(context)/2,color,UiTextStyle.BODY);
     }
 
     void layoutPopup(Font font, UiTheme theme, int screenWidth, int screenHeight) {
-        rowHeight = Math.max(20, UiText.height(font, theme) + 10);
-        int desiredHeight = Math.min(8, options.size()) * rowHeight + 2;
+        popupInset=theme.skin().pixelated()?theme.skin().metrics().frameInset():1;
+        rowHeight = Math.max(theme.skin().metrics().popupRowHeight(), UiText.height(font, theme) + (theme.skin().pixelated()?6:10));
+        int desiredHeight = Math.min(8, options.size()) * rowHeight + popupInset*2;
         int below = Math.max(0, screenHeight - bounds().bottom() - 6);
         int above = Math.max(0, bounds().y() - 6);
         boolean upwards = below < desiredHeight && above > below;
-        visibleRows = Math.min(Math.min(8, options.size()), Math.max(0, ((upwards ? above : below) - 2) / rowHeight));
+        visibleRows = Math.min(Math.min(8, options.size()), Math.max(0, ((upwards ? above : below) - popupInset*2) / rowHeight));
         if (visibleRows == 0) { close(); return; }
         int widest = options.stream().mapToInt(option -> UiText.width(font, option.label(), theme)).max().orElse(0);
         int width = Math.min(Math.max(0, screenWidth - 8), Math.max(bounds().width(), widest + 24));
         int x = Math.max(4, Math.min(bounds().x(), screenWidth - width - 4));
-        int height = visibleRows * rowHeight + 2;
+        int height = visibleRows * rowHeight + popupInset*2;
         int y = upwards ? bounds().y() - height - 2 : bounds().bottom() + 2;
         popupBounds = new Bounds(x, y, width, height);
         firstVisible = Math.max(0, Math.min(firstVisible, options.size() - visibleRows));
@@ -125,20 +123,21 @@ public final class Select<T> extends UiComponent {
         int hovered = optionAt(context.mouseX(), context.mouseY());
         for (int row = 0; row < visibleRows; row++) {
             int index = firstVisible + row;
-            Bounds area = new Bounds(popupBounds.x() + 1, popupBounds.y() + 1 + row * rowHeight,
-                    Math.max(0, popupBounds.width() - 2), rowHeight);
-            if (index == hovered || index == highlightedIndex) UiPaint.rect(context, area, context.theme().palette().buttonHover());
+            Bounds area = new Bounds(popupBounds.x() + popupInset, popupBounds.y() + popupInset + row * rowHeight,
+                    Math.max(0, popupBounds.width() - popupInset*2), rowHeight);
+            if(context.theme().skin().pixelated())UiPaint.rect(context,area,index==selectedIndex?context.theme().palette().buttonPressed():index==hovered||index==highlightedIndex?context.theme().palette().buttonHover():WorkshopSkin.ROW);
+            else if (index == hovered || index == highlightedIndex) UiPaint.rect(context, area, context.theme().palette().buttonHover());
             if (index == selectedIndex) UiPaint.rect(context, new Bounds(area.x(), area.y(), 2, area.height()),
                     context.theme().palette().accent());
-            drawLabel(context, options.get(index).label(), area, 8, context.theme().palette().text());
+            drawLabel(context, options.get(index).label(), area, 8, context.theme().skin().pixelated()&&index==selectedIndex?WorkshopSkin.TEXT_SELECTED:context.theme().palette().text());
         }
     }
 
     boolean popupContains(double x, double y) { return open && popupBounds.contains(x, y); }
 
     private int optionAt(double x, double y) {
-        if (!popupContains(x, y) || y < popupBounds.y() + 1 || y >= popupBounds.bottom() - 1) return -1;
-        return firstVisible + (int) (y - popupBounds.y() - 1) / rowHeight;
+        if (!popupContains(x, y) || y < popupBounds.y() + popupInset || y >= popupBounds.bottom() - popupInset) return -1;
+        return firstVisible + (int) (y - popupBounds.y() - popupInset) / rowHeight;
     }
 
     Tooltip popupTooltip(double x, double y) {
