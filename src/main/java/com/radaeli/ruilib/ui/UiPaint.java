@@ -80,12 +80,14 @@ public final class UiPaint {
     }
 
     public static void panel(UiContext context, Bounds bounds) {
+        if(context.theme().skin().surface(context,bounds,SurfaceVariant.RAISED,null))return;
         int radius = context.theme().tokens().radii().large();
         roundedRect(context, bounds, context.theme().palette().panel(), radius);
         roundedOutline(context, bounds, context.theme().palette().border(), radius);
     }
 
     public static void panel(UiContext context, Bounds bounds, double opacity) {
+        if(context.theme().skin().surface(context.withOpacity(opacity),bounds,SurfaceVariant.RAISED,null))return;
         int radius = context.theme().tokens().radii().large();
         roundedRect(context, bounds, withAlpha(context.theme().palette().panel(), opacity), radius);
         roundedOutline(context, bounds, withAlpha(context.theme().palette().border(), opacity), radius);
@@ -112,6 +114,7 @@ public final class UiPaint {
     }
 
     public static void card(UiContext context, Bounds bounds) {
+        if(context.theme().skin().surface(context,bounds,SurfaceVariant.RAISED,context.theme().palette().card()))return;
         int radius = context.theme().tokens().radii().medium();
         roundedRect(context, bounds, context.theme().palette().card(), radius);
         roundedOutline(context, bounds, context.theme().palette().border(), radius);
@@ -142,6 +145,7 @@ public final class UiPaint {
 
     public static void button(UiContext context, Bounds bounds, double hover, double pressed,
                               boolean enabled, double focused) {
+        if(context.theme().skin().button(context,bounds,new UiVisualState(enabled,hover,pressed,0,focused)))return;
         UiPalette palette = context.theme().palette();
         int fill = !enabled ? palette.disabled()
                 : mixColor(mixColor(palette.button(), palette.buttonHover(), hover), palette.buttonPressed(), pressed);

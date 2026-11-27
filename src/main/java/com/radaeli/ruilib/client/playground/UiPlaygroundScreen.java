@@ -259,16 +259,17 @@ public final class UiPlaygroundScreen extends UiScreen {
                 () -> selectGlobalTheme(UiTheme.DARK)));
         choices.add(new Button(Component.literal(lightSelected ? "Light · Active" : "Light"),
                 () -> selectGlobalTheme(UiTheme.LIGHT)));
+        choices.add(new Button(Component.literal(theme().equals(UiTheme.WORKSHOP) ? "Workshop · Active" : "Workshop"),
+                () -> selectGlobalTheme(UiTheme.WORKSHOP)));
         content.add(choices);
-        showModal(new Modal(Component.literal("Global theme"), content, 240, 104)
+        showModal(new Modal(Component.literal("Global theme"), content, 320, 104)
                 .setCloseOnOutsideClick(true));
     }
 
     private void selectGlobalTheme(UiTheme selectedTheme) {
         UiThemes.setGlobalTheme(selectedTheme);
-        status = selectedTheme.equals(UiTheme.LIGHT)
-                ? "Global UI theme set to Light."
-                : "Global UI theme set to Dark.";
+        status = "Global UI theme set to " + (selectedTheme.equals(UiTheme.WORKSHOP) ? "Workshop" :
+                selectedTheme.equals(UiTheme.LIGHT) ? "Light" : "Dark") + ".";
         closeModal();
     }
 
