@@ -47,7 +47,7 @@ public final class Chip extends UiComponent {
                 animate(context, "focus", isFocused() ? 1 : 0));
         UiPaint.textCentered(context, label, bounds().centerX(),
                 bounds().centerY() - UiText.height(context) / 2,
-                isEnabled() ? context.theme().palette().text() : context.theme().palette().mutedText());
+                context.theme().skin().buttonText(context.theme(),isEnabled(),selected));
     }
 
     @Override

@@ -30,6 +30,11 @@ public final class InfoBox extends UiComponent {
         Bounds bounds = bounds();
         boolean hovered = isEnabled() && bounds.contains(context.mouseX(), context.mouseY());
         var palette = context.theme().palette();
+        if(context.theme().skin().pixelated()) {
+            context.theme().skin().surface(context,bounds,SurfaceVariant.TITLE_PLATE,null);
+            if(isFocused())UiPaint.outline(context,bounds,palette.focus());
+            UiPaint.text(context,MARK,bounds.x()+2,bounds.y(),palette.text());return;
+        }
         if (hovered) UiPaint.rect(context, bounds, UiPaint.withAlpha(palette.buttonHover(), 0.6));
         UiPaint.outline(context, bounds, hovered ? palette.accent() : palette.border());
         UiPaint.text(context, MARK, bounds.centerX() - context.font().width(MARK) / 2 + 1,
@@ -39,6 +44,6 @@ public final class InfoBox extends UiComponent {
 
     @Override
     public boolean isFocusable() {
-        return false;
+        return true;
     }
 }

@@ -6,6 +6,10 @@ import net.minecraft.client.gui.components.EditBox;
 
 public final class UiPlatform {
     private UiPlatform() { }
+    public static void icon(GuiGraphics g, ResourceLocation texture,int x,int y,int u,int v,int w,int h,int tw,int th,int color){
+        g.setColor(((color>>16)&255)/255f,((color>>8)&255)/255f,(color&255)/255f,(color>>>24)/255f);
+        try { g.blit(texture,x,y,u,v,w,h,tw,th); } finally { g.setColor(1,1,1,1); }
+    }
     public static void tickEditor(EditBox editor) { }
     public static boolean scroll(UiPlatformScreen screen, double x, double y, double delta) {
         return screen.mouseScrolled(x, y, 0, delta);
