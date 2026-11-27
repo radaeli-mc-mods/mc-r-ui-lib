@@ -17,6 +17,8 @@ final class PlaygroundNode {
     com.radaeli.ruilib.ui.UiText.Overflow overflow = com.radaeli.ruilib.ui.UiText.Overflow.VISIBLE;
     int maxLines=1;
     Integer background;
+    Integer padding;
+    boolean showValue = true;
     int color = 0xFFF0F3F7;
     boolean enabled = true;
     boolean selected;
@@ -49,6 +51,8 @@ final class PlaygroundNode {
         node.x = x;
         node.y = y;
         switch (type) {
+            case "select" -> {node.text="First,Second,Third";node.width=140;node.height=20;}
+            case "modal-demo", "toast-demo" -> {node.text=type.equals("modal-demo")?"Open dialog":"Show notification";node.width=130;node.height=20;}
             case "infobox" -> { node.text="Help"; node.width=12; node.height=12; }
             case "inventory" -> { node.text="Inventory picker"; node.width=200; node.height=44; }
             case "label" -> {

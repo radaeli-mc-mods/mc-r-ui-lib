@@ -114,6 +114,10 @@ public class TextField extends UiComponent {
         pose.translate(-editBox.getX(), -editBox.getY(), 0);
         editBox.renderEditor(context.graphics(), context.frameTimeNanos());
         pose.popPose();
+        if(context.theme().skin().pixelated()&&value().isEmpty()&&!isFocused()&&!hint.getString().isEmpty()){
+            var shown=UiText.ellipsize(context.font(),hint,Math.max(0,(int)(editBox.getWidth()*textScale)));
+            UiPaint.text(context,shown,editBox.getX(),editBox.getY(),WorkshopSkin.INPUT_HINT,UiTextStyle.BODY);
+        }
     }
 
     protected void renderPrefix(UiContext context) {

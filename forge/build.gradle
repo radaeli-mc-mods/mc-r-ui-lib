@@ -13,7 +13,7 @@ minecraft {
     copyIdeResources = true
     runs {
         client {
-            workingDirectory project.file('runs/client')
+            workingDirectory project.file(project.hasProperty('uiValidation') ? 'runs/validation' : 'runs/client')
             mods { "${mod_id}" { source sourceSets.main } }
             if (project.hasProperty('uiValidation')) property 'r_ui_lib.validate', 'true'
             if (project.hasProperty('withJei')) property 'r_ui_lib.validateJei', 'true'

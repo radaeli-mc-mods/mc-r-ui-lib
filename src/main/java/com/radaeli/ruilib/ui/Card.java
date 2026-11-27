@@ -62,7 +62,8 @@ public final class Card extends UiFrame {
             if(context.theme().skin().pixelated())context.theme().skin().surface(context,
                 new Bounds(bounds().x()+padding.left()-3,bounds().y()+padding.top()-3,
                 Math.max(0,bounds().width()-padding.left()-padding.right()+6),UiText.height(context)+6),SurfaceVariant.TITLE_PLATE,null);
-            UiPaint.text(context, title, bounds().x() + padding.left(),
+            if(context.theme().skin().pixelated())UiPaint.text(context,UiText.ellipsize(context.font(),title,Math.max(0,bounds().width()-padding.left()-padding.right())),bounds().x()+padding.left(),bounds().y()+padding.top(),context.theme().palette().text(),UiTextStyle.HEADING);
+            else UiPaint.text(context, title, bounds().x() + padding.left(),
                     bounds().y() + padding.top(), context.theme().palette().text(), UiTextStyle.HEADING);
         }
         content().render(selected?context.selectedSurface():context);

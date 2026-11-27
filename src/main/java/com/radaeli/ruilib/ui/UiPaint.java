@@ -95,6 +95,9 @@ public final class UiPaint {
 
     /** Draws a notification with its accent clipped inside the panel's rounded border. */
     public static void toast(UiContext context, Bounds bounds, int accentColor) {
+        if(context.theme().skin().surface(context,bounds,SurfaceVariant.RAISED,null)){
+            rect(context,new Bounds(bounds.x()+3,bounds.y()+3,3,Math.max(0,bounds.height()-6)),accentColor);return;
+        }
         int radius = Math.min(context.theme().tokens().radii().large(),
                 Math.min(bounds.width(), bounds.height()) / 2);
         roundedRect(context, bounds, context.theme().palette().panel(), radius);
@@ -227,6 +230,18 @@ public final class UiPaint {
         roundedOutline(context, bounds, mixColor(palette.border(), palette.focus(), focused), radius);
     }
 
+    static void controlLabel(UiContext context, Component label, Bounds bounds, int offset, int color) {
+        if(!context.theme().skin().pixelated()) {
+            textCentered(context,label,bounds.centerX()+offset,bounds.centerY()-UiText.height(context)/2+offset,color);
+            return;
+        }
+        if(bounds.width()<5||bounds.height()<5)return;
+        var shown=UiText.ellipsize(context.font(),label,Math.max(0,bounds.width()-8));
+        context.graphics().enableScissor(bounds.x()+2,bounds.y()+2,bounds.right()-2,bounds.bottom()-2);
+        try {text(context,shown,bounds.centerX()-context.font().width(shown)/2+offset,bounds.centerY()-UiText.height(context)/2+offset,color,UiTextStyle.BODY);}
+        finally {context.graphics().disableScissor();}
+    }
+
     public static void tab(UiContext context, Bounds bounds, boolean selected, boolean focused) {
         tab(context, bounds, selected ? 1 : 0, focused ? 1 : 0);
     }
@@ -324,11 +339,12 @@ public final class UiPaint {
 
             Bounds bounds = new Bounds(x, y, width, height);
             int radius = tokens.radii().small();
-            roundedRect(context, bounds, palette.card(), radius);
-            roundedOutline(context, bounds, palette.border(), radius);
+            if(context.theme().skin().pixelated()){
+                rect(context,bounds,WorkshopSkin.TOOLTIP);outline(context,bounds,WorkshopSkin.TOOLTIP_BORDER);
+            }else{roundedRect(context, bounds, palette.card(), radius);roundedOutline(context, bounds, palette.border(), radius);}
             int textY = y + padding.top();
             for (FormattedCharSequence line : lines) {
-                text(context, line, x + padding.left(), textY, palette.text(), UiTextStyle.SMALL);
+                text(context, line, x + padding.left(), textY, context.theme().skin().pixelated()?WorkshopSkin.INPUT_TEXT:palette.text(), UiTextStyle.SMALL);
                 textY += lineHeight + gap;
             }
         } finally {

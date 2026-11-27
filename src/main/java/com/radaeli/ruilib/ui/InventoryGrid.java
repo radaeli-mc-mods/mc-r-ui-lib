@@ -173,6 +173,7 @@ public final class InventoryGrid extends UiComponent {
         return new UiSize(width, height).constrain(maxWidth, maxHeight);
     }
 
+    @Override protected void layoutChildren(Font f,UiTheme t){if(!explicitSlotSize)slotSize=t.skin().pixelated()?20:DEFAULT_SLOT_SIZE;}
     @Override
     public void render(UiContext context) {
         Container container = containerSupplier.get();

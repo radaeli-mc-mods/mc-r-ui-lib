@@ -102,6 +102,10 @@ public final class Stepper<T> extends UiComponent {
         return wrap ? Math.floorMod(next, size) : Math.max(0, Math.min(size - 1, next));
     }
 
+    public boolean canStep(int direction) {
+        return isEnabled() && direction!=0 && !Objects.equals(value,model.step(value,Integer.signum(direction)));
+    }
+
     public T value() {
         return value;
     }
@@ -156,6 +160,11 @@ public final class Stepper<T> extends UiComponent {
         layout = layout(context.font(), context.theme(), bounds(), label, model.format(value));
         paint(context, bounds(), label, model.format(value), isEnabled(),
                 animate(context, "focus", isFocused() ? 1 : 0));
+        if (context.theme().skin().pixelated()) {
+            arrow(context,MINUS,layout.minus(),layout.textY(),canStep(-1));
+            arrow(context,PLUS,layout.plus(),layout.textY(),canStep(1));
+            if(isFocused()&&isEnabled())UiPaint.outline(context,new Bounds(layout.minus().x(),bounds().y(),bounds().right()-layout.minus().x(),bounds().height()),context.theme().palette().focus());
+        }
     }
 
     @Override
@@ -243,7 +252,7 @@ public final class Stepper<T> extends UiComponent {
             UiPaint.text(context,UiText.ellipsize(context.font(),label,Math.max(0,layout.labelRight()-bounds.x())),bounds.x(),layout.textY(),enabled?palette.text():palette.mutedText(),UiTextStyle.BODY);
             Bounds well=new Bounds(layout.minus().right(),bounds.y(),Math.max(0,layout.plus().x()-layout.minus().right()),bounds.height());
             context.theme().skin().surface(context,well,SurfaceVariant.INSET,WorkshopSkin.WELL);
-            UiPaint.text(context,value,layout.valueX(),layout.textY(),enabled?palette.text():palette.mutedText());
+            UiPaint.text(context,UiText.ellipsize(context.font(),value,Math.max(0,well.width()-8)),layout.valueX(),layout.textY(),enabled?palette.text():palette.mutedText(),UiTextStyle.BODY);
             arrow(context,MINUS,layout.minus(),layout.textY(),enabled);arrow(context,PLUS,layout.plus(),layout.textY(),enabled);return;
         }
         String shown = UiText.width(context.font(), label, context.theme()) <= bounds.width() / 2 ? label.getString()

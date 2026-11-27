@@ -127,7 +127,12 @@ public final class Modal extends UiComponent {
                 UiPaint.withAlpha(context.theme().palette().overlay(), opacity));
         UiPaint.panel(context, bounds(), opacity);
         Insets padding = context.theme().tokens().panelPadding();
-        UiPaint.text(context, title, bounds().x() + padding.left(), bounds().y() + padding.top(),
+        if(context.theme().skin().pixelated()){
+            int titleWidth=Math.min(bounds().width()-padding.left()-padding.right()-(headerAction==null?0:headerAction.bounds().width()+4),UiText.width(context.font(),title,context.theme())+6);
+            context.theme().skin().surface(context,new Bounds(bounds().x()+padding.left()-3,bounds().y()+padding.top()-3,Math.max(0,titleWidth),UiText.height(context)+6),SurfaceVariant.TITLE_PLATE,null);
+        }
+        if(context.theme().skin().pixelated())UiPaint.text(context,UiText.ellipsize(context.font(),title,Math.max(0,bounds().width()-padding.left()-padding.right()-(headerAction==null?0:headerAction.bounds().width()+4))),bounds().x()+padding.left(),bounds().y()+padding.top(),context.theme().palette().text(),UiTextStyle.TITLE);
+        else UiPaint.text(context, title, bounds().x() + padding.left(), bounds().y() + padding.top(),
                 UiPaint.withAlpha(context.theme().palette().text(), opacity), UiTextStyle.TITLE);
         int dividerY = bounds().y() + padding.top() + headingContentHeight(context.font(), context.theme())
                 + context.theme().tokens().smallGap();
@@ -139,6 +144,11 @@ public final class Modal extends UiComponent {
         } finally { context.graphics().pose().popPose(); }
     }
 
+    @Override public UiComponent inspectionHitTest(double x,double y){
+        if(!bounds().contains(x,y))return null;
+        if(headerAction!=null){var hit=headerAction.inspectionHitTest(x,y);if(hit!=null)return hit;}
+        var hit=content.inspectionHitTest(x,y);return hit==null?this:hit;
+    }
     @Override
     public UiComponent hitTest(double mouseX, double mouseY) {
         if (!bounds().contains(mouseX, mouseY)) return null;

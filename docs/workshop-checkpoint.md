@@ -30,3 +30,11 @@ Reference image reopened and reviewed. Added icon side tabs within complete inpu
 ## Phase 6 — progress, charts and radial
 
 Reference image reopened and reviewed. Added inset progress preserving read-only behavior, dark plot/grid and native labels, square point/tangent handles with dashed tangents, and stepped radial edge material. Mathematical models, editing and custom curve colors preserved. Next: Phase 7.
+
+## Phase 7 — overlays and help
+
+Reference image reopened and reviewed. Added titled dialogs, compact level-labelled toasts, dark pixel tooltips, disabled inspection and keyboard help; preview shares native popup/focus handling. Added Select and overlay actions to the playground plus Workshop showcase. Next: real-client validation, documentation and final gate.
+
+## Final gate
+
+Reference image reopened and reviewed. Implemented all groups and revised all five showcase tabs after user screenshots. buildAll and 13 JUnit tests per loader passed; the API example compiles on both. Each real client with JEI passed 383 checks and produced 187 captures. Strict comparison: 182/187 identical, 5 inspected native 3D block-preview differences; strict command remains failing and this limit is documented. Portal check/build passed. Manual visual/font-pack/IME/narrator acceptance remains pending. See workshop-validation.md and workshop-previews/. Next: final phase-7 commit and user review.

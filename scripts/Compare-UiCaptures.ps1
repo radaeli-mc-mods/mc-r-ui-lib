@@ -1,11 +1,12 @@
 param(
-    [string]$Forge = "$PSScriptRoot/../forge/runs/client/ui-validation",
-    [string]$NeoForge = "$PSScriptRoot/../neoforge/runs/client/ui-validation",
+    [string]$Forge = "$PSScriptRoot/../forge/runs/validation/ui-validation",
+    [string]$NeoForge = "$PSScriptRoot/../neoforge/runs/validation/ui-validation",
     [string]$Output = "$PSScriptRoot/../build/reports/ui-parity.json"
 )
 $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.Drawing
-Add-Type -ReferencedAssemblies System.Drawing -TypeDefinition @'
+$drawingReferences=if ($PSVersionTable.PSEdition -eq 'Core') { @('System.Drawing.Common','System.Drawing.Primitives','System.Runtime','System.Runtime.InteropServices') } else { @('System.Drawing') }
+Add-Type -ReferencedAssemblies $drawingReferences -TypeDefinition @'
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;

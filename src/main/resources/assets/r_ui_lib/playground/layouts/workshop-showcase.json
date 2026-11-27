@@ -1,0 +1,2657 @@
+{
+  "version": 1,
+  "name": "workshop-showcase",
+  "root": {
+    "type": "absolute",
+    "width": 0,
+    "height": 0,
+    "children": [
+      {
+        "type": "panel",
+        "x": 16,
+        "y": 16,
+        "width": 342,
+        "height": 264,
+        "children": []
+      },
+      {
+        "type": "panel",
+        "surface": "TITLE_PLATE",
+        "x": 26,
+        "y": 22,
+        "width": 167,
+        "height": 16,
+        "children": [
+          {
+            "type": "label",
+            "text": "Workshop",
+            "width": 145,
+            "height": 10,
+            "overflow": "ELLIPSIS"
+          }
+        ],
+        "padding": 3
+      },
+      {
+        "type": "iconbutton",
+        "iconName": "CLOSE",
+        "text": "Close sample",
+        "x": 336,
+        "y": 24,
+        "width": 12,
+        "height": 12,
+        "selected": false
+      },
+      {
+        "type": "tabs",
+        "tabPlacement": "RIGHT",
+        "x": 26,
+        "y": 45,
+        "width": 350,
+        "height": 207,
+        "children": [
+          {
+            "type": "absolute",
+            "text": "Queue",
+            "iconName": "QUEUE",
+            "width": 322,
+            "height": 207,
+            "children": [
+              {
+                "type": "panel",
+                "surface": "INSET",
+                "x": 0,
+                "y": 0,
+                "width": 322,
+                "height": 67,
+                "children": []
+              },
+              {
+                "type": "panel",
+                "surface": "INSET",
+                "x": 5,
+                "y": 5,
+                "width": 36,
+                "height": 36,
+                "children": []
+              },
+              {
+                "type": "itempreview",
+                "itemId": "minecraft:music_disc_pigstep",
+                "x": 7,
+                "y": 7,
+                "width": 32,
+                "height": 32
+              },
+              {
+                "type": "label",
+                "text": "Now playing",
+                "x": 49,
+                "y": 7,
+                "width": 180,
+                "height": 10,
+                "overflow": "ELLIPSIS"
+              },
+              {
+                "type": "label",
+                "text": "Pigstep",
+                "x": 49,
+                "y": 20,
+                "width": 180,
+                "height": 10,
+                "overflow": "ELLIPSIS"
+              },
+              {
+                "type": "label",
+                "text": "Lena Raine",
+                "x": 49,
+                "y": 32,
+                "width": 180,
+                "height": 10,
+                "overflow": "ELLIPSIS"
+              },
+              {
+                "type": "label",
+                "text": "0:36",
+                "x": 7,
+                "y": 49,
+                "width": 30,
+                "height": 10,
+                "overflow": "ELLIPSIS"
+              },
+              {
+                "type": "progressbar",
+                "showValue": false,
+                "x": 45,
+                "y": 50,
+                "width": 90,
+                "height": 6,
+                "minimum": 0,
+                "maximum": 148,
+                "value": 36
+              },
+              {
+                "type": "label",
+                "text": "2:28",
+                "x": 143,
+                "y": 49,
+                "width": 30,
+                "height": 10,
+                "overflow": "ELLIPSIS"
+              },
+              {
+                "type": "iconbutton",
+                "iconName": "PREVIOUS",
+                "text": "Previous",
+                "x": 183,
+                "y": 43,
+                "width": 20,
+                "height": 20,
+                "selected": false
+              },
+              {
+                "type": "iconbutton",
+                "iconName": "PAUSE",
+                "text": "Pause",
+                "x": 207,
+                "y": 43,
+                "width": 20,
+                "height": 20,
+                "selected": true
+              },
+              {
+                "type": "iconbutton",
+                "iconName": "NEXT",
+                "text": "Next",
+                "x": 231,
+                "y": 43,
+                "width": 20,
+                "height": 20,
+                "selected": false
+              },
+              {
+                "type": "iconbutton",
+                "iconName": "SHUFFLE",
+                "text": "Shuffle",
+                "x": 259,
+                "y": 43,
+                "width": 20,
+                "height": 20,
+                "selected": false
+              },
+              {
+                "type": "label",
+                "text": "Up next",
+                "x": 0,
+                "y": 75,
+                "width": 230,
+                "height": 10,
+                "overflow": "ELLIPSIS"
+              },
+              {
+                "type": "scroll",
+                "gap": 0,
+                "x": 0,
+                "y": 89,
+                "width": 322,
+                "height": 118,
+                "children": [
+                  {
+                    "type": "panel",
+                    "surface": "PLAIN",
+                    "padding": 2,
+                    "gap": 0,
+                    "width": 308,
+                    "height": 22,
+                    "background": -5066845,
+                    "children": [
+                      {
+                        "type": "absolute",
+                        "width": 304,
+                        "height": 18,
+                        "children": [
+                          {
+                            "type": "label",
+                            "text": "Living Mice",
+                            "x": 4,
+                            "y": 0,
+                            "width": 266,
+                            "height": 9,
+                            "overflow": "ELLIPSIS"
+                          },
+                          {
+                            "type": "label",
+                            "text": "C418",
+                            "x": 4,
+                            "y": 9,
+                            "width": 210,
+                            "height": 9,
+                            "overflow": "ELLIPSIS",
+                            "color": -9935785
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Play track",
+                            "iconName": "PLAY",
+                            "x": 280,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "panel",
+                    "surface": "PLAIN",
+                    "padding": 2,
+                    "gap": 0,
+                    "width": 308,
+                    "height": 22,
+                    "background": -5724774,
+                    "children": [
+                      {
+                        "type": "absolute",
+                        "width": 304,
+                        "height": 18,
+                        "children": [
+                          {
+                            "type": "label",
+                            "text": "Tears",
+                            "x": 4,
+                            "y": 0,
+                            "width": 266,
+                            "height": 9,
+                            "overflow": "ELLIPSIS"
+                          },
+                          {
+                            "type": "label",
+                            "text": "Amos Roddy",
+                            "x": 4,
+                            "y": 9,
+                            "width": 210,
+                            "height": 9,
+                            "overflow": "ELLIPSIS",
+                            "color": -9935785
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Play track",
+                            "iconName": "PLAY",
+                            "x": 280,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "panel",
+                    "surface": "PLAIN",
+                    "padding": 2,
+                    "gap": 0,
+                    "width": 308,
+                    "height": 22,
+                    "background": -5066845,
+                    "children": [
+                      {
+                        "type": "absolute",
+                        "width": 304,
+                        "height": 18,
+                        "children": [
+                          {
+                            "type": "label",
+                            "text": "Creator (Music Box)",
+                            "x": 4,
+                            "y": 0,
+                            "width": 266,
+                            "height": 9,
+                            "overflow": "ELLIPSIS"
+                          },
+                          {
+                            "type": "label",
+                            "text": "Lena Raine",
+                            "x": 4,
+                            "y": 9,
+                            "width": 210,
+                            "height": 9,
+                            "overflow": "ELLIPSIS",
+                            "color": -9935785
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Play track",
+                            "iconName": "PLAY",
+                            "x": 280,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "panel",
+                    "surface": "PLAIN",
+                    "padding": 2,
+                    "gap": 0,
+                    "width": 308,
+                    "height": 22,
+                    "background": -5724774,
+                    "children": [
+                      {
+                        "type": "absolute",
+                        "width": 304,
+                        "height": 18,
+                        "children": [
+                          {
+                            "type": "label",
+                            "text": "Chrysopoeia",
+                            "x": 4,
+                            "y": 0,
+                            "width": 266,
+                            "height": 9,
+                            "overflow": "ELLIPSIS"
+                          },
+                          {
+                            "type": "label",
+                            "text": "Background music",
+                            "x": 4,
+                            "y": 9,
+                            "width": 210,
+                            "height": 9,
+                            "overflow": "ELLIPSIS",
+                            "color": -9935785
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Play track",
+                            "iconName": "PLAY",
+                            "x": 280,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "panel",
+                    "surface": "PLAIN",
+                    "padding": 2,
+                    "gap": 0,
+                    "width": 308,
+                    "height": 22,
+                    "background": -5066845,
+                    "children": [
+                      {
+                        "type": "absolute",
+                        "width": 304,
+                        "height": 18,
+                        "children": [
+                          {
+                            "type": "label",
+                            "text": "Danny",
+                            "x": 4,
+                            "y": 0,
+                            "width": 266,
+                            "height": 9,
+                            "overflow": "ELLIPSIS"
+                          },
+                          {
+                            "type": "label",
+                            "text": "C418",
+                            "x": 4,
+                            "y": 9,
+                            "width": 210,
+                            "height": 9,
+                            "overflow": "ELLIPSIS",
+                            "color": -9935785
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Play track",
+                            "iconName": "PLAY",
+                            "x": 280,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "panel",
+                    "surface": "PLAIN",
+                    "padding": 2,
+                    "gap": 0,
+                    "width": 308,
+                    "height": 22,
+                    "background": -5724774,
+                    "children": [
+                      {
+                        "type": "absolute",
+                        "width": 304,
+                        "height": 18,
+                        "children": [
+                          {
+                            "type": "label",
+                            "text": "Living Mice",
+                            "x": 4,
+                            "y": 0,
+                            "width": 266,
+                            "height": 9,
+                            "overflow": "ELLIPSIS"
+                          },
+                          {
+                            "type": "label",
+                            "text": "C418",
+                            "x": 4,
+                            "y": 9,
+                            "width": 210,
+                            "height": 9,
+                            "overflow": "ELLIPSIS",
+                            "color": -9935785
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Play track",
+                            "iconName": "PLAY",
+                            "x": 280,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "panel",
+                    "surface": "PLAIN",
+                    "padding": 2,
+                    "gap": 0,
+                    "width": 308,
+                    "height": 22,
+                    "background": -5066845,
+                    "children": [
+                      {
+                        "type": "absolute",
+                        "width": 304,
+                        "height": 18,
+                        "children": [
+                          {
+                            "type": "label",
+                            "text": "Tears",
+                            "x": 4,
+                            "y": 0,
+                            "width": 266,
+                            "height": 9,
+                            "overflow": "ELLIPSIS"
+                          },
+                          {
+                            "type": "label",
+                            "text": "Amos Roddy",
+                            "x": 4,
+                            "y": 9,
+                            "width": 210,
+                            "height": 9,
+                            "overflow": "ELLIPSIS",
+                            "color": -9935785
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Play track",
+                            "iconName": "PLAY",
+                            "x": 280,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "panel",
+                    "surface": "PLAIN",
+                    "padding": 2,
+                    "gap": 0,
+                    "width": 308,
+                    "height": 22,
+                    "background": -5724774,
+                    "children": [
+                      {
+                        "type": "absolute",
+                        "width": 304,
+                        "height": 18,
+                        "children": [
+                          {
+                            "type": "label",
+                            "text": "Creator (Music Box)",
+                            "x": 4,
+                            "y": 0,
+                            "width": 266,
+                            "height": 9,
+                            "overflow": "ELLIPSIS"
+                          },
+                          {
+                            "type": "label",
+                            "text": "Lena Raine",
+                            "x": 4,
+                            "y": 9,
+                            "width": 210,
+                            "height": 9,
+                            "overflow": "ELLIPSIS",
+                            "color": -9935785
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Play track",
+                            "iconName": "PLAY",
+                            "x": 280,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "panel",
+                    "surface": "PLAIN",
+                    "padding": 2,
+                    "gap": 0,
+                    "width": 308,
+                    "height": 22,
+                    "background": -5066845,
+                    "children": [
+                      {
+                        "type": "absolute",
+                        "width": 304,
+                        "height": 18,
+                        "children": [
+                          {
+                            "type": "label",
+                            "text": "Chrysopoeia",
+                            "x": 4,
+                            "y": 0,
+                            "width": 266,
+                            "height": 9,
+                            "overflow": "ELLIPSIS"
+                          },
+                          {
+                            "type": "label",
+                            "text": "Background music",
+                            "x": 4,
+                            "y": 9,
+                            "width": 210,
+                            "height": 9,
+                            "overflow": "ELLIPSIS",
+                            "color": -9935785
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Play track",
+                            "iconName": "PLAY",
+                            "x": 280,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "panel",
+                    "surface": "PLAIN",
+                    "padding": 2,
+                    "gap": 0,
+                    "width": 308,
+                    "height": 22,
+                    "background": -5724774,
+                    "children": [
+                      {
+                        "type": "absolute",
+                        "width": 304,
+                        "height": 18,
+                        "children": [
+                          {
+                            "type": "label",
+                            "text": "Danny",
+                            "x": 4,
+                            "y": 0,
+                            "width": 266,
+                            "height": 9,
+                            "overflow": "ELLIPSIS"
+                          },
+                          {
+                            "type": "label",
+                            "text": "C418",
+                            "x": 4,
+                            "y": 9,
+                            "width": 210,
+                            "height": 9,
+                            "overflow": "ELLIPSIS",
+                            "color": -9935785
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Play track",
+                            "iconName": "PLAY",
+                            "x": 280,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "panel",
+                    "surface": "PLAIN",
+                    "padding": 2,
+                    "gap": 0,
+                    "width": 308,
+                    "height": 22,
+                    "background": -5066845,
+                    "children": [
+                      {
+                        "type": "absolute",
+                        "width": 304,
+                        "height": 18,
+                        "children": [
+                          {
+                            "type": "label",
+                            "text": "Living Mice",
+                            "x": 4,
+                            "y": 0,
+                            "width": 266,
+                            "height": 9,
+                            "overflow": "ELLIPSIS"
+                          },
+                          {
+                            "type": "label",
+                            "text": "C418",
+                            "x": 4,
+                            "y": 9,
+                            "width": 210,
+                            "height": 9,
+                            "overflow": "ELLIPSIS",
+                            "color": -9935785
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Play track",
+                            "iconName": "PLAY",
+                            "x": 280,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "panel",
+                    "surface": "PLAIN",
+                    "padding": 2,
+                    "gap": 0,
+                    "width": 308,
+                    "height": 22,
+                    "background": -5724774,
+                    "children": [
+                      {
+                        "type": "absolute",
+                        "width": 304,
+                        "height": 18,
+                        "children": [
+                          {
+                            "type": "label",
+                            "text": "Tears",
+                            "x": 4,
+                            "y": 0,
+                            "width": 266,
+                            "height": 9,
+                            "overflow": "ELLIPSIS"
+                          },
+                          {
+                            "type": "label",
+                            "text": "Amos Roddy",
+                            "x": 4,
+                            "y": 9,
+                            "width": 210,
+                            "height": 9,
+                            "overflow": "ELLIPSIS",
+                            "color": -9935785
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Play track",
+                            "iconName": "PLAY",
+                            "x": 280,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "panel",
+                    "surface": "PLAIN",
+                    "padding": 2,
+                    "gap": 0,
+                    "width": 308,
+                    "height": 22,
+                    "background": -5066845,
+                    "children": [
+                      {
+                        "type": "absolute",
+                        "width": 304,
+                        "height": 18,
+                        "children": [
+                          {
+                            "type": "label",
+                            "text": "Creator (Music Box)",
+                            "x": 4,
+                            "y": 0,
+                            "width": 266,
+                            "height": 9,
+                            "overflow": "ELLIPSIS"
+                          },
+                          {
+                            "type": "label",
+                            "text": "Lena Raine",
+                            "x": 4,
+                            "y": 9,
+                            "width": 210,
+                            "height": 9,
+                            "overflow": "ELLIPSIS",
+                            "color": -9935785
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Play track",
+                            "iconName": "PLAY",
+                            "x": 280,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "panel",
+                    "surface": "PLAIN",
+                    "padding": 2,
+                    "gap": 0,
+                    "width": 308,
+                    "height": 22,
+                    "background": -5724774,
+                    "children": [
+                      {
+                        "type": "absolute",
+                        "width": 304,
+                        "height": 18,
+                        "children": [
+                          {
+                            "type": "label",
+                            "text": "Chrysopoeia",
+                            "x": 4,
+                            "y": 0,
+                            "width": 266,
+                            "height": 9,
+                            "overflow": "ELLIPSIS"
+                          },
+                          {
+                            "type": "label",
+                            "text": "Background music",
+                            "x": 4,
+                            "y": 9,
+                            "width": 210,
+                            "height": 9,
+                            "overflow": "ELLIPSIS",
+                            "color": -9935785
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Play track",
+                            "iconName": "PLAY",
+                            "x": 280,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "absolute",
+            "text": "History",
+            "iconName": "HISTORY",
+            "width": 322,
+            "height": 207,
+            "children": [
+              {
+                "type": "panel",
+                "surface": "INSET",
+                "x": 0,
+                "y": 0,
+                "width": 322,
+                "height": 67,
+                "children": []
+              },
+              {
+                "type": "panel",
+                "surface": "INSET",
+                "x": 5,
+                "y": 5,
+                "width": 36,
+                "height": 36,
+                "children": []
+              },
+              {
+                "type": "itempreview",
+                "itemId": "minecraft:music_disc_pigstep",
+                "x": 7,
+                "y": 7,
+                "width": 32,
+                "height": 32
+              },
+              {
+                "type": "label",
+                "text": "Now playing",
+                "x": 49,
+                "y": 7,
+                "width": 180,
+                "height": 10,
+                "overflow": "ELLIPSIS"
+              },
+              {
+                "type": "label",
+                "text": "Pigstep",
+                "x": 49,
+                "y": 20,
+                "width": 180,
+                "height": 10,
+                "overflow": "ELLIPSIS"
+              },
+              {
+                "type": "label",
+                "text": "Lena Raine",
+                "x": 49,
+                "y": 32,
+                "width": 180,
+                "height": 10,
+                "overflow": "ELLIPSIS"
+              },
+              {
+                "type": "label",
+                "text": "0:36",
+                "x": 7,
+                "y": 49,
+                "width": 30,
+                "height": 10,
+                "overflow": "ELLIPSIS"
+              },
+              {
+                "type": "progressbar",
+                "showValue": false,
+                "x": 45,
+                "y": 50,
+                "width": 90,
+                "height": 6,
+                "minimum": 0,
+                "maximum": 148,
+                "value": 36
+              },
+              {
+                "type": "label",
+                "text": "2:28",
+                "x": 143,
+                "y": 49,
+                "width": 30,
+                "height": 10,
+                "overflow": "ELLIPSIS"
+              },
+              {
+                "type": "iconbutton",
+                "iconName": "PREVIOUS",
+                "text": "Previous",
+                "x": 183,
+                "y": 43,
+                "width": 20,
+                "height": 20,
+                "selected": false
+              },
+              {
+                "type": "iconbutton",
+                "iconName": "PAUSE",
+                "text": "Pause",
+                "x": 207,
+                "y": 43,
+                "width": 20,
+                "height": 20,
+                "selected": true
+              },
+              {
+                "type": "iconbutton",
+                "iconName": "NEXT",
+                "text": "Next",
+                "x": 231,
+                "y": 43,
+                "width": 20,
+                "height": 20,
+                "selected": false
+              },
+              {
+                "type": "iconbutton",
+                "iconName": "SHUFFLE",
+                "text": "Shuffle",
+                "x": 259,
+                "y": 43,
+                "width": 20,
+                "height": 20,
+                "selected": false
+              },
+              {
+                "type": "label",
+                "text": "Recently played",
+                "x": 0,
+                "y": 75,
+                "width": 230,
+                "height": 10,
+                "overflow": "ELLIPSIS"
+              },
+              {
+                "type": "scroll",
+                "gap": 0,
+                "x": 0,
+                "y": 89,
+                "width": 322,
+                "height": 118,
+                "children": [
+                  {
+                    "type": "panel",
+                    "surface": "PLAIN",
+                    "padding": 2,
+                    "gap": 0,
+                    "width": 308,
+                    "height": 22,
+                    "background": -5066845,
+                    "children": [
+                      {
+                        "type": "absolute",
+                        "width": 304,
+                        "height": 18,
+                        "children": [
+                          {
+                            "type": "label",
+                            "text": "Living Mice",
+                            "x": 4,
+                            "y": 0,
+                            "width": 222,
+                            "height": 9,
+                            "overflow": "ELLIPSIS"
+                          },
+                          {
+                            "type": "label",
+                            "text": "C418",
+                            "x": 4,
+                            "y": 9,
+                            "width": 210,
+                            "height": 9,
+                            "overflow": "ELLIPSIS",
+                            "color": -9935785
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Add to queue",
+                            "iconName": "PLUS",
+                            "x": 236,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Play now",
+                            "iconName": "PLAY",
+                            "x": 258,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Save track",
+                            "iconName": "SAVE",
+                            "x": 280,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "panel",
+                    "surface": "PLAIN",
+                    "padding": 2,
+                    "gap": 0,
+                    "width": 308,
+                    "height": 22,
+                    "background": -5724774,
+                    "children": [
+                      {
+                        "type": "absolute",
+                        "width": 304,
+                        "height": 18,
+                        "children": [
+                          {
+                            "type": "label",
+                            "text": "Tears",
+                            "x": 4,
+                            "y": 0,
+                            "width": 222,
+                            "height": 9,
+                            "overflow": "ELLIPSIS"
+                          },
+                          {
+                            "type": "label",
+                            "text": "Amos Roddy",
+                            "x": 4,
+                            "y": 9,
+                            "width": 210,
+                            "height": 9,
+                            "overflow": "ELLIPSIS",
+                            "color": -9935785
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Add to queue",
+                            "iconName": "PLUS",
+                            "x": 236,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Play now",
+                            "iconName": "PLAY",
+                            "x": 258,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Save track",
+                            "iconName": "SAVE",
+                            "x": 280,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "panel",
+                    "surface": "PLAIN",
+                    "padding": 2,
+                    "gap": 0,
+                    "width": 308,
+                    "height": 22,
+                    "background": -5066845,
+                    "children": [
+                      {
+                        "type": "absolute",
+                        "width": 304,
+                        "height": 18,
+                        "children": [
+                          {
+                            "type": "label",
+                            "text": "Creator (Music Box)",
+                            "x": 4,
+                            "y": 0,
+                            "width": 222,
+                            "height": 9,
+                            "overflow": "ELLIPSIS"
+                          },
+                          {
+                            "type": "label",
+                            "text": "Lena Raine",
+                            "x": 4,
+                            "y": 9,
+                            "width": 210,
+                            "height": 9,
+                            "overflow": "ELLIPSIS",
+                            "color": -9935785
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Add to queue",
+                            "iconName": "PLUS",
+                            "x": 236,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Play now",
+                            "iconName": "PLAY",
+                            "x": 258,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Save track",
+                            "iconName": "SAVE",
+                            "x": 280,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "panel",
+                    "surface": "PLAIN",
+                    "padding": 2,
+                    "gap": 0,
+                    "width": 308,
+                    "height": 22,
+                    "background": -5724774,
+                    "children": [
+                      {
+                        "type": "absolute",
+                        "width": 304,
+                        "height": 18,
+                        "children": [
+                          {
+                            "type": "label",
+                            "text": "Chrysopoeia",
+                            "x": 4,
+                            "y": 0,
+                            "width": 222,
+                            "height": 9,
+                            "overflow": "ELLIPSIS"
+                          },
+                          {
+                            "type": "label",
+                            "text": "Background music",
+                            "x": 4,
+                            "y": 9,
+                            "width": 210,
+                            "height": 9,
+                            "overflow": "ELLIPSIS",
+                            "color": -9935785
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Add to queue",
+                            "iconName": "PLUS",
+                            "x": 236,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Play now",
+                            "iconName": "PLAY",
+                            "x": 258,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Save track",
+                            "iconName": "SAVE",
+                            "x": 280,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "panel",
+                    "surface": "PLAIN",
+                    "padding": 2,
+                    "gap": 0,
+                    "width": 308,
+                    "height": 22,
+                    "background": -5066845,
+                    "children": [
+                      {
+                        "type": "absolute",
+                        "width": 304,
+                        "height": 18,
+                        "children": [
+                          {
+                            "type": "label",
+                            "text": "Danny",
+                            "x": 4,
+                            "y": 0,
+                            "width": 222,
+                            "height": 9,
+                            "overflow": "ELLIPSIS"
+                          },
+                          {
+                            "type": "label",
+                            "text": "C418",
+                            "x": 4,
+                            "y": 9,
+                            "width": 210,
+                            "height": 9,
+                            "overflow": "ELLIPSIS",
+                            "color": -9935785
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Add to queue",
+                            "iconName": "PLUS",
+                            "x": 236,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Play now",
+                            "iconName": "PLAY",
+                            "x": 258,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Save track",
+                            "iconName": "SAVE",
+                            "x": 280,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "panel",
+                    "surface": "PLAIN",
+                    "padding": 2,
+                    "gap": 0,
+                    "width": 308,
+                    "height": 22,
+                    "background": -5724774,
+                    "children": [
+                      {
+                        "type": "absolute",
+                        "width": 304,
+                        "height": 18,
+                        "children": [
+                          {
+                            "type": "label",
+                            "text": "Living Mice",
+                            "x": 4,
+                            "y": 0,
+                            "width": 222,
+                            "height": 9,
+                            "overflow": "ELLIPSIS"
+                          },
+                          {
+                            "type": "label",
+                            "text": "C418",
+                            "x": 4,
+                            "y": 9,
+                            "width": 210,
+                            "height": 9,
+                            "overflow": "ELLIPSIS",
+                            "color": -9935785
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Add to queue",
+                            "iconName": "PLUS",
+                            "x": 236,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Play now",
+                            "iconName": "PLAY",
+                            "x": 258,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Save track",
+                            "iconName": "SAVE",
+                            "x": 280,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "panel",
+                    "surface": "PLAIN",
+                    "padding": 2,
+                    "gap": 0,
+                    "width": 308,
+                    "height": 22,
+                    "background": -5066845,
+                    "children": [
+                      {
+                        "type": "absolute",
+                        "width": 304,
+                        "height": 18,
+                        "children": [
+                          {
+                            "type": "label",
+                            "text": "Tears",
+                            "x": 4,
+                            "y": 0,
+                            "width": 222,
+                            "height": 9,
+                            "overflow": "ELLIPSIS"
+                          },
+                          {
+                            "type": "label",
+                            "text": "Amos Roddy",
+                            "x": 4,
+                            "y": 9,
+                            "width": 210,
+                            "height": 9,
+                            "overflow": "ELLIPSIS",
+                            "color": -9935785
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Add to queue",
+                            "iconName": "PLUS",
+                            "x": 236,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Play now",
+                            "iconName": "PLAY",
+                            "x": 258,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Save track",
+                            "iconName": "SAVE",
+                            "x": 280,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "panel",
+                    "surface": "PLAIN",
+                    "padding": 2,
+                    "gap": 0,
+                    "width": 308,
+                    "height": 22,
+                    "background": -5724774,
+                    "children": [
+                      {
+                        "type": "absolute",
+                        "width": 304,
+                        "height": 18,
+                        "children": [
+                          {
+                            "type": "label",
+                            "text": "Creator (Music Box)",
+                            "x": 4,
+                            "y": 0,
+                            "width": 222,
+                            "height": 9,
+                            "overflow": "ELLIPSIS"
+                          },
+                          {
+                            "type": "label",
+                            "text": "Lena Raine",
+                            "x": 4,
+                            "y": 9,
+                            "width": 210,
+                            "height": 9,
+                            "overflow": "ELLIPSIS",
+                            "color": -9935785
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Add to queue",
+                            "iconName": "PLUS",
+                            "x": 236,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Play now",
+                            "iconName": "PLAY",
+                            "x": 258,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Save track",
+                            "iconName": "SAVE",
+                            "x": 280,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "panel",
+                    "surface": "PLAIN",
+                    "padding": 2,
+                    "gap": 0,
+                    "width": 308,
+                    "height": 22,
+                    "background": -5066845,
+                    "children": [
+                      {
+                        "type": "absolute",
+                        "width": 304,
+                        "height": 18,
+                        "children": [
+                          {
+                            "type": "label",
+                            "text": "Chrysopoeia",
+                            "x": 4,
+                            "y": 0,
+                            "width": 222,
+                            "height": 9,
+                            "overflow": "ELLIPSIS"
+                          },
+                          {
+                            "type": "label",
+                            "text": "Background music",
+                            "x": 4,
+                            "y": 9,
+                            "width": 210,
+                            "height": 9,
+                            "overflow": "ELLIPSIS",
+                            "color": -9935785
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Add to queue",
+                            "iconName": "PLUS",
+                            "x": 236,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Play now",
+                            "iconName": "PLAY",
+                            "x": 258,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Save track",
+                            "iconName": "SAVE",
+                            "x": 280,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "absolute",
+            "text": "Library",
+            "iconName": "SEARCH",
+            "width": 322,
+            "height": 207,
+            "children": [
+              {
+                "type": "panel",
+                "surface": "INSET",
+                "x": 0,
+                "y": 0,
+                "width": 322,
+                "height": 67,
+                "children": []
+              },
+              {
+                "type": "panel",
+                "surface": "INSET",
+                "x": 5,
+                "y": 5,
+                "width": 36,
+                "height": 36,
+                "children": []
+              },
+              {
+                "type": "itempreview",
+                "itemId": "minecraft:music_disc_pigstep",
+                "x": 7,
+                "y": 7,
+                "width": 32,
+                "height": 32
+              },
+              {
+                "type": "label",
+                "text": "Now playing",
+                "x": 49,
+                "y": 7,
+                "width": 180,
+                "height": 10,
+                "overflow": "ELLIPSIS"
+              },
+              {
+                "type": "label",
+                "text": "Pigstep",
+                "x": 49,
+                "y": 20,
+                "width": 180,
+                "height": 10,
+                "overflow": "ELLIPSIS"
+              },
+              {
+                "type": "label",
+                "text": "Lena Raine",
+                "x": 49,
+                "y": 32,
+                "width": 180,
+                "height": 10,
+                "overflow": "ELLIPSIS"
+              },
+              {
+                "type": "label",
+                "text": "0:36",
+                "x": 7,
+                "y": 49,
+                "width": 30,
+                "height": 10,
+                "overflow": "ELLIPSIS"
+              },
+              {
+                "type": "progressbar",
+                "showValue": false,
+                "x": 45,
+                "y": 50,
+                "width": 90,
+                "height": 6,
+                "minimum": 0,
+                "maximum": 148,
+                "value": 36
+              },
+              {
+                "type": "label",
+                "text": "2:28",
+                "x": 143,
+                "y": 49,
+                "width": 30,
+                "height": 10,
+                "overflow": "ELLIPSIS"
+              },
+              {
+                "type": "iconbutton",
+                "iconName": "PREVIOUS",
+                "text": "Previous",
+                "x": 183,
+                "y": 43,
+                "width": 20,
+                "height": 20,
+                "selected": false
+              },
+              {
+                "type": "iconbutton",
+                "iconName": "PAUSE",
+                "text": "Pause",
+                "x": 207,
+                "y": 43,
+                "width": 20,
+                "height": 20,
+                "selected": true
+              },
+              {
+                "type": "iconbutton",
+                "iconName": "NEXT",
+                "text": "Next",
+                "x": 231,
+                "y": 43,
+                "width": 20,
+                "height": 20,
+                "selected": false
+              },
+              {
+                "type": "iconbutton",
+                "iconName": "SHUFFLE",
+                "text": "Shuffle",
+                "x": 259,
+                "y": 43,
+                "width": 20,
+                "height": 20,
+                "selected": false
+              },
+              {
+                "type": "label",
+                "text": "Available music",
+                "x": 0,
+                "y": 75,
+                "width": 230,
+                "height": 10,
+                "overflow": "ELLIPSIS"
+              },
+              {
+                "type": "searchfield",
+                "text": "",
+                "x": 0,
+                "y": 89,
+                "width": 322,
+                "height": 18
+              },
+              {
+                "type": "scroll",
+                "gap": 0,
+                "x": 0,
+                "y": 111,
+                "width": 322,
+                "height": 96,
+                "children": [
+                  {
+                    "type": "panel",
+                    "surface": "PLAIN",
+                    "padding": 2,
+                    "gap": 0,
+                    "width": 308,
+                    "height": 22,
+                    "background": -5066845,
+                    "children": [
+                      {
+                        "type": "absolute",
+                        "width": 304,
+                        "height": 18,
+                        "children": [
+                          {
+                            "type": "label",
+                            "text": "Living Mice",
+                            "x": 4,
+                            "y": 0,
+                            "width": 266,
+                            "height": 9,
+                            "overflow": "ELLIPSIS"
+                          },
+                          {
+                            "type": "label",
+                            "text": "C418",
+                            "x": 4,
+                            "y": 9,
+                            "width": 210,
+                            "height": 9,
+                            "overflow": "ELLIPSIS",
+                            "color": -9935785
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Add track",
+                            "iconName": "PLUS",
+                            "x": 280,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "panel",
+                    "surface": "PLAIN",
+                    "padding": 2,
+                    "gap": 0,
+                    "width": 308,
+                    "height": 22,
+                    "background": -5724774,
+                    "children": [
+                      {
+                        "type": "absolute",
+                        "width": 304,
+                        "height": 18,
+                        "children": [
+                          {
+                            "type": "label",
+                            "text": "Tears",
+                            "x": 4,
+                            "y": 0,
+                            "width": 266,
+                            "height": 9,
+                            "overflow": "ELLIPSIS"
+                          },
+                          {
+                            "type": "label",
+                            "text": "Amos Roddy",
+                            "x": 4,
+                            "y": 9,
+                            "width": 210,
+                            "height": 9,
+                            "overflow": "ELLIPSIS",
+                            "color": -9935785
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Add track",
+                            "iconName": "PLUS",
+                            "x": 280,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "panel",
+                    "surface": "PLAIN",
+                    "padding": 2,
+                    "gap": 0,
+                    "width": 308,
+                    "height": 22,
+                    "background": -5066845,
+                    "children": [
+                      {
+                        "type": "absolute",
+                        "width": 304,
+                        "height": 18,
+                        "children": [
+                          {
+                            "type": "label",
+                            "text": "Creator (Music Box)",
+                            "x": 4,
+                            "y": 0,
+                            "width": 266,
+                            "height": 9,
+                            "overflow": "ELLIPSIS"
+                          },
+                          {
+                            "type": "label",
+                            "text": "Lena Raine",
+                            "x": 4,
+                            "y": 9,
+                            "width": 210,
+                            "height": 9,
+                            "overflow": "ELLIPSIS",
+                            "color": -9935785
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Add track",
+                            "iconName": "PLUS",
+                            "x": 280,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "panel",
+                    "surface": "PLAIN",
+                    "padding": 2,
+                    "gap": 0,
+                    "width": 308,
+                    "height": 22,
+                    "background": -5724774,
+                    "children": [
+                      {
+                        "type": "absolute",
+                        "width": 304,
+                        "height": 18,
+                        "children": [
+                          {
+                            "type": "label",
+                            "text": "Chrysopoeia",
+                            "x": 4,
+                            "y": 0,
+                            "width": 266,
+                            "height": 9,
+                            "overflow": "ELLIPSIS"
+                          },
+                          {
+                            "type": "label",
+                            "text": "Background music",
+                            "x": 4,
+                            "y": 9,
+                            "width": 210,
+                            "height": 9,
+                            "overflow": "ELLIPSIS",
+                            "color": -9935785
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Add track",
+                            "iconName": "PLUS",
+                            "x": 280,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "panel",
+                    "surface": "PLAIN",
+                    "padding": 2,
+                    "gap": 0,
+                    "width": 308,
+                    "height": 22,
+                    "background": -5066845,
+                    "children": [
+                      {
+                        "type": "absolute",
+                        "width": 304,
+                        "height": 18,
+                        "children": [
+                          {
+                            "type": "label",
+                            "text": "Danny",
+                            "x": 4,
+                            "y": 0,
+                            "width": 266,
+                            "height": 9,
+                            "overflow": "ELLIPSIS"
+                          },
+                          {
+                            "type": "label",
+                            "text": "C418",
+                            "x": 4,
+                            "y": 9,
+                            "width": 210,
+                            "height": 9,
+                            "overflow": "ELLIPSIS",
+                            "color": -9935785
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Add track",
+                            "iconName": "PLUS",
+                            "x": 280,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "panel",
+                    "surface": "PLAIN",
+                    "padding": 2,
+                    "gap": 0,
+                    "width": 308,
+                    "height": 22,
+                    "background": -5724774,
+                    "children": [
+                      {
+                        "type": "absolute",
+                        "width": 304,
+                        "height": 18,
+                        "children": [
+                          {
+                            "type": "label",
+                            "text": "Living Mice",
+                            "x": 4,
+                            "y": 0,
+                            "width": 266,
+                            "height": 9,
+                            "overflow": "ELLIPSIS"
+                          },
+                          {
+                            "type": "label",
+                            "text": "C418",
+                            "x": 4,
+                            "y": 9,
+                            "width": 210,
+                            "height": 9,
+                            "overflow": "ELLIPSIS",
+                            "color": -9935785
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Add track",
+                            "iconName": "PLUS",
+                            "x": 280,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "panel",
+                    "surface": "PLAIN",
+                    "padding": 2,
+                    "gap": 0,
+                    "width": 308,
+                    "height": 22,
+                    "background": -5066845,
+                    "children": [
+                      {
+                        "type": "absolute",
+                        "width": 304,
+                        "height": 18,
+                        "children": [
+                          {
+                            "type": "label",
+                            "text": "Tears",
+                            "x": 4,
+                            "y": 0,
+                            "width": 266,
+                            "height": 9,
+                            "overflow": "ELLIPSIS"
+                          },
+                          {
+                            "type": "label",
+                            "text": "Amos Roddy",
+                            "x": 4,
+                            "y": 9,
+                            "width": 210,
+                            "height": 9,
+                            "overflow": "ELLIPSIS",
+                            "color": -9935785
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Add track",
+                            "iconName": "PLUS",
+                            "x": 280,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "panel",
+                    "surface": "PLAIN",
+                    "padding": 2,
+                    "gap": 0,
+                    "width": 308,
+                    "height": 22,
+                    "background": -5724774,
+                    "children": [
+                      {
+                        "type": "absolute",
+                        "width": 304,
+                        "height": 18,
+                        "children": [
+                          {
+                            "type": "label",
+                            "text": "Creator (Music Box)",
+                            "x": 4,
+                            "y": 0,
+                            "width": 266,
+                            "height": 9,
+                            "overflow": "ELLIPSIS"
+                          },
+                          {
+                            "type": "label",
+                            "text": "Lena Raine",
+                            "x": 4,
+                            "y": 9,
+                            "width": 210,
+                            "height": 9,
+                            "overflow": "ELLIPSIS",
+                            "color": -9935785
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Add track",
+                            "iconName": "PLUS",
+                            "x": 280,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "panel",
+                    "surface": "PLAIN",
+                    "padding": 2,
+                    "gap": 0,
+                    "width": 308,
+                    "height": 22,
+                    "background": -5066845,
+                    "children": [
+                      {
+                        "type": "absolute",
+                        "width": 304,
+                        "height": 18,
+                        "children": [
+                          {
+                            "type": "label",
+                            "text": "Chrysopoeia",
+                            "x": 4,
+                            "y": 0,
+                            "width": 266,
+                            "height": 9,
+                            "overflow": "ELLIPSIS"
+                          },
+                          {
+                            "type": "label",
+                            "text": "Background music",
+                            "x": 4,
+                            "y": 9,
+                            "width": 210,
+                            "height": 9,
+                            "overflow": "ELLIPSIS",
+                            "color": -9935785
+                          },
+                          {
+                            "type": "iconbutton",
+                            "text": "Add track",
+                            "iconName": "PLUS",
+                            "x": 280,
+                            "y": 0,
+                            "width": 18,
+                            "height": 18,
+                            "enabled": true
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "absolute",
+            "text": "Settings",
+            "iconName": "SETTINGS",
+            "width": 322,
+            "height": 207,
+            "children": [
+              {
+                "type": "panel",
+                "surface": "INSET",
+                "x": 0,
+                "y": 0,
+                "width": 322,
+                "height": 67,
+                "children": []
+              },
+              {
+                "type": "panel",
+                "surface": "INSET",
+                "x": 5,
+                "y": 5,
+                "width": 36,
+                "height": 36,
+                "children": []
+              },
+              {
+                "type": "itempreview",
+                "itemId": "minecraft:music_disc_pigstep",
+                "x": 7,
+                "y": 7,
+                "width": 32,
+                "height": 32
+              },
+              {
+                "type": "label",
+                "text": "Now playing",
+                "x": 49,
+                "y": 7,
+                "width": 180,
+                "height": 10,
+                "overflow": "ELLIPSIS"
+              },
+              {
+                "type": "label",
+                "text": "Pigstep",
+                "x": 49,
+                "y": 20,
+                "width": 180,
+                "height": 10,
+                "overflow": "ELLIPSIS"
+              },
+              {
+                "type": "label",
+                "text": "Lena Raine",
+                "x": 49,
+                "y": 32,
+                "width": 180,
+                "height": 10,
+                "overflow": "ELLIPSIS"
+              },
+              {
+                "type": "label",
+                "text": "0:36",
+                "x": 7,
+                "y": 49,
+                "width": 30,
+                "height": 10,
+                "overflow": "ELLIPSIS"
+              },
+              {
+                "type": "progressbar",
+                "showValue": false,
+                "x": 45,
+                "y": 50,
+                "width": 90,
+                "height": 6,
+                "minimum": 0,
+                "maximum": 148,
+                "value": 36
+              },
+              {
+                "type": "label",
+                "text": "2:28",
+                "x": 143,
+                "y": 49,
+                "width": 30,
+                "height": 10,
+                "overflow": "ELLIPSIS"
+              },
+              {
+                "type": "iconbutton",
+                "iconName": "PREVIOUS",
+                "text": "Previous",
+                "x": 183,
+                "y": 43,
+                "width": 20,
+                "height": 20,
+                "selected": false
+              },
+              {
+                "type": "iconbutton",
+                "iconName": "PAUSE",
+                "text": "Pause",
+                "x": 207,
+                "y": 43,
+                "width": 20,
+                "height": 20,
+                "selected": true
+              },
+              {
+                "type": "iconbutton",
+                "iconName": "NEXT",
+                "text": "Next",
+                "x": 231,
+                "y": 43,
+                "width": 20,
+                "height": 20,
+                "selected": false
+              },
+              {
+                "type": "iconbutton",
+                "iconName": "SHUFFLE",
+                "text": "Shuffle",
+                "x": 259,
+                "y": 43,
+                "width": 20,
+                "height": 20,
+                "selected": false
+              },
+              {
+                "type": "label",
+                "text": "Playback settings",
+                "x": 0,
+                "y": 75,
+                "width": 230,
+                "height": 10,
+                "overflow": "ELLIPSIS"
+              },
+              {
+                "type": "panel",
+                "surface": "INSET",
+                "padding": 0,
+                "x": 0,
+                "y": 89,
+                "width": 322,
+                "height": 118,
+                "children": []
+              },
+              {
+                "type": "label",
+                "text": "Free flow interval",
+                "x": 8,
+                "y": 101,
+                "width": 174,
+                "height": 10,
+                "overflow": "ELLIPSIS"
+              },
+              {
+                "type": "select",
+                "text": "Balanced,Frequent,Occasional,Non-stop",
+                "x": 188,
+                "y": 96,
+                "width": 124,
+                "height": 18
+              },
+              {
+                "type": "label",
+                "text": "Playlist interval",
+                "x": 8,
+                "y": 128,
+                "width": 174,
+                "height": 10,
+                "overflow": "ELLIPSIS"
+              },
+              {
+                "type": "select",
+                "text": "Non-stop,Balanced,Frequent,Occasional",
+                "x": 188,
+                "y": 123,
+                "width": 124,
+                "height": 18
+              },
+              {
+                "type": "label",
+                "text": "Biome preference",
+                "x": 8,
+                "y": 155,
+                "width": 174,
+                "height": 10,
+                "overflow": "ELLIPSIS"
+              },
+              {
+                "type": "slider",
+                "x": 188,
+                "y": 149,
+                "width": 124,
+                "height": 20,
+                "minimum": 0,
+                "maximum": 100,
+                "value": 100,
+                "step": 5
+              },
+              {
+                "type": "label",
+                "text": "Startup mode",
+                "x": 8,
+                "y": 182,
+                "width": 174,
+                "height": 10,
+                "overflow": "ELLIPSIS"
+              },
+              {
+                "type": "select",
+                "text": "Last used,Free flow,Playlist",
+                "x": 188,
+                "y": 177,
+                "width": 124,
+                "height": 18
+              }
+            ]
+          },
+          {
+            "type": "absolute",
+            "text": "Feedback",
+            "iconName": "CONFIRM",
+            "width": 322,
+            "height": 207,
+            "children": [
+              {
+                "type": "panel",
+                "surface": "INSET",
+                "x": 0,
+                "y": 0,
+                "width": 322,
+                "height": 67,
+                "children": []
+              },
+              {
+                "type": "panel",
+                "surface": "INSET",
+                "x": 5,
+                "y": 5,
+                "width": 36,
+                "height": 36,
+                "children": []
+              },
+              {
+                "type": "itempreview",
+                "itemId": "minecraft:music_disc_pigstep",
+                "x": 7,
+                "y": 7,
+                "width": 32,
+                "height": 32
+              },
+              {
+                "type": "label",
+                "text": "Now playing",
+                "x": 49,
+                "y": 7,
+                "width": 180,
+                "height": 10,
+                "overflow": "ELLIPSIS"
+              },
+              {
+                "type": "label",
+                "text": "Pigstep",
+                "x": 49,
+                "y": 20,
+                "width": 180,
+                "height": 10,
+                "overflow": "ELLIPSIS"
+              },
+              {
+                "type": "label",
+                "text": "Lena Raine",
+                "x": 49,
+                "y": 32,
+                "width": 180,
+                "height": 10,
+                "overflow": "ELLIPSIS"
+              },
+              {
+                "type": "label",
+                "text": "0:36",
+                "x": 7,
+                "y": 49,
+                "width": 30,
+                "height": 10,
+                "overflow": "ELLIPSIS"
+              },
+              {
+                "type": "progressbar",
+                "showValue": false,
+                "x": 45,
+                "y": 50,
+                "width": 90,
+                "height": 6,
+                "minimum": 0,
+                "maximum": 148,
+                "value": 36
+              },
+              {
+                "type": "label",
+                "text": "2:28",
+                "x": 143,
+                "y": 49,
+                "width": 30,
+                "height": 10,
+                "overflow": "ELLIPSIS"
+              },
+              {
+                "type": "iconbutton",
+                "iconName": "PREVIOUS",
+                "text": "Previous",
+                "x": 183,
+                "y": 43,
+                "width": 20,
+                "height": 20,
+                "selected": false
+              },
+              {
+                "type": "iconbutton",
+                "iconName": "PAUSE",
+                "text": "Pause",
+                "x": 207,
+                "y": 43,
+                "width": 20,
+                "height": 20,
+                "selected": true
+              },
+              {
+                "type": "iconbutton",
+                "iconName": "NEXT",
+                "text": "Next",
+                "x": 231,
+                "y": 43,
+                "width": 20,
+                "height": 20,
+                "selected": false
+              },
+              {
+                "type": "iconbutton",
+                "iconName": "SHUFFLE",
+                "text": "Shuffle",
+                "x": 259,
+                "y": 43,
+                "width": 20,
+                "height": 20,
+                "selected": false
+              },
+              {
+                "type": "label",
+                "text": "Dialogs and feedback",
+                "x": 0,
+                "y": 75,
+                "width": 230,
+                "height": 10,
+                "overflow": "ELLIPSIS"
+              },
+              {
+                "type": "panel",
+                "surface": "INSET",
+                "padding": 0,
+                "x": 0,
+                "y": 89,
+                "width": 322,
+                "height": 118,
+                "children": []
+              },
+              {
+                "type": "label",
+                "text": "Dialog",
+                "x": 8,
+                "y": 101,
+                "width": 143,
+                "height": 10,
+                "overflow": "ELLIPSIS"
+              },
+              {
+                "type": "modal-demo",
+                "text": "Open dialog",
+                "x": 170,
+                "y": 96,
+                "width": 142,
+                "height": 18
+              },
+              {
+                "type": "label",
+                "text": "Notification",
+                "x": 8,
+                "y": 128,
+                "width": 143,
+                "height": 10,
+                "overflow": "ELLIPSIS"
+              },
+              {
+                "type": "toast-demo",
+                "text": "Show notification",
+                "x": 170,
+                "y": 123,
+                "width": 142,
+                "height": 18
+              },
+              {
+                "type": "label",
+                "text": "Unavailable action",
+                "x": 8,
+                "y": 155,
+                "width": 143,
+                "height": 10,
+                "overflow": "ELLIPSIS"
+              },
+              {
+                "type": "button",
+                "text": "Unavailable",
+                "x": 170,
+                "y": 150,
+                "width": 142,
+                "height": 18,
+                "enabled": false
+              },
+              {
+                "type": "label",
+                "text": "Hover or focus controls for help.",
+                "x": 8,
+                "y": 184,
+                "width": 300,
+                "height": 10,
+                "overflow": "ELLIPSIS",
+                "color": -9935785
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "label",
+        "text": "Mode:",
+        "x": 27,
+        "y": 264,
+        "width": 32,
+        "height": 10,
+        "overflow": "ELLIPSIS"
+      },
+      {
+        "type": "select",
+        "text": "Playlist,Free flow",
+        "x": 61,
+        "y": 260,
+        "width": 84,
+        "height": 16
+      },
+      {
+        "type": "button",
+        "text": "Done",
+        "x": 307,
+        "y": 260,
+        "width": 41,
+        "height": 16
+      }
+    ]
+  }
+}

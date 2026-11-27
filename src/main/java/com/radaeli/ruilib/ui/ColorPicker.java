@@ -68,6 +68,7 @@ public final class ColorPicker extends UiContainer {
       preview.setColor(value);
       hex.setValue(String.format("#%06X", value));
       for (int i = 0; i < 3; i++) channels[i].setValue(value >> ((2 - i) * 8) & 255);
+      hex.setInvalid(false);
       apply.setEnabled(true);
     } finally {
       syncing = false;

@@ -157,6 +157,14 @@
         "y": 552,
         "width": 220,
         "height": 22
+      },
+      {
+        "type": "select",
+        "text": "Balanced,Frequent,Occasional,Non-stop",
+        "x": 16,
+        "y": 588,
+        "width": 180,
+        "height": 20
       }
     ]
   }

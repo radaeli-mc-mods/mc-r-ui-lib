@@ -58,15 +58,16 @@ public final class UiPlaygroundScreen extends UiScreen {
             new BuiltInLayout("layout", "Layout — Layout components"),
             new BuiltInLayout("data", "Data — Data components"),
             new BuiltInLayout("status", "Status — Status components"),
-            new BuiltInLayout("scroll", "Scroll — Scroll components"));
+            new BuiltInLayout("scroll", "Scroll — Scroll components"),
+            new BuiltInLayout("workshop-showcase", "Workshop — Reference composition"));
     private static final List<PaletteCategory> PALETTE_CATEGORIES = List.of(
             new PaletteCategory("Basic", List.of("label", "button", "iconbutton", "toggle", "chip", "radio", "infobox")),
-            new PaletteCategory("Input", List.of("textfield", "searchfield", "slider", "stepper", "segmented", "radiogroup", "colorswatch", "colorpicker")),
+            new PaletteCategory("Input", List.of("select", "textfield", "searchfield", "slider", "stepper", "segmented", "radiogroup", "colorswatch", "colorpicker")),
             new PaletteCategory("Layout", List.of("panel", "card", "divider", "row", "column", "stack",
                     "absolute", "grid", "spacer")),
             new PaletteCategory("Data", List.of("selectablecard", "itemcard", "itemslot", "itemgrid", "table", "tabs", "itempreview",
                     "curvechart", "inventory")),
-            new PaletteCategory("Status", List.of("progressbar", "radial")),
+            new PaletteCategory("Status", List.of("progressbar", "radial", "modal-demo", "toast-demo")),
             new PaletteCategory("Scroll", List.of("scroll", "clip", "hscroll")));
 
     private PlaygroundDocument document = PlaygroundDocument.empty("untitled");
@@ -274,6 +275,8 @@ public final class UiPlaygroundScreen extends UiScreen {
             for(var v:com.radaeli.ruilib.ui.SurfaceVariant.values())options.add(new com.radaeli.ruilib.ui.Select.Option<>(v,Component.literal(v.name())));
             content.add(new com.radaeli.ruilib.ui.Select<>(options,node.surface,v->node.surface=v));
         }
+        if(node.type.equals("panel"))content.add(com.radaeli.ruilib.ui.Stepper.ofRange(Component.literal("Padding"),0,128,1,node.padding==null?theme().tokens().panelPadding().left():node.padding,v->Component.literal(v.toString()),v->node.padding=v));
+        if(node.type.equals("progressbar"))content.add(new com.radaeli.ruilib.ui.Toggle(Component.literal("Value label"),node.showValue,v->node.showValue=v));
         if(node.type.equals("label")){
             var options=new ArrayList<com.radaeli.ruilib.ui.Select.Option<com.radaeli.ruilib.ui.UiText.Overflow>>();
             for(var v:com.radaeli.ruilib.ui.UiText.Overflow.values())options.add(new com.radaeli.ruilib.ui.Select.Option<>(v,Component.literal(v.name())));
@@ -379,11 +382,12 @@ public final class UiPlaygroundScreen extends UiScreen {
         renderClosingModal(context);
         if (modal() != null) modal().render(context);
         renderCarriedItem(graphics, mouseX, mouseY);
-        UiComponent hovered = (modal() == null ? root() : modal()).hitTest(mouseX, mouseY);
-        Tooltip hoveredTooltip = hovered == null ? null : hovered.tooltipAt(mouseX, mouseY);
-        if (hoveredTooltip != null) {
-            UiPaint.tooltip(context, hoveredTooltip, mouseX, mouseY);
-        }
+        var select=openSelect();
+        if(select!=null){graphics.pose().pushPose();graphics.pose().translate(0,0,400);select.renderPopup(context);graphics.pose().popPose();}
+        if(select!=null&&select.popupContains(mouseX,mouseY)){
+            var tooltip=select.popupTooltip(mouseX,mouseY);
+            if(tooltip!=null)UiPaint.tooltip(context,tooltip,mouseX,mouseY);
+        }else renderToolkitTooltip(context,modal()==null?root():modal(),modal()==null?focusedPreviewComponent:focusedComponent());
     }
 
     private void drawCanvasGrid(GuiGraphics graphics) {
@@ -519,6 +523,7 @@ public final class UiPlaygroundScreen extends UiScreen {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        if(openSelect()!=null)return super.mouseClicked(mouseX,mouseY,button);
         if (modal() != null) return super.mouseClicked(mouseX, mouseY, button);
         if (handleToastClick(mouseX, mouseY, button)) {
             clearPreviewFocus();
@@ -592,7 +597,7 @@ public final class UiPlaygroundScreen extends UiScreen {
         }
         if (target.isFocusable()) {
             focusedPreviewComponent = target;
-            focusedPreviewComponent.setFocused(true);
+            focusComponent(focusedPreviewComponent);
         }
         pressedPreviewComponent = target.mouseClicked(mouseX, mouseY, button) ? target : null;
         return true;
@@ -733,6 +738,7 @@ public final class UiPlaygroundScreen extends UiScreen {
     private void clearPreviewFocus() {
         if (focusedPreviewComponent != null) focusedPreviewComponent.setFocused(false);
         focusedPreviewComponent = null;
+        focusComponent(null);
     }
 
     private void addNode(String type, int mouseX, int mouseY) {
@@ -844,6 +850,8 @@ public final class UiPlaygroundScreen extends UiScreen {
         AbsoluteLayout rebuiltRoot = (AbsoluteLayout) PlaygroundComponentFactory.build(
                 document.root, rebuiltMap, node -> {
                     clickCount++;
+                    if(node.type.equals("modal-demo")){showModalDemo();return;}
+                    if(node.type.equals("toast-demo")){toastHost().info(Component.literal("Workshop notification"));return;}
                     if (node.type.equals("itemcard")) {
                         if (node.parent != null && node.parent.type.equals("itemgrid")) {
                             for (PlaygroundNode sibling : node.parent.children) {
@@ -1092,7 +1100,7 @@ public final class UiPlaygroundScreen extends UiScreen {
         for (var renderable : renderables) {
             if (renderable instanceof net.minecraft.client.gui.components.Button button) {
                 String label = button.getMessage().getString();
-                if (label.equals("Apply") || label.equals("Remove")) button.active = !previewMode;
+                if (label.equals("Apply") || label.equals("Remove") || label.equals("Style")) button.active = !previewMode;
             }
         }
         status = previewMode ? "Preview: interaja; botão do meio arrasta o canvas."
@@ -1234,7 +1242,7 @@ public final class UiPlaygroundScreen extends UiScreen {
         for (var renderable : renderables) {
             if (renderable instanceof net.minecraft.client.gui.components.Button button) {
                 String label = button.getMessage().getString();
-                if (label.equals("Apply") || label.equals("Remove")) {
+                if (label.equals("Apply") || label.equals("Remove") || label.equals("Style")) {
                     button.visible = !previewMode && hasSelection;
                     button.active = !previewMode && hasSelection;
                 }

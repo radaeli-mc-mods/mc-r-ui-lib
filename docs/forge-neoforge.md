@@ -97,7 +97,7 @@ separadas, preservando o mesmo código de ghost targets.
 
 Execute os clientes sequencialmente. O modo opt-in abre uma tela de validação a
 partir do menu, usa os widgets/fontes/renderizador reais, grava `results.json`
-e PNGs em `<loader>/runs/client/ui-validation/` e fecha o cliente ao terminar.
+e PNGs em `<loader>/runs/validation/ui-validation/` e fecha o cliente ao terminar.
 Falhas de uma asserção geram `failure.txt` e falham a execução. O comparador
 exige a mesma lista de verificações e imagens idênticas pixel a pixel; salva
 `build/reports/ui-parity.json`. As capturas de animação usam timestamps fixos.
@@ -138,6 +138,6 @@ e [ModDevGradle](https://docs.neoforged.net/toolchain/docs/plugins/mdg/).
 Os relatórios locais gerados ficam em `build/reports/ui-parity.json`,
 `build/reports/artifacts.json` e nos diretórios `build/test-results/test` dos
 loaders. As capturas e as listas de verificações ficam em
-`<loader>/runs/client/ui-validation/`. Esses arquivos de execução são ignorados
+`<loader>/runs/validation/ui-validation/`. Esses arquivos de execução são ignorados
 pelo Git. A matriz manual acima permanece necessária para declarar cobertura
 de IME, atalhos físicos e integrações específicas de um consumidor.
