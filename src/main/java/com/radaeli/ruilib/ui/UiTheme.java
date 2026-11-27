@@ -3,7 +3,16 @@ package com.radaeli.ruilib.ui;
 import java.util.Objects;
 
 /** Immutable bundle of semantic colors and design tokens. */
-public record UiTheme(UiPalette palette, UiTokens tokens) {
+public record UiTheme(UiPalette palette, UiTokens tokens, UiSkin skin) {
+    public UiTheme(UiPalette palette, UiTokens tokens) { this(palette, tokens, UiSkin.DEFAULT); }
+    public static final UiTheme WORKSHOP = new UiTheme(
+        new UiPalette(0x99000000,0xFFC6C4BC,0xFF97978B,0xFF242323,0xFF77756F,
+            0xFF403D38,0xFF686457,0xFFB4C478,0xFF999A90,0xFFAAA99B,0xFF777D62,
+            0xFF92918A,0xFFF8DFA0,0x99000000,0xFF6D814C,0xFFAA823D,0xFF965A48),
+        new UiTokens(Insets.all(8),Insets.all(6),2,4,8,Insets.symmetric(4,3),20,20,
+            new UiTypography(1,1,1,1),new UiRadii(0,0,0,0),new UiMotion(0,UiEasing.LINEAR)),
+        new WorkshopSkin());
+
     public static final UiTheme DARK = new UiTheme(
             new UiPalette(
                     0xE6101319, 0xF01B2029, 0xF5222933, 0xFF3B4655,
@@ -27,5 +36,6 @@ public record UiTheme(UiPalette palette, UiTokens tokens) {
     public UiTheme {
         Objects.requireNonNull(palette, "palette");
         Objects.requireNonNull(tokens, "tokens");
+        Objects.requireNonNull(skin, "skin");
     }
 }
