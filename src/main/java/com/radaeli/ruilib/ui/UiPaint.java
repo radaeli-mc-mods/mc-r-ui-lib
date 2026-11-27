@@ -238,6 +238,7 @@ public final class UiPaint {
     /** Paints one segment of a tab strip, rounding only the exposed outer corners. */
     public static void tab(UiContext context, Bounds bounds, double selected, double focused,
                            boolean roundLeft, boolean roundRight) {
+        if(context.theme().skin().button(context,bounds,new UiVisualState(true,0,0,selected,focused)))return;
         UiPalette palette = context.theme().palette();
         int radius = context.theme().tokens().radii().small();
         int fill = mixColor(palette.panel(), palette.card(), selected);

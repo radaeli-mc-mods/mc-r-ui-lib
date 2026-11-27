@@ -11,7 +11,12 @@ import java.util.function.IntConsumer;
 
 /** Single-selection page container with a compact, keyboard-navigable tab strip. */
 public final class Tabs extends UiContainer {
-    private record Tab(Component title, UiComponent content) { }
+    public enum Placement { TOP, LEFT, RIGHT }
+    private record Tab(Component title, UiIcon icon, UiComponent content) { }
+    private Placement placement=Placement.TOP;
+    private Bounds[] sideBounds=new Bounds[0];
+    public Tabs setPlacement(Placement placement){this.placement=Objects.requireNonNull(placement);if(lastFont!=null)layoutChildren(lastFont,lastTheme);return this;}
+    public Tabs addTab(Component title,UiIcon icon,UiComponent content){addTab(title,content);tabs.set(tabs.size()-1,new Tab(title,icon,content));return this;}
 
     private final List<Tab> tabs = new ArrayList<>();
     private int selectedIndex;
@@ -26,7 +31,7 @@ public final class Tabs extends UiContainer {
         Objects.requireNonNull(title, "title");
         Objects.requireNonNull(content, "content");
         super.add(content);
-        tabs.add(new Tab(title, content));
+        tabs.add(new Tab(title,null,content));
         return this;
     }
 
@@ -54,6 +59,7 @@ public final class Tabs extends UiContainer {
 
     @Override
     protected UiSize measureIntrinsic(Font font, UiTheme theme, int maxWidth, int maxHeight) {
+        if(placement!=Placement.TOP){UiSize child=tabs.isEmpty()?UiSize.ZERO:tabs.get(selectedIndex).content().measure(font,theme,Math.max(0,maxWidth-28),maxHeight);return new UiSize(child.width()+28,Math.max(child.height(),tabs.size()*26)).constrain(maxWidth,maxHeight);}
         int stripWidth = 0;
         int stripHeight = Math.max(UiText.height(font, theme) + 8, 16);
         for (Tab tab : tabs) stripWidth += UiText.width(font, tab.title(), theme) + 16;
@@ -68,6 +74,18 @@ public final class Tabs extends UiContainer {
         lastFont = font;
         lastTheme = theme;
         if (tabs.isEmpty()) return;
+        if(placement!=Placement.TOP){
+            int strip=Math.min(28,bounds().width());
+            int contentX=bounds().x()+(placement==Placement.LEFT?strip:0);
+            Bounds content=new Bounds(contentX,bounds().y(),Math.max(0,bounds().width()-strip),bounds().height());
+            sideBounds=new Bounds[tabs.size()];
+            for(int i=0;i<tabs.size();i++){
+                int w=Math.min(strip,i==selectedIndex?28:24),y=bounds().y()+i*26;
+                int x=placement==Placement.RIGHT?bounds().right()-strip:bounds().x()+strip-w;
+                sideBounds[i]=new Bounds(x,y,w,Math.min(24,Math.max(0,bounds().bottom()-y)));
+                tabs.get(i).content().layout(font,theme,i==selectedIndex?content:Bounds.EMPTY);
+            }return;
+        }
         stripHeight = Math.min(bounds().height(), Math.max(UiText.height(font, theme) + 8, 16));
         tabWidths = new int[tabs.size()];
         for (int i = 0; i < tabs.size(); i++) tabWidths[i] = UiText.width(font, tabs.get(i).title(), theme) + 16;
@@ -82,6 +100,20 @@ public final class Tabs extends UiContainer {
     @Override
     public void render(UiContext context) {
         if (tabs.isEmpty()) return;
+        if(placement!=Placement.TOP){
+            tabs.get(selectedIndex).content().render(context);
+            for(int i=0;i<tabs.size();i++){
+                Bounds b=sideBounds[i];if(b.height()==0)continue;boolean selected=i==selectedIndex;
+                UiPaint.tab(context,b,selected?1:0,selected&&isFocused()?1:0);
+                if(selected&&context.theme().skin().pixelated()){
+                    int edge=placement==Placement.RIGHT?b.x():b.right()-2;
+                    UiPaint.rect(context,new Bounds(edge,b.y()+2,2,Math.max(0,b.height()-4)),context.theme().palette().buttonPressed());
+                }
+                UiIcon icon=tabs.get(i).icon()==null?UiIcon.glyph(Component.literal(tabs.get(i).title().getString().isEmpty()?"?":tabs.get(i).title().getString().substring(0,1))):tabs.get(i).icon();
+                icon.render(context,b.centerX()-icon.width(context.font(),context.theme())/2,b.centerY()-icon.height(context.font(),context.theme())/2,
+                    context.theme().skin().buttonText(context.theme(),isEnabled(),selected));
+            }return;
+        }
         int x = bounds().x() + tabStripOffset();
         for (int i = 0; i < tabs.size(); i++) {
             Component title = tabs.get(i).title();
@@ -96,8 +128,7 @@ public final class Tabs extends UiContainer {
                     i == tabs.size() - 1 || x + width >= bounds().right());
             UiPaint.textCentered(context, title, tabBounds.centerX(),
                     tabBounds.centerY() - UiText.height(context) / 2,
-                    UiPaint.mixColor(context.theme().palette().mutedText(), context.theme().palette().text(),
-                            selectedProgress));
+                    context.theme().skin().pixelated()?context.theme().skin().buttonText(context.theme(),isEnabled(),selected):UiPaint.mixColor(context.theme().palette().mutedText(), context.theme().palette().text(), selectedProgress));
             x += width;
         }
         tabs.get(selectedIndex).content().render(context);
@@ -106,14 +137,16 @@ public final class Tabs extends UiContainer {
     @Override
     public UiComponent hitTest(double mouseX, double mouseY) {
         if (!isEnabled() || !bounds().contains(mouseX, mouseY) || tabs.isEmpty()) return null;
+        if(placement!=Placement.TOP){for(Bounds b:sideBounds)if(b.contains(mouseX,mouseY))return this;return tabs.get(selectedIndex).content().hitTest(mouseX,mouseY);}
         if (mouseY < bounds().y() + stripHeight) return this;
         return tabs.get(selectedIndex).content().hitTest(mouseX, mouseY);
     }
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if (!isEnabled() || button != 0 || tabs.isEmpty()
-                || mouseY >= bounds().y() + stripHeight) return false;
+        if(!isEnabled()||button!=0||tabs.isEmpty())return false;
+        if(placement!=Placement.TOP){for(int i=0;i<sideBounds.length;i++)if(sideBounds[i].contains(mouseX,mouseY)){select(i);setFocused(true);return true;}return false;}
+        if(mouseY>=bounds().y()+stripHeight)return false;
         int x = bounds().x() + tabStripOffset();
         for (int i = 0; i < tabs.size(); i++) {
             int width = tabWidths[i];
@@ -137,11 +170,11 @@ public final class Tabs extends UiContainer {
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         if (!isEnabled() || !isFocused() || tabs.size() < 2) return false;
-        if (keyCode == GLFW.GLFW_KEY_LEFT) {
+        if (keyCode == (placement==Placement.TOP?GLFW.GLFW_KEY_LEFT:GLFW.GLFW_KEY_UP)) {
             select((selectedIndex + tabs.size() - 1) % tabs.size());
             return true;
         }
-        if (keyCode == GLFW.GLFW_KEY_RIGHT) {
+        if (keyCode == (placement==Placement.TOP?GLFW.GLFW_KEY_RIGHT:GLFW.GLFW_KEY_DOWN)) {
             select((selectedIndex + 1) % tabs.size());
             return true;
         }
@@ -155,6 +188,11 @@ public final class Tabs extends UiContainer {
         if (!tabs.isEmpty()) tabs.get(selectedIndex).content().visitFocusable(visitor);
     }
 
+    @Override public Tooltip tooltipAt(double x,double y){
+        if(placement!=Placement.TOP){for(int i=0;i<sideBounds.length;i++)if(sideBounds[i].contains(x,y))return Tooltip.of(tabs.get(i).title());}
+        return super.tooltipAt(x,y);
+    }
+    @Override public Tooltip tooltip(){return isFocused()&&!tabs.isEmpty()?Tooltip.of(tabs.get(selectedIndex).title()):super.tooltip();}
     @Override
     public boolean isFocusable() {
         return tabs.size() > 1;

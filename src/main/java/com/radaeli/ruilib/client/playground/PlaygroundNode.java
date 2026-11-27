@@ -12,6 +12,7 @@ final class PlaygroundNode {
     String text = "Label";
     String iconSymbol = "";
     String iconName="";
+    com.radaeli.ruilib.ui.Tabs.Placement tabPlacement=com.radaeli.ruilib.ui.Tabs.Placement.TOP;
     com.radaeli.ruilib.ui.SurfaceVariant surface = com.radaeli.ruilib.ui.SurfaceVariant.DEFAULT;
     com.radaeli.ruilib.ui.UiText.Overflow overflow = com.radaeli.ruilib.ui.UiText.Overflow.VISIBLE;
     int maxLines=1;

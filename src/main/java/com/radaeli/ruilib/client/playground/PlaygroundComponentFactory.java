@@ -112,8 +112,8 @@ final class PlaygroundComponentFactory {
                     safeAlignment(node.horizontalAlignment));
             case "stack" -> new Stack(safeAlignment(node.horizontalAlignment),
                     safeAlignment(node.verticalAlignment));
-            case "tabs" -> new Tabs();
-            case "scroll" -> new ScrollView(node.gap);
+            case "tabs" -> new Tabs().setPlacement(node.tabPlacement);
+            case "scroll" -> new ScrollView(node.gap).setSurface(node.surface);
             case "clip" -> new ClipStack();
             case "grid" -> new Grid(node.columns, node.gap);
             case "itemgrid" -> new ItemGrid(node.columns, node.gap,
@@ -162,7 +162,7 @@ final class PlaygroundComponentFactory {
                     absolute.addAt(child, new Bounds(childNode.x, childNode.y,
                             childNode.width, childNode.height));
                 } else if (container instanceof Tabs tabs) {
-                    tabs.addTab(Component.literal(childNode.text), child);
+                    tabs.addTab(Component.literal(childNode.text),childNode.iconName.isBlank()?null:com.radaeli.ruilib.ui.UiIcons.valueOf(childNode.iconName),child);
                 } else {
                     container.add(child);
                 }

@@ -53,6 +53,7 @@ final class PlaygroundDocument {
         if(node.surface==null)node.surface=com.radaeli.ruilib.ui.SurfaceVariant.DEFAULT;
         if(node.overflow==null)node.overflow=com.radaeli.ruilib.ui.UiText.Overflow.VISIBLE;
         node.maxLines=Math.max(1,Math.min(32,node.maxLines));
+        if(node.tabPlacement==null)node.tabPlacement=com.radaeli.ruilib.ui.Tabs.Placement.TOP;
         if(node.iconName==null)node.iconName="";
         if(!node.iconName.isBlank())com.radaeli.ruilib.ui.UiIcons.valueOf(node.iconName);
         if (node.iconSymbol == null) node.iconSymbol="";
