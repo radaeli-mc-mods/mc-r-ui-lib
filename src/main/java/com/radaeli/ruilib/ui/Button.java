@@ -33,8 +33,9 @@ public final class Button extends UiComponent {
                 animate(context, "press", pressed ? 1 : 0), isEnabled(),
                 animate(context, "focus", isFocused() ? 1 : 0));
         int color = isEnabled() ? context.theme().palette().text() : context.theme().palette().mutedText();
-        UiPaint.textCentered(context, label, bounds().centerX(),
-                bounds().centerY() - UiText.height(context) / 2, color);
+        int offset=context.theme().skin().pixelated()&&pressed&&isEnabled()?1:0;
+        UiPaint.textCentered(context,label,bounds().centerX()+offset,bounds().centerY()-UiText.height(context)/2+offset,
+            context.theme().skin().buttonText(context.theme(),isEnabled(),false));
     }
 
     @Override

@@ -165,6 +165,12 @@ public final class UiPaint {
     public static void toggle(UiContext context, Bounds bounds, double selected, double hovered,
                              boolean enabled, double focused) {
         UiPalette palette = context.theme().palette();
+        if(context.theme().skin().pixelated()) {
+            Bounds track=new Bounds(bounds.x()+context.theme().tokens().buttonPadding().left(),bounds.centerY()-7,24,14);
+            context.theme().skin().surface(context,track,SurfaceVariant.INSET,WorkshopSkin.WELL);
+            Bounds knob=new Bounds(track.x()+2+(selected>=0.5?10:0),track.y()+2,10,10);
+            context.theme().skin().button(context,knob,new UiVisualState(enabled,hovered,0,selected,focused));return;
+        }
         Insets padding = context.theme().tokens().buttonPadding();
         int trackHeight = Math.max(10, Math.min(14, bounds.height() - padding.top() - padding.bottom()));
         int trackY = bounds.centerY() - trackHeight / 2;
@@ -190,6 +196,11 @@ public final class UiPaint {
     public static void radio(UiContext context, Bounds indicator, double selected, double hovered,
                              boolean enabled, double focused) {
         UiPalette palette = context.theme().palette();
+        if(context.theme().skin().pixelated()) {
+            Bounds ring=indicator.inset(Insets.all(1));
+            roundedOutline(context,ring,!enabled?palette.disabled():focused>0?palette.focus():palette.border(),2);
+            if(selected>=0.5)rect(context,indicator.inset(Insets.all(3)),enabled?palette.text():palette.disabled());return;
+        }
         int radius = Math.min(indicator.width(), indicator.height()) / 2;
         int ring = !enabled ? palette.disabled()
                 : mixColor(mixColor(mixColor(palette.mutedText(), palette.text(), hovered), palette.text(), selected),
@@ -207,6 +218,7 @@ public final class UiPaint {
 
     public static void chip(UiContext context, Bounds bounds, double selected, double hovered,
                             boolean enabled, double focused) {
+        if(context.theme().skin().button(context,bounds,new UiVisualState(enabled,hovered,0,selected,focused)))return;
         UiPalette palette = context.theme().palette();
         int fill = !enabled ? palette.disabled()
                 : mixColor(mixColor(palette.card(), palette.buttonHover(), hovered), palette.accent(), selected);

@@ -134,6 +134,80 @@
         "width": 185,
         "height": 12,
         "overflow": "ELLIPSIS"
+      },
+      {
+        "type": "infobox",
+        "text": "Workshop help; focus using Tab",
+        "x": 16,
+        "y": 445,
+        "width": 12,
+        "height": 12
+      },
+      {
+        "type": "iconbutton",
+        "text": "PLAY",
+        "iconName": "PLAY",
+        "selected": false,
+        "enabled": true,
+        "x": 40,
+        "y": 440,
+        "width": 20,
+        "height": 20
+      },
+      {
+        "type": "iconbutton",
+        "text": "PAUSE",
+        "iconName": "PAUSE",
+        "selected": false,
+        "enabled": true,
+        "x": 66,
+        "y": 440,
+        "width": 20,
+        "height": 20
+      },
+      {
+        "type": "iconbutton",
+        "text": "SHUFFLE",
+        "iconName": "SHUFFLE",
+        "selected": true,
+        "enabled": true,
+        "x": 92,
+        "y": 440,
+        "width": 20,
+        "height": 20
+      },
+      {
+        "type": "iconbutton",
+        "text": "SAVE",
+        "iconName": "SAVE",
+        "selected": false,
+        "enabled": false,
+        "x": 118,
+        "y": 440,
+        "width": 20,
+        "height": 20
+      },
+      {
+        "type": "iconbutton",
+        "text": "SEARCH",
+        "iconName": "SEARCH",
+        "selected": false,
+        "enabled": true,
+        "x": 144,
+        "y": 440,
+        "width": 20,
+        "height": 20
+      },
+      {
+        "type": "iconbutton",
+        "text": "SETTINGS",
+        "iconName": "SETTINGS",
+        "selected": false,
+        "enabled": true,
+        "x": 170,
+        "y": 440,
+        "width": 20,
+        "height": 20
       }
     ]
   }

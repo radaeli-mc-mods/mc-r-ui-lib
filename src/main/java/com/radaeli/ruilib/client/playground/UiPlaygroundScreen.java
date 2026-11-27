@@ -60,7 +60,7 @@ public final class UiPlaygroundScreen extends UiScreen {
             new BuiltInLayout("status", "Status — Status components"),
             new BuiltInLayout("scroll", "Scroll — Scroll components"));
     private static final List<PaletteCategory> PALETTE_CATEGORIES = List.of(
-            new PaletteCategory("Basic", List.of("label", "button", "iconbutton", "toggle", "chip", "radio")),
+            new PaletteCategory("Basic", List.of("label", "button", "iconbutton", "toggle", "chip", "radio", "infobox")),
             new PaletteCategory("Input", List.of("textfield", "searchfield", "slider", "stepper", "segmented", "radiogroup", "colorswatch", "colorpicker")),
             new PaletteCategory("Layout", List.of("panel", "card", "divider", "row", "column", "stack",
                     "absolute", "grid", "spacer")),

@@ -56,7 +56,8 @@ final class PlaygroundComponentFactory {
         UiComponent component = switch (node.type) {
             case "label" -> (node.color==0xFFF0F3F7?new Label(Component.literal(node.text)):new Label(Component.literal(node.text),node.color)).setOverflow(node.overflow,node.maxLines);
             case "button" -> new Button(Component.literal(node.text), () -> onButtonClick.accept(node));
-            case "iconbutton" -> !node.iconSymbol.isBlank() ? new IconButton(Component.literal(node.text), IconButton.Symbol.valueOf(node.iconSymbol), () -> onButtonClick.accept(node)) : new IconButton(Component.literal(node.text),
+            case "infobox" -> new com.radaeli.ruilib.ui.InfoBox(Component.literal(node.text));
+            case "iconbutton" -> !node.iconName.isBlank()?new IconButton(Component.literal(node.text),com.radaeli.ruilib.ui.UiIcons.valueOf(node.iconName),()->onButtonClick.accept(node)).setSelected(node.selected):!node.iconSymbol.isBlank() ? new IconButton(Component.literal(node.text), IconButton.Symbol.valueOf(node.iconSymbol), () -> onButtonClick.accept(node)) : new IconButton(Component.literal(node.text),
                     Component.literal(node.text.isBlank() ? "?" : node.text.substring(0, 1)),
                     () -> onButtonClick.accept(node));
             // Default spacing: the node's height is the whole area, the rule is 1 px inside 5 px of air.
