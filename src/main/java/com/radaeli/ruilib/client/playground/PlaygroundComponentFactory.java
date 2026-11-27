@@ -54,14 +54,14 @@ final class PlaygroundComponentFactory {
                              Consumer<PlaygroundNode> onButtonClick,
                              BiConsumer<PlaygroundNode, Boolean> onSelectionChange) {
         UiComponent component = switch (node.type) {
-            case "label" -> new Label(Component.literal(node.text), node.color);
+            case "label" -> (node.color==0xFFF0F3F7?new Label(Component.literal(node.text)):new Label(Component.literal(node.text),node.color)).setOverflow(node.overflow,node.maxLines);
             case "button" -> new Button(Component.literal(node.text), () -> onButtonClick.accept(node));
             case "iconbutton" -> !node.iconSymbol.isBlank() ? new IconButton(Component.literal(node.text), IconButton.Symbol.valueOf(node.iconSymbol), () -> onButtonClick.accept(node)) : new IconButton(Component.literal(node.text),
                     Component.literal(node.text.isBlank() ? "?" : node.text.substring(0, 1)),
                     () -> onButtonClick.accept(node));
             // Default spacing: the node's height is the whole area, the rule is 1 px inside 5 px of air.
             case "divider" -> new Divider(Divider.Orientation.HORIZONTAL);
-            case "panel" -> new Panel(new Column(node.gap)).setBackground(node.background);
+            case "panel" -> new Panel(new Column(node.gap)).setBackground(node.background).setSurface(node.surface);
             case "colorswatch" -> new com.radaeli.ruilib.ui.ColorSwatch(node.color, node.selected, () -> onButtonClick.accept(node));
             case "colorpicker" -> new com.radaeli.ruilib.ui.ColorPicker(node.color, color -> {node.color=color;onButtonClick.accept(node);}, () -> onButtonClick.accept(node));
             case "itempreview" -> new com.radaeli.ruilib.ui.ItemPreview(new net.minecraft.world.item.ItemStack(net.minecraft.core.registries.BuiltInRegistries.ITEM.get(net.minecraft.resources.ResourceLocation.parse(node.itemId))), Math.max(1, Math.min(512,node.width)));

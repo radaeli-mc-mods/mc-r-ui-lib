@@ -227,6 +227,39 @@
         "y": 230,
         "width": 260,
         "height": 14
+      },
+      {
+        "type": "panel",
+        "surface": "INSET",
+        "x": 16,
+        "y": 410,
+        "width": 260,
+        "height": 50,
+        "children": [
+          {
+            "type": "label",
+            "text": "Workshop inset surface and native text",
+            "width": 225,
+            "height": 16,
+            "overflow": "ELLIPSIS"
+          }
+        ]
+      },
+      {
+        "type": "panel",
+        "surface": "TITLE_PLATE",
+        "x": 16,
+        "y": 468,
+        "width": 190,
+        "height": 32,
+        "children": [
+          {
+            "type": "label",
+            "text": "Instrument panel",
+            "width": 160,
+            "height": 12
+          }
+        ]
       }
     ]
   }

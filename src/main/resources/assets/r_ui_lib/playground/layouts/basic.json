@@ -125,6 +125,15 @@
         "y": 160,
         "width": 96,
         "height": 16
+      },
+      {
+        "type": "label",
+        "text": "A deliberately long styled label that must not overlap adjacent controls",
+        "x": 16,
+        "y": 410,
+        "width": 185,
+        "height": 12,
+        "overflow": "ELLIPSIS"
       }
     ]
   }

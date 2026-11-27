@@ -126,6 +126,9 @@ public final class UiPaint {
     }
 
     public static void card(UiContext context, Bounds bounds, double hover, double selected, double focused) {
+        if(context.theme().skin().pixelated()) {
+            context.theme().skin().button(context,bounds,new UiVisualState(true,hover,0,selected,focused)); return;
+        }
         UiPalette palette = context.theme().palette();
         int fill = mixColor(mixColor(palette.card(), palette.panel(), hover), palette.buttonPressed(), selected);
         int radius = context.theme().tokens().radii().medium();
