@@ -56,6 +56,7 @@ final class PlaygroundComponentFactory {
         UiComponent component = switch (node.type) {
             case "label" -> (node.color==0xFFF0F3F7?new Label(Component.literal(node.text)):new Label(Component.literal(node.text),node.color)).setOverflow(node.overflow,node.maxLines);
             case "button" -> new Button(Component.literal(node.text), () -> onButtonClick.accept(node));
+            case "inventory" -> createInventory(node);
             case "infobox" -> new com.radaeli.ruilib.ui.InfoBox(Component.literal(node.text));
             case "iconbutton" -> !node.iconName.isBlank()?new IconButton(Component.literal(node.text),com.radaeli.ruilib.ui.UiIcons.valueOf(node.iconName),()->onButtonClick.accept(node)).setSelected(node.selected):!node.iconSymbol.isBlank() ? new IconButton(Component.literal(node.text), IconButton.Symbol.valueOf(node.iconSymbol), () -> onButtonClick.accept(node)) : new IconButton(Component.literal(node.text),
                     Component.literal(node.text.isBlank() ? "?" : node.text.substring(0, 1)),
@@ -144,6 +145,13 @@ final class PlaygroundComponentFactory {
         return component;
     }
 
+    private static UiComponent createInventory(PlaygroundNode node) {
+        var items=new net.minecraft.world.SimpleContainer(18);
+        items.setItem(0,new ItemStack(net.minecraft.world.item.Items.DIAMOND,32));
+        items.setItem(2,new ItemStack(net.minecraft.world.item.Items.IRON_INGOT,12));
+        items.setItem(10,new ItemStack(net.minecraft.world.item.Items.MUSIC_DISC_PIGSTEP));
+        return new com.radaeli.ruilib.ui.InventoryGrid(items);
+    }
     private static void addChildren(PlaygroundNode node, Map<PlaygroundNode, UiComponent> components,
                                     Consumer<PlaygroundNode> onButtonClick,
                                     BiConsumer<PlaygroundNode, Boolean> onSelectionChange,

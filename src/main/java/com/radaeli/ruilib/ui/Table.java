@@ -96,7 +96,7 @@ public final class Table<T> extends UiComponent {
             clampScroll();
         }
         Bounds tableBounds = bounds();
-        UiPaint.panel(context, tableBounds);
+        if(!context.theme().skin().surface(context,tableBounds,SurfaceVariant.INSET,WorkshopSkin.WELL))UiPaint.panel(context, tableBounds);
         if (tableBounds.width() == 0 || tableBounds.height() == 0 || columns.isEmpty()) return;
 
         int headerBottom = Math.min(tableBounds.bottom(), tableBounds.y() + headerHeight);
@@ -125,11 +125,11 @@ public final class Table<T> extends UiComponent {
                 double hoverProgress = animate(context, "row-hover-" + index, hovered ? 1 : 0);
                 double selectedProgress = animate(context, "row-selected-" + index,
                         index == selectedIndex ? 1 : 0);
-                int base = (index & 1) == 1 ? palette.card() : palette.panel();
+                int base = context.theme().skin().pixelated()?((index&1)==1?WorkshopSkin.ROW_ALT:WorkshopSkin.ROW):(index & 1) == 1 ? palette.card() : palette.panel();
                 int fill = UiPaint.mixColor(UiPaint.mixColor(base, palette.buttonHover(), hoverProgress),
-                        palette.accent(), selectedProgress);
+                        context.theme().skin().pixelated()?palette.buttonPressed():palette.accent(), selectedProgress);
                 UiPaint.rect(context, rowBounds, fill);
-                drawCells(context, index, y, context.theme().palette().text());
+                drawCells(context,index,y,context.theme().skin().pixelated()&&index==selectedIndex?WorkshopSkin.TEXT_SELECTED:context.theme().palette().text());
                 UiPaint.divider(context, new Bounds(tableBounds.x(), y + rowHeight - 1,
                         tableBounds.width(), 1));
             }
@@ -214,7 +214,7 @@ public final class Table<T> extends UiComponent {
             int textY = y + Math.max(0, (rowHeight - UiText.height(context)) / 2);
             context.graphics().enableScissor(x, y, x + cellWidth, y + rowHeight);
             try {
-                UiPaint.text(context, value, textX, textY, color);
+                UiPaint.text(context,UiText.ellipsize(context.font(),value,Math.max(0,(int)((cellWidth-CELL_PADDING_X*2)/context.theme().tokens().typography().bodyScale()))),textX,textY,color,UiTextStyle.BODY);
             } finally {
                 context.graphics().disableScissor();
             }

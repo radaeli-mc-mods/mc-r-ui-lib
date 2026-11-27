@@ -28,6 +28,11 @@ public final class SelectableCard extends UiFrame {
 
   @Override
   public void render(UiContext context) {
+    if(context.theme().skin().pixelated()){
+      context.theme().skin().button(context,bounds(),new UiVisualState(isEnabled(),bounds().contains(context.mouseX(),context.mouseY())?1:0,pressed?1:0,selected?1:0,isFocused()?1:0));
+      if(selected)UiPaint.rect(context,new Bounds(bounds().x()+3,bounds().y()+3,2,Math.max(0,bounds().height()-6)),context.theme().palette().accent());
+      content().render(selected?context.selectedSurface():context);return;
+    }
     UiPaint.panel(context, bounds());
     boolean hover = isEnabled() && bounds().contains(context.mouseX(), context.mouseY());
     UiPaint.outline(

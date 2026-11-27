@@ -65,7 +65,7 @@ public final class UiPlaygroundScreen extends UiScreen {
             new PaletteCategory("Layout", List.of("panel", "card", "divider", "row", "column", "stack",
                     "absolute", "grid", "spacer")),
             new PaletteCategory("Data", List.of("selectablecard", "itemcard", "itemslot", "itemgrid", "table", "tabs", "itempreview",
-                    "curvechart")),
+                    "curvechart", "inventory")),
             new PaletteCategory("Status", List.of("progressbar", "radial")),
             new PaletteCategory("Scroll", List.of("scroll", "clip", "hscroll")));
 

@@ -151,6 +151,38 @@
             "height": 24
           }
         ]
+      },
+      {
+        "type": "inventory",
+        "text": "Inventory picker",
+        "x": 16,
+        "y": 600,
+        "width": 200,
+        "height": 44
+      },
+      {
+        "type": "selectablecard",
+        "selected": true,
+        "x": 234,
+        "y": 600,
+        "width": 150,
+        "height": 44,
+        "children": [
+          {
+            "type": "label",
+            "text": "Selected surface",
+            "width": 125,
+            "height": 12
+          }
+        ]
+      },
+      {
+        "type": "itemslot",
+        "itemId": "",
+        "x": 16,
+        "y": 655,
+        "width": 24,
+        "height": 24
       }
     ]
   }

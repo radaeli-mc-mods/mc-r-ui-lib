@@ -75,7 +75,8 @@ public final class ItemCard extends UiComponent {
         int color = isEnabled() ? context.theme().palette().text() : context.theme().palette().mutedText();
         int textX = iconX + ICON_SIZE + GAP;
         int textY = bounds().centerY() - UiText.height(context) / 2;
-        UiPaint.text(context, label, textX, textY, color);
+        if(context.theme().skin().pixelated())color=context.theme().skin().buttonText(context.theme(),isEnabled(),selected);
+        UiPaint.text(context,UiText.ellipsize(context.font(),label,Math.max(0,(int)((bounds().right()-textX-HORIZONTAL_PADDING)/context.theme().tokens().typography().bodyScale()))),textX,textY,color,UiTextStyle.BODY);
         if (hovered) ItemRenderer.renderTooltip(context, stack);
     }
 
