@@ -11,6 +11,8 @@ public final class ScrollView extends UiContainer {
     private Font lastFont;
     private UiTheme lastTheme;
     private boolean draggingScrollbar;
+    private SurfaceVariant surface=SurfaceVariant.DEFAULT;
+    public ScrollView setSurface(SurfaceVariant surface){this.surface=java.util.Objects.requireNonNull(surface);return this;}
 
     public ScrollView() {
         this((Integer) null);
@@ -55,24 +57,29 @@ public final class ScrollView extends UiContainer {
     @Override
     protected void layoutChildren(Font font, UiTheme theme) {
         int gap = gap(theme);
+        int inset=theme.skin().pixelated()?theme.skin().metrics().frameInset():0;
+        int gutter=theme.skin().pixelated()?theme.skin().metrics().scrollbarHitWidth():0;
+        int available=Math.max(0,bounds().width()-inset*2-gutter);
         lastFont = font;
         lastTheme = theme;
         contentHeight = 0;
         UiSize[] sizes = new UiSize[children().size()];
         for (int i = 0; i < children().size(); i++) {
-            sizes[i] = contentSize(children().get(i), font, theme, bounds().width(), 8192);
+            sizes[i] = contentSize(children().get(i), font, theme, available, 8192);
             contentHeight += sizes[i].height();
         }
         if (sizes.length > 1) contentHeight += gap * (sizes.length - 1);
+        contentHeight+=inset*2;
         scrollOffset = Math.min(scrollOffset, maxScrollOffset());
+        if(theme.skin().pixelated())visualScrollOffset=scrollOffset;
 
-        int y = (int) Math.round(bounds().y() - visualScrollOffset);
+        int y = (int) Math.round(bounds().y() + inset - visualScrollOffset);
         for (int i = 0; i < children().size(); i++) {
             UiComponent child = children().get(i);
             UiSize size = sizes[i];
             int childWidth = child.preferredWidth() == null
-                    ? bounds().width() : Math.min(size.width(), bounds().width());
-            int x = Column.alignedStart(bounds().x(), bounds().width(), childWidth,
+                    ? available : Math.min(size.width(), available);
+            int x = Column.alignedStart(bounds().x()+inset, available, childWidth,
                     child.preferredWidth() == null ? Alignment.STRETCH : Alignment.START);
             child.layout(font, theme, new Bounds(x, y, childWidth, size.height()));
             y += size.height() + gap;
@@ -100,8 +107,9 @@ public final class ScrollView extends UiContainer {
         visualScrollOffset = animate(context, "scroll-offset", scrollOffset);
         if (Math.abs(previousOffset - visualScrollOffset) >= 0.01
                 && lastFont != null && lastTheme != null) layoutChildren(lastFont, lastTheme);
-        UiPaint.panel(context, bounds());
-        context.graphics().enableScissor(bounds().x(), bounds().y(), bounds().right(), bounds().bottom());
+        if(surface!=SurfaceVariant.PLAIN){if(!context.theme().skin().surface(context,bounds(),surface==SurfaceVariant.DEFAULT?SurfaceVariant.INSET:surface,WorkshopSkin.WELL))UiPaint.panel(context,bounds());}
+        Bounds viewport=context.theme().skin().pixelated()?bounds().inset(Insets.all(context.theme().skin().metrics().frameInset())):bounds();
+        context.graphics().enableScissor(viewport.x(),viewport.y(),viewport.right(),viewport.bottom());
         try {
             super.render(context);
         } finally {
@@ -119,8 +127,8 @@ public final class ScrollView extends UiContainer {
                     && context.mouseX() >= bounds().right() - 8;
             double shown = animate(context, "scrollbar-visible", pointerOnScrollbar || draggingScrollbar ? 1 : 0);
             int thumbColor = UiPaint.withAlpha(context.theme().palette().accent(), 0.35 + shown * 0.65);
-            UiPaint.roundedRect(context, new Bounds(trackX - 1, thumbY, 4, thumbHeight),
-                    thumbColor, context.theme().tokens().radii().pill());
+            Bounds thumb=new Bounds(trackX-1,thumbY,4,thumbHeight);
+            if(!context.theme().skin().surface(context,thumb,SurfaceVariant.RAISED,context.theme().palette().button()))UiPaint.roundedRect(context,thumb,thumbColor,context.theme().tokens().radii().pill());
         }
     }
 

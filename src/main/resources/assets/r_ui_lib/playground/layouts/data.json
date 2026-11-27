@@ -183,6 +183,42 @@
         "y": 655,
         "width": 24,
         "height": 24
+      },
+      {
+        "type": "tabs",
+        "tabPlacement": "RIGHT",
+        "x": 16,
+        "y": 700,
+        "width": 310,
+        "height": 120,
+        "children": [
+          {
+            "type": "panel",
+            "text": "Queue",
+            "iconName": "PLAY",
+            "children": [
+              {
+                "type": "label",
+                "text": "Attached side tabs",
+                "width": 200,
+                "height": 12
+              }
+            ]
+          },
+          {
+            "type": "panel",
+            "text": "Settings",
+            "iconName": "SETTINGS",
+            "children": [
+              {
+                "type": "button",
+                "text": "A normal control",
+                "width": 120,
+                "height": 20
+              }
+            ]
+          }
+        ]
       }
     ]
   }

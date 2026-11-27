@@ -266,6 +266,34 @@ public final class UiPlaygroundScreen extends UiScreen {
                 .setCloseOnOutsideClick(true));
     }
 
+    private void openStyleEditor(){
+        if(selected==null)return;final PlaygroundNode node=selected;Column content=new Column(4);
+        content.add(new Label(Component.literal("Style: "+node.type)));
+        if(node.type.equals("panel")||node.type.equals("scroll")){
+            var options=new ArrayList<com.radaeli.ruilib.ui.Select.Option<com.radaeli.ruilib.ui.SurfaceVariant>>();
+            for(var v:com.radaeli.ruilib.ui.SurfaceVariant.values())options.add(new com.radaeli.ruilib.ui.Select.Option<>(v,Component.literal(v.name())));
+            content.add(new com.radaeli.ruilib.ui.Select<>(options,node.surface,v->node.surface=v));
+        }
+        if(node.type.equals("label")){
+            var options=new ArrayList<com.radaeli.ruilib.ui.Select.Option<com.radaeli.ruilib.ui.UiText.Overflow>>();
+            for(var v:com.radaeli.ruilib.ui.UiText.Overflow.values())options.add(new com.radaeli.ruilib.ui.Select.Option<>(v,Component.literal(v.name())));
+            content.add(new com.radaeli.ruilib.ui.Select<>(options,node.overflow,v->node.overflow=v));
+            content.add(com.radaeli.ruilib.ui.Stepper.ofRange(Component.literal("Max lines"),1,32,1,node.maxLines,v->Component.literal(v.toString()),v->node.maxLines=v));
+        }
+        if(node.type.equals("tabs")){
+            var options=new ArrayList<com.radaeli.ruilib.ui.Select.Option<com.radaeli.ruilib.ui.Tabs.Placement>>();
+            for(var v:com.radaeli.ruilib.ui.Tabs.Placement.values())options.add(new com.radaeli.ruilib.ui.Select.Option<>(v,Component.literal(v.name())));
+            content.add(new com.radaeli.ruilib.ui.Select<>(options,node.tabPlacement,v->node.tabPlacement=v));
+        }
+        if(node.type.equals("iconbutton")||node.parent!=null&&node.parent.type.equals("tabs")){
+            var options=new ArrayList<com.radaeli.ruilib.ui.Select.Option<String>>();options.add(new com.radaeli.ruilib.ui.Select.Option<>("",Component.literal("Glyph/default")));
+            for(var v:com.radaeli.ruilib.ui.UiIcons.values())options.add(new com.radaeli.ruilib.ui.Select.Option<>(v.name(),Component.literal(v.name())));
+            content.add(new com.radaeli.ruilib.ui.Select<>(options,node.iconName,v->node.iconName=v));
+        }
+        if(node.type.equals("iconbutton"))content.add(new com.radaeli.ruilib.ui.Toggle(Component.literal("Selected"),node.selected,v->node.selected=v));
+        content.add(new Button(Component.literal("Apply style"),()->{closeModal();rebuildCanvas();}));
+        showModal(new Modal(Component.literal("Component style"),content,260,200));
+    }
     private void selectGlobalTheme(UiTheme selectedTheme) {
         UiThemes.setGlobalTheme(selectedTheme);
         status = "Global UI theme set to " + (selectedTheme.equals(UiTheme.WORKSHOP) ? "Workshop" :
@@ -301,12 +329,15 @@ public final class UiPlaygroundScreen extends UiScreen {
                 Component.literal("Enabled"), button -> toggleEnabled())
                 .bounds(panelX, 182, fieldWidth, 18).build());
         int actionY = Math.max(204, height - 38);
+        int styleWidth=Math.max(20,(fieldWidth-8)/3);
         addInspectorButton(net.minecraft.client.gui.components.Button.builder(
                 Component.literal("Apply"), button -> applyInspector())
-                .bounds(panelX, actionY, alignmentWidth, 18).build());
+                .bounds(panelX, actionY, styleWidth, 18).build());
         addInspectorButton(net.minecraft.client.gui.components.Button.builder(
                 Component.literal("Remove"), button -> removeSelected())
-                .bounds(panelX + alignmentWidth + 4, actionY, alignmentWidth, 18).build());
+                .bounds(panelX + styleWidth + 4, actionY, styleWidth, 18).build());
+        addInspectorButton(net.minecraft.client.gui.components.Button.builder(Component.literal("Style"),button->openStyleEditor())
+            .bounds(panelX+styleWidth*2+8,actionY,styleWidth,18).build());
     }
 
     private net.minecraft.client.gui.components.Button addInspectorButton(
@@ -1269,7 +1300,7 @@ public final class UiPlaygroundScreen extends UiScreen {
             if (renderable instanceof net.minecraft.client.gui.components.Button button) {
                 String label = button.getMessage().getString();
                 if (label.equals("Apply")) button.setY(actionY);
-                else if (label.equals("Remove")) button.setY(actionY);
+                else if (label.equals("Remove") || label.equals("Style")) button.setY(actionY);
             }
         }
     }

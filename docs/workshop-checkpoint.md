@@ -22,3 +22,7 @@ Reference image reopened and reviewed. Unified input/popup colors and frame, pix
 ## Phase 4 — items and tabular data
 
 Reference image reopened and reviewed. Added consistent inset inventory/ghost slots, selected child contrast, safe item/table text, alternating table rows and a built-in InventoryGrid picker. ItemGrid inherits themed cards; ItemPreview keeps the native renderer without an automatic frame. Next: Phase 5.
+
+## Phase 5 — navigation and viewports
+
+Reference image reopened and reviewed. Added icon side tabs within complete input bounds, keyboard direction and per-tab help, shared scrollbar materials and gutters, and Style dialog for surface/overflow/icons/tab placement. ClipStack remains transparent with native scissor nesting. Next: Phase 6.

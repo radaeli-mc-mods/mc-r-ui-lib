@@ -57,6 +57,7 @@ public final class HorizontalScrollView extends UiContainer {
 
   @Override
   public void render(UiContext c) {
+    if(c.theme().skin().pixelated())c.theme().skin().surface(c,bounds(),SurfaceVariant.INSET,WorkshopSkin.WELL);
     c.graphics().enableScissor(bounds().x(), bounds().y(), bounds().right(), bounds().bottom());
     try {
       super.render(c);
@@ -70,7 +71,8 @@ public final class HorizontalScrollView extends UiContainer {
           c.theme().palette().divider());
       int thumb = thumb();
       int x = bounds().x() + (int) ((long) offset * (bounds().width() - thumb) / maxScrollOffset());
-      UiPaint.rect(c, new Bounds(x, bounds().bottom() - 6, thumb, 4), c.theme().palette().accent());
+      Bounds handle=new Bounds(x,bounds().bottom()-6,thumb,4);
+      if(!c.theme().skin().surface(c,handle,SurfaceVariant.RAISED,c.theme().palette().button()))UiPaint.rect(c,handle,c.theme().palette().accent());
     }
   }
 
