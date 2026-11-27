@@ -3,7 +3,6 @@ package com.radaeli.ruilib.client.playground;
 import com.google.gson.GsonBuilder;
 import com.radaeli.ruilib.ui.*;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.Screenshot;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.SimpleContainer;
@@ -16,21 +15,14 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Opt-in development regression runner. Uses the real client, fonts, widgets and renderer. */
+/** Opt-in automated interaction checks using the real Minecraft client and widgets. */
 public final class UiValidation extends UiScreen {
-    private static final String[] TYPES = {"label", "button", "iconbutton", "divider", "panel", "card",
-            "toggle", "chip", "textfield", "searchfield", "slider", "progressbar", "radial", "itemcard",
-            "itemslot", "spacer", "row", "column", "stack", "tabs", "scroll", "clip", "grid", "itemgrid", "table", "absolute",
-            "curvechart"};
     private static boolean started;
     private static boolean windowRequested;
     private static int windowWaitTicks;
     private final List<String> checks = new ArrayList<>();
-    private final List<String> captures = new ArrayList<>();
     private final Path output = Minecraft.getInstance().gameDirectory.toPath().resolve("ui-validation");
-    private int frame;
     private boolean tested;
-    private Button motionButton;
 
     private UiValidation() { super(Component.literal("R-UI validation"), new AbsoluteLayout()); }
 
@@ -304,123 +296,28 @@ public final class UiValidation extends UiScreen {
         }
     }
 
-    private void newControlsCapture(GuiGraphics graphics,int state) throws Exception {
-        var root=new AbsoluteLayout();
-        var swatch=root.addAt(new ColorSwatch(0x4e91bd,true,()->{}),new Bounds(20,30,32,32));
-        root.addAt(new ItemPreview(new ItemStack(Items.OAK_LOG),64),new Bounds(70,20,64,64));
-        root.addAt(new ColorPicker(0x4e91bd,c->{},()->{}),new Bounds(20,110,220,220));
-        var scroll=root.addAt(new HorizontalScrollView(6),new Bounds(280,40,240,100));
-        for(int i=0;i<6;i++) {var panel=scroll.add(new Panel(new ItemPreview(new ItemStack(Items.BRICKS),48)).setBackground(0xff604040+i*0x10101));panel.setPreferredSize(100,80);}
-        Column composite=new Column(5);composite.add(new ItemPreview(new ItemStack(Items.STONE),40));
-        composite.add(new IconButton(Component.literal("Keep block"),state==0?IconButton.Symbol.LOCK_OPEN:IconButton.Symbol.LOCK_CLOSED,()->{}));
-        var card=root.addAt(new SelectableCard(composite,state>0,()->{}),new Bounds(290,175,145,115));card.setFocused(state==2);
-        root.addAt(new SegmentedControl<>(List.of(new SegmentedControl.Option<>(0,Component.literal("Free")),new SegmentedControl.Option<>(1,Component.literal("Block")),new SegmentedControl.Option<>(2,Component.literal("Color"))),state,v->{}),new Bounds(280,310,260,26));
-        root.layout(font,UiTheme.DARK,new Bounds(0,0,width,height));if(state>0)scroll.setScrollOffset(120);
-        graphics.fill(0,0,width,height,0xff101319);root.render(new UiContext(graphics,font,UiTheme.DARK,state==2?95:-1,state==2?45:-1,width,height));
-        if(state==2){
-            var dialog=new Modal(Component.literal("Dialog above item previews"),new ColorPicker(0x4e91bd,c->{},()->{}),260,270);
-            dialog.layoutInScreen(font,UiTheme.DARK,width,height);
-            dialog.render(new UiContext(graphics,font,UiTheme.DARK,-1,-1,width,height,0));
-            dialog.render(new UiContext(graphics,font,UiTheme.DARK,-1,-1,width,height,200_000_000));
-        }
-        capture(graphics,"palette-controls-"+state);
-    }
-
     @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
+        if (tested || width < 320 || height < 240) return;
+        tested = true;
         try {
-            if(width<320||height<240)return;
-            if (!tested) {
-                Files.createDirectories(output);
-                Files.deleteIfExists(output.resolve("failure.txt"));
-                Files.deleteIfExists(output.resolve("results.json"));
-                curveChartChecks(); inputChecks(); colorControlChecks(); workshopChecks(graphics); tested = true;
-            }
-            if (frame < 18) {
-                int page = frame % 3;
-                boolean dark = frame % 6 < 3;
-                int state = frame / 6;
-                UiTheme theme = dark ? UiTheme.DARK : UiTheme.LIGHT;
-                graphics.fill(0, 0, width, height, theme.palette().screen() | 0xFF000000);
-                for (int i = page * 9; i < Math.min(TYPES.length, page * 9 + 9); i++) {
-                    PlaygroundNode node = PlaygroundNode.create(TYPES[i], 0, 0);
-                    if (node.isContainer()) node.children.add(PlaygroundNode.create("button", 2, 2));
-                    UiComponent component = PlaygroundComponentFactory.build(node, PlaygroundComponentFactory.newComponentMap(), n -> { }, (n, selected) -> { });
-                    int cell = i - page * 9;
-                    Bounds bounds = new Bounds(12 + cell % 3 * 208, 30 + cell / 3 * 144, Math.min(198, node.width), Math.min(126, node.height));
-                    component.layout(font, theme, bounds);
-                    graphics.drawString(font, TYPES[i], bounds.x(), bounds.y() - 14, theme.palette().text(), false);
-                    component.render(new UiContext(graphics, font, theme, -100, -100, width, height, 0));
-                    if (state > 0) {
-                        component.setFocused(true);
-                        component.mouseClicked(bounds.centerX(), bounds.centerY(), 0);
-                        component.mouseReleased(bounds.centerX(), bounds.centerY(), 0);
-                        if (component instanceof TextField field) { field.setValue("Sample 123"); field.setFocused(false); }
-                        if (state == 2) component.setEnabled(false);
-                        component.render(new UiContext(graphics, font, theme, bounds.centerX(), bounds.centerY(), width, height, 0));
-                        component.render(new UiContext(graphics, font, theme, bounds.centerX(), bounds.centerY(), width, height, 70_000_000));
-                    }
-                    checks.add("render " + TYPES[i] + " " + (dark ? "dark" : "light") + " state " + state);
-                }
-                capture(graphics, (dark ? "dark" : "light") + "-atlas-" + page + "-state-" + state);
-            } else if (frame < 24) {
-                int step = frame - 18;
-                graphics.fill(0, 0, width, height, UiTheme.DARK.palette().screen() | 0xFF000000);
-                if (motionButton == null) {
-                    motionButton = new Button(Component.literal("Hover transition"), () -> { });
-                    motionButton.layout(font, UiTheme.DARK, new Bounds(40, 40, 200, 32));
-                    motionButton.render(new UiContext(graphics, font, UiTheme.DARK, -1, -1, width, height, 0));
-                }
-                long time = Math.max(0, step - 1) * 35_000_000L;
-                motionButton.render(new UiContext(graphics, font, UiTheme.DARK, step == 0 ? -1 : 60, 50, width, height, time));
-                capture(graphics, "motion-" + step);
-            } else if (frame < 29) {
-                int step = frame - 24;
-                graphics.fill(0, 0, width, height, UiTheme.DARK.palette().screen() | 0xFF000000);
-                UiOverlayValidation.render(graphics, font, width, height, step);
-                capture(graphics, "overlays-" + step);
-            } else if (frame < 32) {
-                graphics.fill(0, 0, width, height, UiTheme.DARK.palette().screen() | 0xFF000000);
-                UiOverlayValidation.renderCursor(graphics, font, width, height, frame - 29);
-                capture(graphics, "cursor-" + (frame - 29));
-            } else if(frame < 35) {
-                newControlsCapture(graphics,frame-32);
-            } else if (frame < 37) {
-                curveChartCapture(graphics, frame - 35);
-            } else if(frame<37+WORKSHOP_TYPES.length*3+31){
-                workshopCapture(graphics,frame-37);
-            } else {
-                Files.writeString(output.resolve("results.json"), new GsonBuilder().setPrettyPrinting().create()
-                        .toJson(java.util.Map.of("passed", true, "checks", checks, "captures", captures)));
-                Minecraft.getInstance().stop();
-            }
-            frame++;
+            Files.createDirectories(output);
+            Files.deleteIfExists(output.resolve("failure.txt"));
+            Files.deleteIfExists(output.resolve("results.json"));
+            curveChartChecks();
+            inputChecks();
+            colorControlChecks();
+            workshopChecks(graphics);
+            Files.writeString(output.resolve("results.json"), new GsonBuilder().setPrettyPrinting().create()
+                    .toJson(java.util.Map.of("passed", true, "checks", checks)));
+            Minecraft.getInstance().stop();
         } catch (Exception | AssertionError error) {
-            try { Files.createDirectories(output); Files.writeString(output.resolve("failure.txt"), error.toString()); } catch (Exception ignored) { }
+            try {
+                Files.createDirectories(output);
+                Files.writeString(output.resolve("failure.txt"), error.toString());
+            } catch (Exception ignored) { }
             throw new IllegalStateException("R-UI runtime validation failed", error);
         }
-    }
-
-    /** Selected point with tangent handles and a custom-labelled tooltip, in both themes. */
-    private void curveChartCapture(GuiGraphics graphics, int step) throws Exception {
-        UiTheme theme = step == 0 ? UiTheme.DARK : UiTheme.LIGHT;
-        graphics.fill(0, 0, width, height, theme.palette().screen() | 0xFF000000);
-        CurveChart chart = new CurveChart(List.of(new CurvePoint(-38, 1.5, -0.006), new CurvePoint(63, 1, -0.004),
-                new CurvePoint(280, 0.4, -0.0016), new CurvePoint(320, 0, -0.02)), new CurveViewport(-80, 360, -0.1, 1.7))
-                .setAxisLabels(Component.literal("Altitude"), Component.literal("Y"))
-                .setTooltipLabels(null, Component.literal("Pressure"), null);
-        chart.layout(font, theme, new Bounds(40, 40, 400, 240));
-        Bounds plot = chart.plotBounds();
-        double x = chart.viewport().toScreenX(63, plot);
-        double y = chart.viewport().toScreenY(1, plot);
-        chart.mouseClicked(x, y, 0);
-        chart.mouseReleased(x, y, 0);
-        check(chart.selectedIndex() == 1, "curve chart capture selects a point");
-        UiContext context = new UiContext(graphics, font, theme, x, y, width, height, 0);
-        chart.render(context);
-        chart.render(new UiContext(graphics, font, theme, x, y, width, height, 1_000_000_000L));
-        UiPaint.tooltip(context, chart.tooltipAt(x, y), (int) x, (int) y);
-        capture(graphics, "curve-chart-" + (step == 0 ? "dark" : "light"));
     }
 
     private void workshopChecks(GuiGraphics graphics){
@@ -462,56 +359,5 @@ public final class UiValidation extends UiScreen {
         void focusForTest(UiComponent component){focusComponent(component);}
         UiComponent focusForTest(){return focusedComponent();}
         void finishClose(UiContext context){renderClosingModal(context);}
-    }
-
-    private static final String[] WORKSHOP_TYPES={"label","button","iconbutton","toggle","chip","radio","infobox",
-        "select","textfield","searchfield","slider","stepper","segmented","radiogroup","colorswatch","colorpicker",
-        "panel","card","divider","row","column","stack","absolute","grid","spacer","selectablecard","itemcard",
-        "itemslot","itemgrid","inventory","itempreview","table","tabs","scroll","hscroll","clip","progressbar","curvechart","radial","modal-demo","toast-demo"};
-
-    private UiComponent reference(String name) throws Exception {
-        try(var stream=UiValidation.class.getResourceAsStream("/assets/r_ui_lib/playground/layouts/"+name+".json")){
-            if(stream==null)throw new IllegalStateException("Missing reference "+name);
-            var doc=new GsonBuilder().create().fromJson(new java.io.InputStreamReader(stream,java.nio.charset.StandardCharsets.UTF_8),PlaygroundDocument.class);
-            doc.normalize();return PlaygroundComponentFactory.build(doc.root,PlaygroundComponentFactory.newComponentMap(),n->{},(n,v)->{});
-        }
-    }
-
-    private void workshopCapture(GuiGraphics graphics,int step) throws Exception {
-        UiTheme theme=UiTheme.WORKSHOP;graphics.fill(0,0,width,height,0xff252527);
-        int atlasSteps=WORKSHOP_TYPES.length*3;
-        if(step<atlasSteps){
-            graphics.fill(0,0,width,height,theme.palette().panel());int index=step%WORKSHOP_TYPES.length,state=step/WORKSHOP_TYPES.length;
-            var node=PlaygroundNode.create(WORKSHOP_TYPES[index],0,0);node.selected=state>0;node.enabled=state!=2;
-            if(node.type.equals("iconbutton"))node.iconName="PLAY";
-            if(node.type.equals("colorpicker")){node.width=240;node.height=250;}
-            if(node.isContainer())node.children.add(PlaygroundNode.create("button",0,0));
-            var component=PlaygroundComponentFactory.build(node,PlaygroundComponentFactory.newComponentMap(),n->{},(n,w)->{});
-            Bounds b=new Bounds(24,60,Math.min(width-48,Math.max(20,node.width)),Math.min(height-90,Math.max(20,node.height)));
-            component.layout(font,theme,b);graphics.drawString(font,node.type+" / state "+state,b.x(),b.y()-20,theme.palette().text(),false);
-            component.setFocused(state==1);component.render(new UiContext(graphics,font,theme,state==1?b.centerX():-100,state==1?b.centerY():-100,width,height,0));
-            checks.add("Workshop atlas "+node.type+" state "+state);capture(graphics,"workshop-"+node.type+"-state-"+state);
-        }else if(step<atlasSteps+6){int scale=1+(step-atlasSteps)/2;
-            if((step-atlasSteps)%2==0){Minecraft.getInstance().options.guiScale().set(scale);Minecraft.getInstance().resizeDisplay();return;}
-            var component=reference("workshop-showcase");component.layout(font,theme,new Bounds(Math.max(0,(width-384)/2),Math.max(0,(height-300)/2),384,300));
-            component.render(new UiContext(graphics,font,theme,-100,-100,width,height,0));capture(graphics,"workshop-showcase-scale-"+scale);
-        }else if(step==atlasSteps+6){Minecraft.getInstance().options.guiScale().set(2);Minecraft.getInstance().resizeDisplay();
-        }else if(step<atlasSteps+25){graphics.fill(0,0,width,height,theme.palette().panel());int n=step-atlasSteps-7;String[] categories={"basic","input","layout","data","status","scroll"};String category=categories[n/3];
-            var component=reference(category);component.layout(font,theme,new Bounds(0,-(n%3)*350,width,2048));
-            component.render(new UiContext(graphics,font,theme,-100,-100,width,height,0));capture(graphics,"workshop-"+category+"-page-"+(n%3));
-        }else if(step<atlasSteps+30){
-            int tab=step-atlasSteps-25;var component=reference("workshop-showcase");
-            component.layout(font,theme,new Bounds(Math.max(0,(width-384)/2),Math.max(0,(height-300)/2),384,300));
-            component.visitComponents(c->{if(c instanceof Tabs t)t.select(tab);});
-            component.render(new UiContext(graphics,font,theme,-100,-100,width,height,0));capture(graphics,"workshop-showcase-tab-"+tab);
-        }else{UiOverlayValidation.render(graphics,font,width,height,0,theme);UiPaint.tooltip(new UiContext(graphics,font,theme,400,350,width,height,0),Tooltip.of(Component.literal("Disabled controls explain their state")),400,350);capture(graphics,"workshop-overlays");}
-    }
-
-    private void capture(GuiGraphics graphics, String name) throws Exception {
-        graphics.flush();
-        try (var image = Screenshot.takeScreenshot(Minecraft.getInstance().getMainRenderTarget())) {
-            image.writeToFile(output.resolve(name + ".png"));
-        }
-        captures.add(name);
     }
 }

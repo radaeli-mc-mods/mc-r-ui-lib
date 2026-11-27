@@ -85,59 +85,24 @@ ao editor nativo. O tamanho lógico acompanha a escala tipográfica, evitando
 texto fora do campo. JEI 15 e 19 usam pontes de propriedades de GUI
 separadas, preservando o mesmo código de ghost targets.
 
-## Validação repetível
+## Testes automatizados
 
-```powershell
-.\scripts\dev.ps1 -Task :forge:runClient -Validate
-.\scripts\dev.ps1 -Task :neoforge:runClient -Validate
+~~~powershell
+.\scripts\dev.ps1 -Task buildAll
 .\scripts\dev.ps1 -Task :forge:runClient -Validate -WithJei
 .\scripts\dev.ps1 -Task :neoforge:runClient -Validate -WithJei
-.\scripts\Compare-UiCaptures.ps1
-```
+~~~
 
-Execute os clientes sequencialmente. O modo opt-in abre uma tela de validação a
-partir do menu, usa os widgets/fontes/renderizador reais, grava `results.json`
-e PNGs em `<loader>/runs/validation/ui-validation/` e fecha o cliente ao terminar.
-Falhas de uma asserção geram `failure.txt` e falham a execução. O comparador
-exige a mesma lista de verificações e imagens idênticas pixel a pixel; salva
-`build/reports/ui-parity.json`. As capturas de animação usam timestamps fixos.
+Execute os clientes sequencialmente. O modo opt-in usa os widgets e as fontes reais do jogo, executa asserções de comportamento e encerra o cliente automaticamente. O diretório isolado de cada loader é runs/validation; a execução normal continua em runs/client.
 
-Use a mesma opção `-WithJei` nos dois loaders para comparar listas equivalentes.
-Ela instala JEI 15 no Forge e JEI 19 no NeoForge, e exercita a descoberta dos
-ghost targets e a entrega de um item ao filtro.
+Os resultados ficam em results.json dentro de runs/validation/ui-validation. Uma asserção que falha produz failure.txt e falha a execução. A suíte não gera capturas de tela nem compara imagens.
 
-Os testes JVM em `src/test/java` verificam geometria radial, curvas de animação
-e cores. A suíte do cliente cobre callbacks, foco, Unicode, edição, limites,
-disabled, sliders/range, toggle/chip, select, scroll nativo, drag de inventário,
-modal e toast. Os atlas exercitam os componentes do playground em Dark/Light,
-nos estados padrão, interativo e desabilitado. As capturas adicionais cobrem
-popup de Select, inventário, ghost slot e transições de modal/toast.
-O comparador também exige que o cursor alterne aos 300 ms e retorne ao mesmo
-visual aos 600 ms. Há asserções para seleção por arraste, autoscroll em texto
-comprido e seleção com escala tipográfica de 150%.
+Os testes JVM em src/test/java verificam geometria, curvas, cores e o contrato do tema Workshop. O exemplo de API da documentação é compilado nos dois loaders. O build também verifica os artefatos Java 17/21 e os recursos compartilhados.
 
-Antes de declarar equivalência completa de um consumidor, valide também com
-teclado/mouse reais: Ctrl+A/C/X/V, seleção por Shift e arraste, Home/End,
-repetição de teclas, IME, redimensionamento, escalas de GUI, navegação de popups,
-JEI com os mods instalados e os itens do próprio mod. Os testes automatizados
-não substituem esses cenários de hardware e integração.
+A suíte do cliente verifica callbacks, foco, Unicode, seleção e edição de texto, limites, controles desabilitados, sliders/range, toggle/chip, Select, scroll, inventário, modal e toast. O grupo Workshop cobre seleção sem callback em setters, inspeção de controles desabilitados, ellipsis com Unicode, abas laterais, disponibilidade de Stepper, gutter, ordem de Escape e retorno do foco. Os exemplos embutidos são carregados e validados antes de qualquer Save.
 
-Referências oficiais: [Forge 1.20.1](https://docs.minecraftforge.net/en/1.20.1/gettingstarted/)
-e [ModDevGradle](https://docs.neoforged.net/toolchain/docs/plugins/mdg/).
+Com -WithJei, a suíte usa JEI 15 no Forge e JEI 19 no NeoForge para verificar ghost targets e entrega de itens ao filtro.
 
-## Resultado local em 14/10/2026
+Para avaliar aparência e uso no consumidor, abra o playground com teclado e mouse reais. IME, atalhos físicos, resource packs de fonte, escalas de GUI e integrações com outros mods precisam de validação prática.
 
-- Clientes Forge/Java 17 e NeoForge/Java 21 iniciados e encerrados pela suíte.
-- 196 verificações concluídas em cada cliente, com JEI 15/19 instalado.
-- 32 pares de PNGs de 1280×960 idênticos pixel a pixel; zero pixels diferentes.
-- Período do cursor verificado: visível em 0 ms, oculto em 300 ms, visível em 600 ms.
-- Três testes JVM por loader, sem falhas ou testes ignorados.
-- JARs inspecionados: 98 classes por loader, 69 fontes compartilhadas idênticas,
-  metadados isolados, recursos iguais e bytecode Java 17/21.
-
-Os relatórios locais gerados ficam em `build/reports/ui-parity.json`,
-`build/reports/artifacts.json` e nos diretórios `build/test-results/test` dos
-loaders. As capturas e as listas de verificações ficam em
-`<loader>/runs/validation/ui-validation/`. Esses arquivos de execução são ignorados
-pelo Git. A matriz manual acima permanece necessária para declarar cobertura
-de IME, atalhos físicos e integrações específicas de um consumidor.
+Referências oficiais: [Forge 1.20.1](https://docs.minecraftforge.net/en/1.20.1/gettingstarted/) e [ModDevGradle](https://docs.neoforged.net/toolchain/docs/plugins/mdg/).
