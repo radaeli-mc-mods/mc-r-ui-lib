@@ -39,6 +39,13 @@ public record UiContext(
         opacity = Math.max(0, Math.min(1, opacity));
     }
 
+    public UiContext withTheme(UiTheme theme) {
+        return new UiContext(graphics,font,theme,mouseX,mouseY,screenWidth,screenHeight,frameTimeNanos,opacity);
+    }
+    public UiContext selectedSurface() {
+        if(!theme.skin().pixelated())return this;
+        return withTheme(new UiTheme(theme.palette().withText(WorkshopSkin.TEXT_SELECTED,WorkshopSkin.TEXT_BUTTON),theme.tokens(),theme.skin()));
+    }
     public UiContext withOpacity(double opacity) {
         return new UiContext(graphics, font, theme, mouseX, mouseY, screenWidth, screenHeight,
                 frameTimeNanos, this.opacity * Math.max(0, Math.min(1, opacity)));

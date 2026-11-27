@@ -54,6 +54,7 @@ public final class InventoryGrid extends UiComponent {
     private final boolean playerLayout;
     private int columns = DEFAULT_COLUMNS;
     private int slotSize = DEFAULT_SLOT_SIZE;
+    private boolean explicitSlotSize;
     private int gap = DEFAULT_GAP;
     private int carriedSlotIndex = -1;
     private int customPressedSlot = -1;
@@ -107,6 +108,7 @@ public final class InventoryGrid extends UiComponent {
     public InventoryGrid setSlotSize(int slotSize) {
         if (slotSize < 16 || slotSize > 128) throw new IllegalArgumentException("slotSize must be 16 to 128");
         this.slotSize = slotSize;
+        explicitSlotSize=true;
         return this;
     }
 
@@ -163,6 +165,7 @@ public final class InventoryGrid extends UiComponent {
 
     @Override
     protected UiSize measureIntrinsic(Font font, UiTheme theme, int maxWidth, int maxHeight) {
+        if(!explicitSlotSize)slotSize=theme.skin().pixelated()?20:DEFAULT_SLOT_SIZE;
         int rows = rowCount();
         int width = slotSize * columns + gap * Math.max(0, columns - 1);
         int height = slotSize * rows + gap * Math.max(0, rows - 1)
@@ -181,7 +184,7 @@ public final class InventoryGrid extends UiComponent {
             int firstHotbarRow = playerMainRows();
             int bandHeight = hotbarRows * slotSize + Math.max(0, hotbarRows - 1) * gap;
             Bounds hotbarBand = new Bounds(bounds().x(), rowY(firstHotbarRow), bounds().width(), bandHeight);
-            UiPaint.roundedRect(context, hotbarBand,
+            if(!context.theme().skin().pixelated())UiPaint.roundedRect(context, hotbarBand,
                     UiPaint.withAlpha(context.theme().palette().accent(), 0.07),
                     context.theme().tokens().radii().small());
             UiPaint.divider(context, new Bounds(bounds().x(), rowY(firstHotbarRow) - (HOTBAR_GAP - 1) / 2,
@@ -196,8 +199,11 @@ public final class InventoryGrid extends UiComponent {
             double hover = animate(context, "slot-hover-" + displayIndex, hovered ? 1 : 0);
             double selected = animate(context, "slot-selected-" + displayIndex,
                     carriedSlotIndex == displayIndex ? 1 : 0);
-            UiPaint.card(context, slotBounds, hover, selected, 0);
-            if (playerLayout && displayIndex >= 27) {
+            if(context.theme().skin().pixelated()){
+                context.theme().skin().surface(context,slotBounds,SurfaceVariant.INSET,WorkshopSkin.WELL);
+                if(selected>0||hover>0)UiPaint.outline(context,slotBounds.inset(Insets.all(1)),selected>0?context.theme().palette().accent():WorkshopSkin.EDGE_LIGHT);
+            }else UiPaint.card(context, slotBounds, hover, selected, 0);
+            if (playerLayout && displayIndex >= 27 && !context.theme().skin().pixelated()) {
                 UiPaint.roundedRect(context, slotBounds,
                         UiPaint.withAlpha(context.theme().palette().accent(), 0.10),
                         context.theme().tokens().radii().medium());

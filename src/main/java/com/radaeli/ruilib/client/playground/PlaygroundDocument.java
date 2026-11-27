@@ -36,7 +36,7 @@ final class PlaygroundDocument {
         if (node == null || node.type == null) throw new IllegalArgumentException("Layout contains an empty node");
         if (++count[0] > 512) throw new IllegalArgumentException("Layout has more than 512 components");
         if (node.children == null) node.children = new java.util.ArrayList<>();
-        if (!(node.type.equals("segmented") || node.type.equals("itempreview") || node.type.equals("colorswatch") || node.type.equals("colorpicker") || node.type.equals("infobox") || node.type.equals("label") || node.type.equals("button")
+        if (!(node.type.equals("segmented") || node.type.equals("itempreview") || node.type.equals("colorswatch") || node.type.equals("colorpicker") || node.type.equals("inventory") || node.type.equals("infobox") || node.type.equals("label") || node.type.equals("button")
                 || node.type.equals("iconbutton") || node.type.equals("divider")
                 || node.type.equals("toggle") || node.type.equals("chip")
                 || node.type.equals("radio") || node.type.equals("radiogroup") || node.type.equals("stepper")

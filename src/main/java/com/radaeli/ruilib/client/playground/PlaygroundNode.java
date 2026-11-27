@@ -48,6 +48,8 @@ final class PlaygroundNode {
         node.x = x;
         node.y = y;
         switch (type) {
+            case "infobox" -> { node.text="Help"; node.width=12; node.height=12; }
+            case "inventory" -> { node.text="Inventory picker"; node.width=200; node.height=44; }
             case "label" -> {
                 node.text = "Text";
                 node.width = 80;

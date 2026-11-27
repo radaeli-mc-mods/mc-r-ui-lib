@@ -18,3 +18,7 @@ Reference image reopened and reviewed. Added original pixel icons and texture/gl
 ## Phase 3 — inputs and configuration
 
 Reference image reopened and reviewed. Unified input/popup colors and frame, pixel search/dropdown symbols, styled popup ellipsis, rectangular slider/stepper, contiguous segments and unmodified RGB swatches. Invalid hex input is marked without changing Apply/Cancel. Updated Input examples. Next: Phase 4.
+
+## Phase 4 — items and tabular data
+
+Reference image reopened and reviewed. Added consistent inset inventory/ghost slots, selected child contrast, safe item/table text, alternating table rows and a built-in InventoryGrid picker. ItemGrid inherits themed cards; ItemPreview keeps the native renderer without an automatic frame. Next: Phase 5.

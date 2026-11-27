@@ -20,6 +20,10 @@ public record UiPalette(
         int warning,
         int error
 ) {
+    /** Derives contrast for children on a selected surface without changing other roles. */
+    public UiPalette withText(int primary,int secondary) {
+        return new UiPalette(screen,panel,card,border,divider,primary,secondary,accent,button,buttonHover,buttonPressed,disabled,focus,overlay,success,warning,error);
+    }
     /** Keeps source compatibility with the first public palette shape. */
     public UiPalette(int screen, int panel, int card, int border, int divider, int text, int mutedText,
                      int accent, int button, int buttonHover, int buttonPressed, int disabled, int focus) {

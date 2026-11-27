@@ -122,7 +122,7 @@ public final class ItemSlot extends UiComponent {
         double focused = animate(context, "focus", isFocused() ? 1 : 0);
         double pressedAmount = animate(context, "press", pressed ? 1 : 0);
         UiPaint.input(context, bounds(), hover, isEnabled(), focused,
-                backgroundColor == null ? null : backgroundColor.argb());
+                backgroundColor == null ? (context.theme().skin().pixelated()?WorkshopSkin.WELL:null) : backgroundColor.argb());
         if (dropTargetActive) {
             UiPaint.roundedOutline(context, bounds(), context.theme().palette().accent(),
                     context.theme().tokens().radii().medium());

@@ -65,7 +65,7 @@ public final class Card extends UiFrame {
             UiPaint.text(context, title, bounds().x() + padding.left(),
                     bounds().y() + padding.top(), context.theme().palette().text(), UiTextStyle.HEADING);
         }
-        content().render(context);
+        content().render(selected?context.selectedSurface():context);
     }
 
     public Component title() {
