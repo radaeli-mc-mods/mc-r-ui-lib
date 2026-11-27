@@ -73,6 +73,8 @@ theme, including when the screen uses a custom global theme.
 
 ## Workshop theme
 
+Available since R-Ui Lib 0.11.0.
+
 `UiTheme.WORKSHOP` provides warm gray pixel frames, inset fields, olive selection, native Minecraft text at scale 1.0, and immediate state changes. Dark and Light retain their default painters and transitions. Pass the theme to an individual screen to keep other mods' global appearance unchanged.
 
 ```java

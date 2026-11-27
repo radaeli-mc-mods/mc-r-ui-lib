@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.11.0] - 2026-11-27
+
+### Added
+
+- Added the Workshop theme with pixel frames, inset controls, native Minecraft text, and olive selection.
+- Added side tabs, reusable pixel icons, and selectable icon buttons.
+- Added raised, inset and title surfaces, plus clipping, ellipsis and wrapping for styled text.
+- Added help tooltips for disabled controls and keyboard focus.
+- Added Workshop reference pages and style controls in the playground.
+
+### Fixed
+
+- Fixed keyboard focus being lost after closing dialogs.
+- Fixed notifications being hidden behind dialog backdrops.
+
 ## [0.10.0] - 2026-11-08
 
 ### Added
