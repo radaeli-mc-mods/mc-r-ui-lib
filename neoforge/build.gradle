@@ -14,7 +14,7 @@ neoForge {
     runs {
         client {
             client()
-            gameDirectory = project.file('runs/client')
+            gameDirectory = project.file(project.hasProperty('uiValidation') ? 'runs/validation' : 'runs/client')
             if (project.hasProperty('uiValidation')) systemProperty 'r_ui_lib.validate', 'true'
             if (project.hasProperty('withJei')) systemProperty 'r_ui_lib.validateJei', 'true'
         }
@@ -35,3 +35,6 @@ processResources {
     inputs.properties(properties)
     filesMatching(['META-INF/neoforge.mods.toml', 'pack.mcmeta']) { expand(properties) }
 }
+
+// Compile documented UI examples against the same Minecraft API as main sources.
+sourceSets.test.compileClasspath += sourceSets.main.compileClasspath

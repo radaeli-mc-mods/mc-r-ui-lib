@@ -44,7 +44,7 @@ try {
     & ./gradlew.bat @gradleArguments
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
     if ($Validate) {
-        $resultPath = Join-Path $projectRoot "$validationLoader/runs/client/ui-validation/results.json"
+        $resultPath = Join-Path $projectRoot "$validationLoader/runs/validation/ui-validation/results.json"
         if (!(Test-Path -LiteralPath $resultPath) -or (Get-Item -LiteralPath $resultPath).LastWriteTimeUtc -lt $runStarted) {
             throw 'The client exited without producing a new validation result.'
         }

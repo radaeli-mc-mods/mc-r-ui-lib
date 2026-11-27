@@ -136,6 +136,11 @@ public final class Table<T> extends UiComponent {
         } finally {
             context.graphics().disableScissor();
         }
+        if(context.theme().skin().pixelated()){
+            UiPaint.outline(context,tableBounds,context.theme().palette().border());
+            UiPaint.rect(context,new Bounds(tableBounds.x()+1,tableBounds.y()+1,Math.max(0,tableBounds.width()-2),1),WorkshopSkin.INSET_DARK);
+            UiPaint.rect(context,new Bounds(tableBounds.x()+1,tableBounds.y()+1,1,Math.max(0,tableBounds.height()-2)),WorkshopSkin.INSET_DARK);
+        }
     }
 
     @Override

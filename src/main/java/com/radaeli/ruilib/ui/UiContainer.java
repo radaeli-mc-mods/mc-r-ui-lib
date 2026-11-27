@@ -59,6 +59,11 @@ public abstract class UiContainer extends UiComponent {
         }
     }
 
+    @Override public UiComponent inspectionHitTest(double x,double y){
+        if(!bounds().contains(x,y))return null;
+        for(int i=children.size()-1;i>=0;i--){var hit=children.get(i).inspectionHitTest(x,y);if(hit!=null)return hit;}
+        return this;
+    }
     @Override
     public UiComponent hitTest(double mouseX, double mouseY) {
         if (!isEnabled() || !bounds().contains(mouseX, mouseY)) {

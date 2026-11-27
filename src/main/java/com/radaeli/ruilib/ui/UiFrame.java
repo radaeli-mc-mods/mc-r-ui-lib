@@ -59,6 +59,7 @@ abstract class UiFrame extends UiComponent {
         content.layout(font, theme, inner);
     }
 
+    @Override public UiComponent inspectionHitTest(double x,double y){if(!bounds().contains(x,y))return null;var hit=content.inspectionHitTest(x,y);return hit==null?this:hit;}
     @Override
     public UiComponent hitTest(double mouseX, double mouseY) {
         if (!isEnabled() || !bounds().contains(mouseX, mouseY)) return null;

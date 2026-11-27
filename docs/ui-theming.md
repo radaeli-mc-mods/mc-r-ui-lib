@@ -70,3 +70,43 @@ of the global default. Components also retain their local overrides, such as
 colors in `Label` and `Divider`, colors in `ProgressBar`, and explicit padding
 in `Panel`/`Card`. Without an override, their defaults come from the active
 theme, including when the screen uses a custom global theme.
+
+## Workshop theme
+
+`UiTheme.WORKSHOP` provides warm gray pixel frames, inset fields, olive selection, native Minecraft text at scale 1.0, and immediate state changes. Dark and Light retain their default painters and transitions. Pass the theme to an individual screen to keep other mods' global appearance unchanged.
+
+```java
+import com.radaeli.ruilib.ui.*;
+import net.minecraft.network.chat.Component;
+
+public final class WorkshopExample {
+    public static UiScreen screen() {
+        Column content = new Column(4);
+        content.add(new Panel(new Label(Component.literal("Workshop")))
+                .setSurface(SurfaceVariant.TITLE_PLATE));
+        content.add(new Label(Component.literal("A long title stays inside its row"))
+                .setOverflow(UiText.Overflow.ELLIPSIS, 1));
+        IconButton play = new IconButton(Component.literal("Play"), UiIcons.PLAY, () -> { });
+        play.setSelected(true);
+        content.add(play);
+        Tabs tabs = new Tabs().setPlacement(Tabs.Placement.RIGHT);
+        tabs.addTab(Component.literal("Queue"), UiIcons.PLAY,
+                new Label(Component.literal("Upcoming tracks")));
+        tabs.addTab(Component.literal("Settings"), UiIcons.SETTINGS,
+                new Slider(0, 100, 50, value -> { }));
+        content.add(tabs);
+        return new UiScreen(Component.literal("Example"), new Panel(content), UiTheme.WORKSHOP);
+    }
+}
+```
+`Panel.setSurface` accepts DEFAULT, RAISED, INSET, PLAIN and TITLE_PLATE. Padding includes the border reserve. `Label.setOverflow` supports VISIBLE, CLIP, ELLIPSIS and WRAP with a maximum line count. Styled text is measured by the current Minecraft font.
+
+`UiIcon` supports glyphs and texture regions; `UiIcons` supplies original pixel symbols. `IconButton.setIcon`, `setAccessibleName` and `setSelected` update a mounted control; selection alone does not execute its callback. Use snapshots owned by your mod as the source of truth. Textures must declare their full atlas dimensions and a valid region.
+
+`Tabs.setPlacement` accepts TOP, LEFT and RIGHT; the complete tab strip is included in the component bounds. Side tabs use Up/Down; top tabs use Left/Right. Reserve the complete root through `jeiGuiBounds()` when composing a larger screen. `ScrollView.setSurface(PLAIN)` omits a nested frame.
+
+Surface paint is delegated through `UiSkin`, with `UiSkinMetrics` and `UiVisualState`. The two-argument `UiTheme(palette, tokens)` constructor still uses the original painter. The record also exposes its skin: audit reflection/record serialization when integrating across versions. Disabled controls remain inactive while inspection can display their explanation.
+
+Use the game's Font and ItemPreview; do not copy a font atlas or item texture into your mod to reproduce Workshop. Item colors, color swatches and mathematical chart values remain unchanged by the theme.
+
+In the Style dialog, Panel padding reserves its frame and ProgressBar can hide its value label for thin tracks. Bounded Stepper arrows show independent availability; canStep(direction) reports it without executing the callback. Icon button names feed help text; this does not add full Minecraft narrator integration.

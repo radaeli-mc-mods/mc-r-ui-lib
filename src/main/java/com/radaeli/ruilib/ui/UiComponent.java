@@ -141,6 +141,8 @@ public abstract class UiComponent {
         return false;
     }
 
+    /** Inspection is separate from activation: disabled controls may explain themselves. */
+    public UiComponent inspectionHitTest(double x,double y){return bounds.contains(x,y)?this:null;}
     public UiComponent hitTest(double mouseX, double mouseY) {
         return enabled && bounds.contains(mouseX, mouseY) ? this : null;
     }

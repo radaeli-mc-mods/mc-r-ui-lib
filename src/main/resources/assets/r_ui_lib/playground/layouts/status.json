@@ -80,6 +80,22 @@
         "y": 390,
         "width": 140,
         "height": 140
+      },
+      {
+        "type": "modal-demo",
+        "text": "Open dialog",
+        "x": 16,
+        "y": 555,
+        "width": 130,
+        "height": 20
+      },
+      {
+        "type": "toast-demo",
+        "text": "Show notification",
+        "x": 152,
+        "y": 555,
+        "width": 150,
+        "height": 20
       }
     ]
   }

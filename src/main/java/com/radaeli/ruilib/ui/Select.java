@@ -117,7 +117,7 @@ public final class Select<T> extends UiComponent {
         else if (highlightedIndex >= firstVisible + visibleRows) firstVisible = highlightedIndex - visibleRows + 1;
     }
 
-    void renderPopup(UiContext context) {
+    public void renderPopup(UiContext context) {
         if (!open) return;
         UiPaint.card(context, popupBounds);
         int hovered = optionAt(context.mouseX(), context.mouseY());
@@ -133,14 +133,14 @@ public final class Select<T> extends UiComponent {
         }
     }
 
-    boolean popupContains(double x, double y) { return open && popupBounds.contains(x, y); }
+    public boolean popupContains(double x, double y) { return open && popupBounds.contains(x, y); }
 
     private int optionAt(double x, double y) {
         if (!popupContains(x, y) || y < popupBounds.y() + popupInset || y >= popupBounds.bottom() - popupInset) return -1;
         return firstVisible + (int) (y - popupBounds.y() - popupInset) / rowHeight;
     }
 
-    Tooltip popupTooltip(double x, double y) {
+    public Tooltip popupTooltip(double x, double y) {
         int index = optionAt(x, y);
         return index < 0 ? null : options.get(index).tooltip();
     }

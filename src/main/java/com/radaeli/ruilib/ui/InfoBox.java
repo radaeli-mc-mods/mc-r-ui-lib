@@ -22,7 +22,8 @@ public final class InfoBox extends UiComponent {
 
     @Override
     protected UiSize measureIntrinsic(Font font, UiTheme theme, int maxWidth, int maxHeight) {
-        return new UiSize(SIZE, SIZE).constrain(maxWidth, maxHeight);
+        int size=theme.skin().pixelated()?12:SIZE;
+        return new UiSize(size, size).constrain(maxWidth, maxHeight);
     }
 
     @Override
@@ -33,7 +34,7 @@ public final class InfoBox extends UiComponent {
         if(context.theme().skin().pixelated()) {
             context.theme().skin().surface(context,bounds,SurfaceVariant.TITLE_PLATE,null);
             if(isFocused())UiPaint.outline(context,bounds,palette.focus());
-            UiPaint.text(context,MARK,bounds.x()+2,bounds.y(),palette.text());return;
+            UiPaint.text(context,MARK,bounds.centerX()-context.font().width(MARK)/2,bounds.centerY()-context.font().lineHeight/2+1,palette.text());return;
         }
         if (hovered) UiPaint.rect(context, bounds, UiPaint.withAlpha(palette.buttonHover(), 0.6));
         UiPaint.outline(context, bounds, hovered ? palette.accent() : palette.border());

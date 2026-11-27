@@ -36,7 +36,7 @@ final class PlaygroundDocument {
         if (node == null || node.type == null) throw new IllegalArgumentException("Layout contains an empty node");
         if (++count[0] > 512) throw new IllegalArgumentException("Layout has more than 512 components");
         if (node.children == null) node.children = new java.util.ArrayList<>();
-        if (!(node.type.equals("segmented") || node.type.equals("itempreview") || node.type.equals("colorswatch") || node.type.equals("colorpicker") || node.type.equals("inventory") || node.type.equals("infobox") || node.type.equals("label") || node.type.equals("button")
+        if (!(node.type.equals("segmented") || node.type.equals("itempreview") || node.type.equals("colorswatch") || node.type.equals("colorpicker") || node.type.equals("select") || node.type.equals("modal-demo") || node.type.equals("toast-demo") || node.type.equals("inventory") || node.type.equals("infobox") || node.type.equals("label") || node.type.equals("button")
                 || node.type.equals("iconbutton") || node.type.equals("divider")
                 || node.type.equals("toggle") || node.type.equals("chip")
                 || node.type.equals("radio") || node.type.equals("radiogroup") || node.type.equals("stepper")
@@ -53,6 +53,7 @@ final class PlaygroundDocument {
         if(node.surface==null)node.surface=com.radaeli.ruilib.ui.SurfaceVariant.DEFAULT;
         if(node.overflow==null)node.overflow=com.radaeli.ruilib.ui.UiText.Overflow.VISIBLE;
         node.maxLines=Math.max(1,Math.min(32,node.maxLines));
+        if(node.padding!=null)node.padding=Math.max(0,Math.min(128,node.padding));
         if(node.tabPlacement==null)node.tabPlacement=com.radaeli.ruilib.ui.Tabs.Placement.TOP;
         if(node.iconName==null)node.iconName="";
         if(!node.iconName.isBlank())com.radaeli.ruilib.ui.UiIcons.valueOf(node.iconName);

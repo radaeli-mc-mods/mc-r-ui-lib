@@ -18,6 +18,7 @@ public class UiScreen extends UiPlatformScreen {
     private UiTheme layoutTheme;
     private final ToastHost toastHost = new ToastHost();
     private UiComponent focusedComponent;
+    private UiComponent focusBeforeModal;
     private UiComponent pressedComponent;
     private Modal modal;
     private Modal closingModal;
@@ -78,16 +79,25 @@ public class UiScreen extends UiPlatformScreen {
             if (tooltip != null) UiPaint.tooltip(context, tooltip, mouseX, mouseY);
             return;
         }
-        UiComponent hovered = closingModal == null ? activeRoot().hitTest(mouseX, mouseY) : null;
-        if (hovered instanceof ItemPreview preview) preview.renderTooltip(context);
-        Tooltip hoveredTooltip = hovered == null ? null : hovered.tooltipAt(mouseX, mouseY);
-        if (hoveredTooltip != null) {
-            UiPaint.tooltip(context, hoveredTooltip, mouseX, mouseY);
+        if(closingModal==null)renderToolkitTooltip(context,activeRoot(),focusedComponent);
+    }
+
+    protected final void renderToolkitTooltip(UiContext context,UiComponent active,UiComponent focus){
+        UiComponent hovered=active.inspectionHitTest(context.mouseX(),context.mouseY());
+        if(hovered instanceof ItemPreview preview)preview.renderTooltip(context);
+        Tooltip tooltip=hovered==null?null:hovered.tooltipAt(context.mouseX(),context.mouseY());
+        int x=(int)context.mouseX(),y=(int)context.mouseY();
+        if(tooltip==null&&focus!=null&&focus.isEnabled()&&focus.isFocused()&&focus.bounds().width()>0){
+            tooltip=focus.tooltip();x=focus.bounds().right();y=focus.bounds().y();
         }
+        if(tooltip!=null)UiPaint.tooltip(context,tooltip,x,y);
     }
 
     protected void renderToastOverlay(GuiGraphics graphics, int mouseX, int mouseY) {
-        toastHost.render(new UiContext(graphics, font, theme(), mouseX, mouseY, width, height));
+        graphics.pose().pushPose();
+        graphics.pose().translate(0,0,420);
+        try { toastHost.render(new UiContext(graphics, font, theme(), mouseX, mouseY, width, height)); }
+        finally { graphics.pose().popPose(); }
     }
 
     protected void layoutRoot(UiTheme theme) {
@@ -100,6 +110,7 @@ public class UiScreen extends UiPlatformScreen {
         if (closingModal.closeTransitionComplete()) {
             closingModal.clearContentFocus();
             closingModal = null;
+            if(focusBeforeModal!=null){UiComponent previous=focusBeforeModal;focusBeforeModal=null;root.visitFocusable(c->{if(c==previous)focusComponent(c);});}
         }
     }
 
@@ -270,7 +281,7 @@ public class UiScreen extends UiPlatformScreen {
     }
 
     /** Only a focused, still-visible select can own an overlay or intercept input. */
-    private Select<?> openSelect() {
+    protected final Select<?> openSelect() {
         if (closingModal != null || !(focusedComponent instanceof Select<?> select) || !select.isOpen()) return null;
         boolean[] attached = {false};
         activeRoot().visitFocusable(component -> { if (component == select) attached[0] = true; });
@@ -285,7 +296,9 @@ public class UiScreen extends UiPlatformScreen {
     public void showModal(Modal modal) {
         ensureThemeLayout();
         Objects.requireNonNull(modal, "modal");
+        UiComponent previous=this.modal==null?focusedComponent:focusBeforeModal;
         closeModal();
+        focusBeforeModal=previous;
         this.modal = modal;
         closingModal = null;
         modal.beginOpen();

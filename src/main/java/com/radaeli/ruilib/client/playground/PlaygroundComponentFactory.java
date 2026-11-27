@@ -56,6 +56,8 @@ final class PlaygroundComponentFactory {
         UiComponent component = switch (node.type) {
             case "label" -> (node.color==0xFFF0F3F7?new Label(Component.literal(node.text)):new Label(Component.literal(node.text),node.color)).setOverflow(node.overflow,node.maxLines);
             case "button" -> new Button(Component.literal(node.text), () -> onButtonClick.accept(node));
+            case "select" -> createSelect(node);
+            case "modal-demo", "toast-demo" -> new Button(Component.literal(node.text),()->onButtonClick.accept(node));
             case "inventory" -> createInventory(node);
             case "infobox" -> new com.radaeli.ruilib.ui.InfoBox(Component.literal(node.text));
             case "iconbutton" -> !node.iconName.isBlank()?new IconButton(Component.literal(node.text),com.radaeli.ruilib.ui.UiIcons.valueOf(node.iconName),()->onButtonClick.accept(node)).setSelected(node.selected):!node.iconSymbol.isBlank() ? new IconButton(Component.literal(node.text), IconButton.Symbol.valueOf(node.iconSymbol), () -> onButtonClick.accept(node)) : new IconButton(Component.literal(node.text),
@@ -63,7 +65,7 @@ final class PlaygroundComponentFactory {
                     () -> onButtonClick.accept(node));
             // Default spacing: the node's height is the whole area, the rule is 1 px inside 5 px of air.
             case "divider" -> new Divider(Divider.Orientation.HORIZONTAL);
-            case "panel" -> new Panel(new Column(node.gap)).setBackground(node.background).setSurface(node.surface);
+            case "panel" -> new Panel(new Column(node.gap),node.padding==null?null:com.radaeli.ruilib.ui.Insets.all(node.padding)).setBackground(node.background).setSurface(node.surface);
             case "colorswatch" -> new com.radaeli.ruilib.ui.ColorSwatch(node.color, node.selected, () -> onButtonClick.accept(node));
             case "colorpicker" -> new com.radaeli.ruilib.ui.ColorPicker(node.color, color -> {node.color=color;onButtonClick.accept(node);}, () -> onButtonClick.accept(node));
             case "itempreview" -> new com.radaeli.ruilib.ui.ItemPreview(new net.minecraft.world.item.ItemStack(net.minecraft.core.registries.BuiltInRegistries.ITEM.get(net.minecraft.resources.ResourceLocation.parse(node.itemId))), Math.max(1, Math.min(512,node.width)));
@@ -98,7 +100,7 @@ final class PlaygroundComponentFactory {
                     true, value -> onButtonClick.accept(node));
             case "progressbar" -> new ProgressBar(node.minimum, node.maximum, node.value)
                     .setPercentage(node.percentage)
-                    .setFormatter(node.percentage ? null : value -> Component.literal(
+                    .setFormatter(node.percentage || !node.showValue ? null : value -> Component.literal(
                             java.math.BigDecimal.valueOf(value)
                                     .setScale(0, java.math.RoundingMode.HALF_UP).toPlainString()));
             case "radial" -> createRadialMenu(node, onButtonClick);
@@ -123,6 +125,7 @@ final class PlaygroundComponentFactory {
             default -> throw new IllegalArgumentException("Unsupported component type: " + node.type);
         };
         component.setEnabled(node.enabled);
+        if(component instanceof IconButton iconButton)iconButton.setSelected(node.selected);
         if (node.type.equals("spacer") && node.flexible) {
             component.setPreferredSize(null, null);
         } else {
@@ -145,6 +148,12 @@ final class PlaygroundComponentFactory {
         return component;
     }
 
+    private static UiComponent createSelect(PlaygroundNode node){
+        var options=new ArrayList<com.radaeli.ruilib.ui.Select.Option<Integer>>();String[] labels=node.text.split(",");
+        for(int i=0;i<labels.length;i++)options.add(new com.radaeli.ruilib.ui.Select.Option<>(i,Component.literal(labels[i].trim())));
+        if(options.isEmpty())options.add(new com.radaeli.ruilib.ui.Select.Option<>(0,Component.literal("Option")));
+        return new com.radaeli.ruilib.ui.Select<>(options,Math.floorMod(node.selectedTab,options.size()),v->node.selectedTab=v);
+    }
     private static UiComponent createInventory(PlaygroundNode node) {
         var items=new net.minecraft.world.SimpleContainer(18);
         items.setItem(0,new ItemStack(net.minecraft.world.item.Items.DIAMOND,32));

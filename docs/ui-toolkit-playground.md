@@ -6,7 +6,7 @@ The playground is a development tool for experimenting with toolkit components i
 
 - Start the client through `runClient` and press **F7**.
 - Press **F8** to open the `ItemSlot` example screen, with `InventoryGrid` and JEI drag integration. The shortcut is configurable in Controls.
-- Use **Theme** in the top toolbar to choose **Dark** or **Light**; this changes the global theme while the playground is open.
+- Use **Theme** in the top toolbar to choose **Dark**, **Light**, or **Workshop**; this changes the global theme while the playground is open.
 - The key can be changed under **Options → Controls → R-Ui Lib**.
 - In development runs, **F6** displays the test toast sequence over the game. This key can also be changed in Controls.
 - The screen is registered only in development runs. It is not available in production installations of the mod.
@@ -39,3 +39,11 @@ The playground is a development tool for experimenting with toolkit components i
 - File or format errors appear in the screen's bottom bar.
 
 Documents use `version: 1`; the playground rejects unknown versions and structurally invalid layouts without closing the game.
+
+## Review Workshop in the playground
+
+Press F7 in a development client, choose **Theme → Workshop**, then **Load → Workshop — Reference composition**. Enable **Preview** to use the controls. Built-in layouts work before any Save; user layouts are preserved. Review Basic, Input, Layout, Data, Status and Scroll with the same theme. Inventory picker, Select, help, dialog and toast examples are included.
+
+In Edit mode select a component and use **Style** to choose surface variant, text overflow/line count, icon, selected state or tab placement where applicable. Toolbars and inspector fields include native Minecraft editor widgets; the canvas preview contains the library components. The theme picker changes the global theme of the development session, while screens with explicit overrides keep their own theme.
+
+Style also exposes Panel padding and a value-label switch for thin ProgressBar tracks.

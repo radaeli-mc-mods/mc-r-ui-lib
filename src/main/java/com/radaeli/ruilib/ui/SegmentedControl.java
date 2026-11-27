@@ -23,6 +23,8 @@ public final class SegmentedControl<T> extends UiComponent {
   private final Consumer<T> onChange;
   private T value;
   private int pressed = -1;
+  private boolean pixelated;
+  @Override protected void layoutChildren(Font f,UiTheme t){pixelated=t.skin().pixelated();}
 
   public SegmentedControl(List<Option<T>> options, T value, Consumer<T> onChange) {
     this.options = List.copyOf(options);
@@ -58,7 +60,7 @@ public final class SegmentedControl<T> extends UiComponent {
   private Bounds cell(int index) {
     int left = bounds().x() + bounds().width() * index / options.size();
     int right = bounds().x() + bounds().width() * (index + 1) / options.size();
-    return new Bounds(left, bounds().y(), Math.max(0, right - left - 1), bounds().height());
+    return new Bounds(left, bounds().y(), Math.max(0, right - left - (pixelated?1:2)), bounds().height());
   }
 
   @Override

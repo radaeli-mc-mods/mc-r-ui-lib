@@ -135,7 +135,8 @@ public final class ToastHost extends UiComponent {
         int bottom = bounds().bottom() - edge;
 
         for (ActiveToast active : activeToasts) {
-            List<FormattedCharSequence> wrapped = layoutFont.split(active.toast.message(), textWidth);
+            Component message=layoutTheme.skin().pixelated()?Component.literal(active.toast.level().name()+": ").append(active.toast.message()):active.toast.message();
+            List<FormattedCharSequence> wrapped = layoutFont.split(message, textWidth);
             if (wrapped.isEmpty()) wrapped = List.of(FormattedCharSequence.EMPTY);
             int linesShown = Math.min(MAX_LINES, wrapped.size());
             active.lines = List.copyOf(wrapped.subList(0, linesShown));

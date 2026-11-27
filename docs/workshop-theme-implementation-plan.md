@@ -1,6 +1,6 @@
 # Plano de implementação — tema Workshop da R-Ui Lib
 
-Data: 27/11/2026. Estado: planejado; implementação e aceite visual ainda não iniciados.
+Data: 27/11/2026. Estado: implementação concluída na branch codex/workshop-theme; verificações e limites registrados em workshop-validation.md. Aceite visual do usuário pendente.
 Base: R-Ui Lib 0.10.0; Forge 1.20.1/Java 17 e NeoForge 1.21.1/Java 21.
 
 ## Objetivo e referência vinculante
@@ -9,7 +9,7 @@ Implementar **na própria biblioteca** um tema completo chamado **Workshop**, di
 
 O nome Workshop remete aos painéis de instrumentos de uma oficina: carcaça cinza quente, molduras em relevo, campos rebaixados e controles verde oliva. Essa combinação observada na proposta define a identidade do tema.
 
-A referência visual é o protótipo aprovado de Better Radio em `../better-radio/docs/design/index.html`, seu desenho em `prototype.js` e a captura `console.png` do mesmo diretório. Consultar também `references.md`: a linguagem foi baseada nas interfaces de Create e nas abas de Sophisticated Backpacks. Antes de implementar, criar uma captura de referência no repositório da lib para que a comparação não dependa de alterações futuras no checkout do consumidor. A captura é referência interna, não textura para desenhar a UI.
+A referência visual é o protótipo aprovado de Better Radio em `../better-radio/docs/design/index.html`, seu desenho em `prototype.js` e a captura `console.png` do mesmo diretório. Consultar também `references.md`: a linguagem foi baseada nas interfaces de Create e nas abas de Sophisticated Backpacks. A captura foi preservada em docs/workshop-reference.png no repositório da lib e foi reaberta entre os grupos de implementação para que a comparação não dependa de alterações futuras no checkout do consumidor. A captura é referência interna, não textura para desenhar a UI.
 
 O tema terá molduras em pixels, superfícies cinza quente em relevo e rebaixo, tipografia Minecraft em escala nativa, controles compactos e seleção verde oliva. O Better Radio não precisará implementar renderizadores próprios de painel, botão, aba, campo ou scrollbar. Layouts e regras musicais continuam pertencendo ao consumidor; o tema é útil para qualquer mod.
 
@@ -249,19 +249,19 @@ Além dos helpers, auditar chamadas diretas a fill/drawString/blit/roundedRect e
 
 O agente pode concluir implementação e verificações técnicas. **Aceite visual pertence ao usuário**, que fará a validação no playground depois. Usar estados separados no relatório: implementado, verificado tecnicamente, aguardando aceite visual. Não afirmar que o tema foi aprovado visualmente antes desse retorno e não interromper as fases para pedir aprovações intermediárias não solicitadas.
 
-Sem commit, bump, tag, push ou publicação automática. Uma release posterior segue a política de versionamento do usuário. Este pedido autoriza criar o plano; a implementação das fases será uma tarefa posterior.
+Execução autorizada posteriormente pelo usuário: branch nova codex/workshop-theme e um commit por grupo (fundação e fases 1–7). Sem bump, tag, push ou publicação. Uma release posterior segue a política de versionamento do usuário. Checkpoints de continuidade estão em workshop-checkpoint.md; não há ferramenta de compactação manual exposta nesta sessão.
 
 ## Checklist de execução
 
-- [ ] Fundação: UiTheme.WORKSHOP, skin/métricas/paleta e seletor inicial
-- [ ] Fase 1: superfícies, texto e layouts
-- [ ] Fase 2: ações e seleções básicas
-- [ ] Fase 3: entradas e edição de cor
-- [ ] Fase 4: itens, inventário e dados tabulares
-- [ ] Fase 5: navegação e viewports
-- [ ] Fase 6: progresso, gráfico e radial
-- [ ] Fase 7: diálogos, notificações e ajuda
-- [ ] Exemplos embutidos, inspector e showcase completos
-- [ ] Testes/builds/paridade dos dois loaders e documentação implementada
-- [ ] Entrega para validação do usuário no playground
+- [x] Fundação: UiTheme.WORKSHOP, skin/métricas/paleta e seletor inicial
+- [x] Fase 1: superfícies, texto e layouts
+- [x] Fase 2: ações e seleções básicas
+- [x] Fase 3: entradas e edição de cor
+- [x] Fase 4: itens, inventário e dados tabulares
+- [x] Fase 5: navegação e viewports
+- [x] Fase 6: progresso, gráfico e radial
+- [x] Fase 7: diálogos, notificações e ajuda
+- [x] Exemplos embutidos, inspector e showcase completos
+- [x] Testes/builds e documentação implementada; comparação de paridade executada, com 5 diferenças nativas registradas em workshop-validation.md
+- [x] Entrega para validação do usuário no playground
 - [ ] Aceite visual registrado após retorno do usuário

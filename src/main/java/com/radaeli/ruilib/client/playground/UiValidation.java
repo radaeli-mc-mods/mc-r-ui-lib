@@ -23,6 +23,8 @@ public final class UiValidation extends UiScreen {
             "itemslot", "spacer", "row", "column", "stack", "tabs", "scroll", "clip", "grid", "itemgrid", "table", "absolute",
             "curvechart"};
     private static boolean started;
+    private static boolean windowRequested;
+    private static int windowWaitTicks;
     private final List<String> checks = new ArrayList<>();
     private final List<String> captures = new ArrayList<>();
     private final Path output = Minecraft.getInstance().gameDirectory.toPath().resolve("ui-validation");
@@ -36,9 +38,19 @@ public final class UiValidation extends UiScreen {
         if (!Boolean.getBoolean("r_ui_lib.validate") || started) return;
         Minecraft mc = Minecraft.getInstance();
         if (mc.screen == null || mc.getOverlay() != null || mc.font == null) return;
-        started = true;
-        mc.options.guiScale().set(2);
-        GLFW.glfwSetWindowSize(mc.getWindow().getWindow(), 1280, 960);
+        if(!windowRequested){
+            mc.options.fullscreen().set(false);
+            if(mc.getWindow().isFullscreen())mc.getWindow().toggleFullScreen();
+            mc.options.guiScale().set(2);
+            GLFW.glfwRestoreWindow(mc.getWindow().getWindow());
+            GLFW.glfwSetWindowSize(mc.getWindow().getWindow(),1280,960);
+            windowRequested=true;return;
+        }
+        if(mc.getWindow().getWidth()!=1280||mc.getWindow().getHeight()!=960){
+            if(++windowWaitTicks>200)throw new IllegalStateException("Validation window did not reach 1280x960: "+mc.getWindow().getWidth()+"x"+mc.getWindow().getHeight());
+            return;
+        }
+        started=true;
         mc.resizeDisplay();
         mc.setScreen(new UiValidation());
     }
@@ -317,11 +329,12 @@ public final class UiValidation extends UiScreen {
     @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
         try {
+            if(width<320||height<240)return;
             if (!tested) {
                 Files.createDirectories(output);
                 Files.deleteIfExists(output.resolve("failure.txt"));
                 Files.deleteIfExists(output.resolve("results.json"));
-                curveChartChecks(); inputChecks(); colorControlChecks(); tested = true;
+                curveChartChecks(); inputChecks(); colorControlChecks(); workshopChecks(graphics); tested = true;
             }
             if (frame < 18) {
                 int page = frame % 3;
@@ -374,6 +387,8 @@ public final class UiValidation extends UiScreen {
                 newControlsCapture(graphics,frame-32);
             } else if (frame < 37) {
                 curveChartCapture(graphics, frame - 35);
+            } else if(frame<37+WORKSHOP_TYPES.length*3+31){
+                workshopCapture(graphics,frame-37);
             } else {
                 Files.writeString(output.resolve("results.json"), new GsonBuilder().setPrettyPrinting().create()
                         .toJson(java.util.Map.of("passed", true, "checks", checks, "captures", captures)));
@@ -406,6 +421,90 @@ public final class UiValidation extends UiScreen {
         chart.render(new UiContext(graphics, font, theme, x, y, width, height, 1_000_000_000L));
         UiPaint.tooltip(context, chart.tooltipAt(x, y), (int) x, (int) y);
         capture(graphics, "curve-chart-" + (step == 0 ? "dark" : "light"));
+    }
+
+    private void workshopChecks(GuiGraphics graphics){
+        var root=new AbsoluteLayout();
+        var returnTarget=root.addAt(new Button(Component.literal("Return focus"),()->{}),new Bounds(10,10,100,20));
+        var probe=new OverlayProbe(root);probe.init(Minecraft.getInstance(),width,height);probe.focusForTest(returnTarget);
+        var choice=new Select<>(List.of(new Select.Option<>(0,Component.literal("First")),new Select.Option<>(1,Component.literal("Second"))),0,v->{});
+        probe.showModal(new Modal(Component.literal("Dialog"),choice,240,100));
+        probe.keyPressed(GLFW.GLFW_KEY_ENTER,0,0);
+        check(choice.isOpen(),"modal select opens through screen focus");
+        probe.keyPressed(GLFW.GLFW_KEY_ESCAPE,0,0);
+        check(!choice.isOpen()&&probe.focusForTest()==choice,"Escape dismisses popup before its modal");
+        probe.keyPressed(GLFW.GLFW_KEY_ESCAPE,0,0);
+        probe.finishClose(new UiContext(graphics,font,UiTheme.WORKSHOP,-100,-100,width,height,0));
+        check(probe.focusForTest()==returnTarget&&returnTarget.isFocused(),"modal close restores attached root focus");
+        var theme=UiTheme.WORKSHOP;
+        int[] actions={0};var button=new IconButton(Component.literal("Pause"),UiIcons.PAUSE,()->actions[0]++);
+        button.setSelected(true);button.setIcon(UiIcons.PLAY);button.setAccessibleName(Component.literal("Play"));
+        check(button.isSelected()&&actions[0]==0,"Workshop selected setter does not execute actions");
+        button.layout(font,theme,new Bounds(5,5,20,20));button.setEnabled(false);
+        check(button.hitTest(10,10)==null&&button.inspectionHitTest(10,10)==button&&button.tooltip()!=null,"disabled help is independent of activation");
+        var label=Component.literal("Long title with Unicode: café and \uD83C\uDFB5");
+        check(font.width(UiText.ellipsize(font,label,60))<=60,"styled Unicode ellipsis fits its actual font bounds");
+        var tabs=new Tabs().setPlacement(Tabs.Placement.RIGHT);
+        tabs.addTab(Component.literal("First"),UiIcons.PLAY,new Label(Component.literal("First")));
+        tabs.addTab(Component.literal("Second"),UiIcons.SETTINGS,new Label(Component.literal("Second")));
+        tabs.layout(font,theme,new Bounds(10,10,200,100));
+        check(tabs.hitTest(200,45)==tabs,"side tab outer edge belongs to the input bounds");
+        tabs.mouseClicked(200,45,0);check(tabs.selectedIndex()==1,"side tab click selects its page");
+        tabs.setFocused(true);tabs.keyPressed(GLFW.GLFW_KEY_UP,0,0);check(tabs.selectedIndex()==0,"side tabs use vertical keyboard arrows");
+        var bounded=Stepper.ofRange(Component.literal("Range"),0,10,1,10,v->Component.literal(v.toString()),v->actions[0]++);
+        check(bounded.canStep(-1)&&!bounded.canStep(1)&&actions[0]==0,"bounded stepper disables only the unavailable direction");
+        var list=new ScrollView(0);var child=list.add(new Label(Component.literal("A long row")));list.layout(font,theme,new Bounds(0,0,100,50));
+        check(child.bounds().right()<=100-theme.skin().metrics().scrollbarHitWidth(),"Workshop reserves the scrollbar gutter");
+    }
+
+    private static final class OverlayProbe extends UiScreen {
+        OverlayProbe(UiComponent root){super(Component.literal("Overlay probe"),root,UiTheme.WORKSHOP);}
+        void focusForTest(UiComponent component){focusComponent(component);}
+        UiComponent focusForTest(){return focusedComponent();}
+        void finishClose(UiContext context){renderClosingModal(context);}
+    }
+
+    private static final String[] WORKSHOP_TYPES={"label","button","iconbutton","toggle","chip","radio","infobox",
+        "select","textfield","searchfield","slider","stepper","segmented","radiogroup","colorswatch","colorpicker",
+        "panel","card","divider","row","column","stack","absolute","grid","spacer","selectablecard","itemcard",
+        "itemslot","itemgrid","inventory","itempreview","table","tabs","scroll","hscroll","clip","progressbar","curvechart","radial","modal-demo","toast-demo"};
+
+    private UiComponent reference(String name) throws Exception {
+        try(var stream=UiValidation.class.getResourceAsStream("/assets/r_ui_lib/playground/layouts/"+name+".json")){
+            if(stream==null)throw new IllegalStateException("Missing reference "+name);
+            var doc=new GsonBuilder().create().fromJson(new java.io.InputStreamReader(stream,java.nio.charset.StandardCharsets.UTF_8),PlaygroundDocument.class);
+            doc.normalize();return PlaygroundComponentFactory.build(doc.root,PlaygroundComponentFactory.newComponentMap(),n->{},(n,v)->{});
+        }
+    }
+
+    private void workshopCapture(GuiGraphics graphics,int step) throws Exception {
+        UiTheme theme=UiTheme.WORKSHOP;graphics.fill(0,0,width,height,0xff252527);
+        int atlasSteps=WORKSHOP_TYPES.length*3;
+        if(step<atlasSteps){
+            graphics.fill(0,0,width,height,theme.palette().panel());int index=step%WORKSHOP_TYPES.length,state=step/WORKSHOP_TYPES.length;
+            var node=PlaygroundNode.create(WORKSHOP_TYPES[index],0,0);node.selected=state>0;node.enabled=state!=2;
+            if(node.type.equals("iconbutton"))node.iconName="PLAY";
+            if(node.type.equals("colorpicker")){node.width=240;node.height=250;}
+            if(node.isContainer())node.children.add(PlaygroundNode.create("button",0,0));
+            var component=PlaygroundComponentFactory.build(node,PlaygroundComponentFactory.newComponentMap(),n->{},(n,w)->{});
+            Bounds b=new Bounds(24,60,Math.min(width-48,Math.max(20,node.width)),Math.min(height-90,Math.max(20,node.height)));
+            component.layout(font,theme,b);graphics.drawString(font,node.type+" / state "+state,b.x(),b.y()-20,theme.palette().text(),false);
+            component.setFocused(state==1);component.render(new UiContext(graphics,font,theme,state==1?b.centerX():-100,state==1?b.centerY():-100,width,height,0));
+            checks.add("Workshop atlas "+node.type+" state "+state);capture(graphics,"workshop-"+node.type+"-state-"+state);
+        }else if(step<atlasSteps+6){int scale=1+(step-atlasSteps)/2;
+            if((step-atlasSteps)%2==0){Minecraft.getInstance().options.guiScale().set(scale);Minecraft.getInstance().resizeDisplay();return;}
+            var component=reference("workshop-showcase");component.layout(font,theme,new Bounds(Math.max(0,(width-384)/2),Math.max(0,(height-300)/2),384,300));
+            component.render(new UiContext(graphics,font,theme,-100,-100,width,height,0));capture(graphics,"workshop-showcase-scale-"+scale);
+        }else if(step==atlasSteps+6){Minecraft.getInstance().options.guiScale().set(2);Minecraft.getInstance().resizeDisplay();
+        }else if(step<atlasSteps+25){graphics.fill(0,0,width,height,theme.palette().panel());int n=step-atlasSteps-7;String[] categories={"basic","input","layout","data","status","scroll"};String category=categories[n/3];
+            var component=reference(category);component.layout(font,theme,new Bounds(0,-(n%3)*350,width,2048));
+            component.render(new UiContext(graphics,font,theme,-100,-100,width,height,0));capture(graphics,"workshop-"+category+"-page-"+(n%3));
+        }else if(step<atlasSteps+30){
+            int tab=step-atlasSteps-25;var component=reference("workshop-showcase");
+            component.layout(font,theme,new Bounds(Math.max(0,(width-384)/2),Math.max(0,(height-300)/2),384,300));
+            component.visitComponents(c->{if(c instanceof Tabs t)t.select(tab);});
+            component.render(new UiContext(graphics,font,theme,-100,-100,width,height,0));capture(graphics,"workshop-showcase-tab-"+tab);
+        }else{UiOverlayValidation.render(graphics,font,width,height,0,theme);UiPaint.tooltip(new UiContext(graphics,font,theme,400,350,width,height,0),Tooltip.of(Component.literal("Disabled controls explain their state")),400,350);capture(graphics,"workshop-overlays");}
     }
 
     private void capture(GuiGraphics graphics, String name) throws Exception {
