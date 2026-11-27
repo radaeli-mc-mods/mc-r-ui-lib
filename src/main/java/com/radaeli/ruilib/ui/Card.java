@@ -59,6 +59,9 @@ public final class Card extends UiFrame {
                 animate(context, "focus", isFocused() ? 1 : 0));
         Insets padding = padding(context.theme());
         if (title != null) {
+            if(context.theme().skin().pixelated())context.theme().skin().surface(context,
+                new Bounds(bounds().x()+padding.left()-3,bounds().y()+padding.top()-3,
+                Math.max(0,bounds().width()-padding.left()-padding.right()+6),UiText.height(context)+6),SurfaceVariant.TITLE_PLATE,null);
             UiPaint.text(context, title, bounds().x() + padding.left(),
                     bounds().y() + padding.top(), context.theme().palette().text(), UiTextStyle.HEADING);
         }

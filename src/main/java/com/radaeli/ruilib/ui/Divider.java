@@ -72,5 +72,9 @@ public final class Divider extends UiComponent {
                 ? new Bounds(area.x(), area.y() + before(), area.width(), thickness)
                 : new Bounds(area.x() + before(), area.y(), thickness, area.height());
         UiPaint.rect(context, rule, color == null ? context.theme().palette().divider() : color);
+        if(context.theme().skin().pixelated() && color==null) {
+            Bounds light=orientation==Orientation.HORIZONTAL?new Bounds(rule.x(),rule.bottom(),rule.width(),1):new Bounds(rule.right(),rule.y(),1,rule.height());
+            UiPaint.rect(context,light,WorkshopSkin.EDGE_LIGHT);
+        }
     }
 }

@@ -50,6 +50,9 @@ final class PlaygroundDocument {
         if (!node.isContainer() && !node.children.isEmpty()) {
             throw new IllegalArgumentException("Only layout containers can have children");
         }
+        if(node.surface==null)node.surface=com.radaeli.ruilib.ui.SurfaceVariant.DEFAULT;
+        if(node.overflow==null)node.overflow=com.radaeli.ruilib.ui.UiText.Overflow.VISIBLE;
+        node.maxLines=Math.max(1,Math.min(32,node.maxLines));
         if (node.iconSymbol == null) node.iconSymbol="";
         if (!node.iconSymbol.isBlank()) com.radaeli.ruilib.ui.IconButton.Symbol.valueOf(node.iconSymbol);
         if (node.text == null) node.text = node.type;

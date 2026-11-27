@@ -5,6 +5,16 @@ import net.minecraft.network.chat.Component;
 
 /** Convenience wrapper that leaves glyph measurement and rendering to Minecraft's Font. */
 public final class UiText {
+    public enum Overflow { VISIBLE, CLIP, ELLIPSIS, WRAP }
+    /** Font's splitter preserves styled runs and Unicode code points. */
+    public static net.minecraft.util.FormattedCharSequence ellipsize(Font font, Component value, int width) {
+        if(width<=0)return net.minecraft.util.FormattedCharSequence.EMPTY;
+        if(font.width(value)<=width)return value.getVisualOrderText();
+        Component dots=Component.literal("...");
+        if(font.width(dots)>width)return net.minecraft.util.FormattedCharSequence.EMPTY;
+        var lines=font.split(value,Math.max(1,width-font.width(dots)));
+        return net.minecraft.util.FormattedCharSequence.composite(lines.isEmpty()?net.minecraft.util.FormattedCharSequence.EMPTY:lines.get(0),dots.getVisualOrderText());
+    }
     private UiText() {
     }
 
