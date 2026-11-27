@@ -217,6 +217,12 @@ public final class Stepper<T> extends UiComponent {
      */
     public static Layout layout(Font font, UiTheme theme, Bounds bounds, Component label, Component value) {
         int textY = bounds.centerY() - UiText.height(font, theme) / 2;
+        if(theme.skin().pixelated()){
+            int arrow=Math.min(18,Math.max(8,bounds.width()/4));int valueWidth=Math.min(Math.max(30,UiText.width(font,value,theme)+8),Math.max(0,bounds.width()/2-arrow*2));
+            int minusX=bounds.right()-arrow*2-valueWidth;
+            return new Layout(new Bounds(minusX,bounds.y(),arrow,bounds.height()),new Bounds(bounds.right()-arrow,bounds.y(),arrow,bounds.height()),
+                minusX-4,minusX+arrow+4,textY);
+        }
         int plusWidth = UiText.width(font, PLUS, theme);
         int arrow = UiText.width(font, MINUS + " ", theme);
         int valueRight = bounds.right() - arrow;
@@ -233,6 +239,13 @@ public final class Stepper<T> extends UiComponent {
                              double focused) {
         UiPalette palette = context.theme().palette();
         Layout layout = layout(context.font(), context.theme(), bounds, label, value);
+        if(context.theme().skin().pixelated()){
+            UiPaint.text(context,UiText.ellipsize(context.font(),label,Math.max(0,layout.labelRight()-bounds.x())),bounds.x(),layout.textY(),enabled?palette.text():palette.mutedText(),UiTextStyle.BODY);
+            Bounds well=new Bounds(layout.minus().right(),bounds.y(),Math.max(0,layout.plus().x()-layout.minus().right()),bounds.height());
+            context.theme().skin().surface(context,well,SurfaceVariant.INSET,WorkshopSkin.WELL);
+            UiPaint.text(context,value,layout.valueX(),layout.textY(),enabled?palette.text():palette.mutedText());
+            arrow(context,MINUS,layout.minus(),layout.textY(),enabled);arrow(context,PLUS,layout.plus(),layout.textY(),enabled);return;
+        }
         String shown = UiText.width(context.font(), label, context.theme()) <= bounds.width() / 2 ? label.getString()
                 : context.font().plainSubstrByWidth(label.getString(),
                 Math.max(0, bounds.width() / 2 - context.font().width("…"))) + "…";
@@ -246,6 +259,11 @@ public final class Stepper<T> extends UiComponent {
     private static void arrow(UiContext context, String glyph, Bounds bounds, int textY, boolean enabled) {
         UiPalette palette = context.theme().palette();
         boolean hovered = enabled && hits(bounds, context.mouseX(), context.mouseY());
+        if(context.theme().skin().pixelated()){
+            context.theme().skin().button(context,bounds,new UiVisualState(enabled,hovered?1:0,0,0,0));
+            UiIcon icon=glyph.equals(MINUS)?UiIcons.MINUS:UiIcons.PLUS;
+            icon.render(context,bounds.centerX()-icon.width(context.font(),context.theme())/2,bounds.centerY()-icon.height(context.font(),context.theme())/2,context.theme().skin().buttonText(context.theme(),enabled,false));return;
+        }
         int color = !enabled ? palette.disabled() : hovered ? palette.text() : palette.accent();
         UiPaint.text(context, glyph, bounds.x(), textY, color);
     }

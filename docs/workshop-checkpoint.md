@@ -14,3 +14,7 @@ Reference image reopened and reviewed. Added semantic Panel variants, raised/ins
 ## Phase 2 — actions and selection
 
 Reference image reopened and reviewed. Added original pixel icons and texture/glyph abstraction, selection/name/icon setters, compact pressed content, rectangular toggle/chip, pixel radio and keyboard-focusable help. Updated Basic preset and node icon fields. Next: Phase 3.
+
+## Phase 3 — inputs and configuration
+
+Reference image reopened and reviewed. Unified input/popup colors and frame, pixel search/dropdown symbols, styled popup ellipsis, rectangular slider/stepper, contiguous segments and unmodified RGB swatches. Invalid hex input is marked without changing Apply/Cancel. Updated Input examples. Next: Phase 4.

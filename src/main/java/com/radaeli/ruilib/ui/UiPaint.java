@@ -273,6 +273,10 @@ public final class UiPaint {
 
     public static void input(UiContext context, Bounds bounds, double hovered,
                              boolean enabled, double focused, Integer backgroundOverride) {
+        if(context.theme().skin().pixelated()) {
+            context.theme().skin().surface(context,bounds,SurfaceVariant.INSET,!enabled?context.theme().palette().disabled():backgroundOverride==null?WorkshopSkin.INPUT:backgroundOverride);
+            if(focused>0&&enabled)outline(context,bounds.inset(Insets.all(2)),context.theme().palette().focus());return;
+        }
         UiPalette palette = context.theme().palette();
         int radius = context.theme().tokens().radii().small();
         int background = backgroundOverride == null ? palette.card()

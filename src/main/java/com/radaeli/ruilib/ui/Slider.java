@@ -195,6 +195,10 @@ public final class Slider extends UiComponent {
         UiPaint.roundedRect(context, new Bounds(selectionStart, trackY - 2,
                 Math.max(0, selectionEnd - selectionStart), 4),
                 isEnabled() ? palette.accent() : palette.disabled(), radius);
+        if(context.theme().skin().pixelated()) {
+            context.theme().skin().surface(context,new Bounds(trackStartX-2,trackY-4,Math.max(5,trackEndX-trackStartX+4),8),SurfaceVariant.INSET,WorkshopSkin.WELL);
+            UiPaint.rect(context,new Bounds(selectionStart,trackY-1,Math.max(0,selectionEnd-selectionStart),2),isEnabled()?palette.accent():palette.disabled());
+        }
         // Draw the active handle last so it remains visible when handles are close together.
         if (hasUpperValue() && !upperHandleActive) drawKnob(context, upperKnobX, true);
         drawKnob(context, knobX, false);
@@ -213,6 +217,7 @@ public final class Slider extends UiComponent {
         int knobColor = !isEnabled() ? palette.mutedText()
                 : UiPaint.mixColor(palette.text(), palette.buttonHover(), hovered || dragging && active ? 1 : 0);
         Bounds knob = new Bounds(knobX - 3, bounds().centerY() - 6, 7, 12);
+        if(context.theme().skin().button(context,knob,new UiVisualState(isEnabled(),hovered?1:0,dragging&&active?1:0,0,isFocused()&&active?1:0)))return;
         UiPaint.roundedRect(context, knob, knobColor, context.theme().tokens().radii().pill());
         UiPaint.roundedOutline(context, knob, isFocused() && active ? palette.focus() : palette.border(),
                 context.theme().tokens().radii().pill());

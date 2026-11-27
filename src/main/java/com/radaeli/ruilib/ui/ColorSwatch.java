@@ -40,6 +40,11 @@ public final class ColorSwatch extends UiComponent {
 
   @Override
   public void render(UiContext c) {
+    if(c.theme().skin().pixelated()){
+      c.theme().skin().surface(c,bounds(),SurfaceVariant.INSET,0xff000000|rgb);
+      if(selected||isFocused())UiPaint.outline(c,bounds(),isFocused()?c.theme().palette().focus():c.theme().palette().accent());
+      if(!isEnabled())UiPaint.outline(c,bounds().inset(Insets.all(1)),c.theme().palette().disabled());return;
+    }
     UiPaint.rect(
         c,
         bounds(),

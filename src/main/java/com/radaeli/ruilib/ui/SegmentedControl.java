@@ -58,7 +58,7 @@ public final class SegmentedControl<T> extends UiComponent {
   private Bounds cell(int index) {
     int left = bounds().x() + bounds().width() * index / options.size();
     int right = bounds().x() + bounds().width() * (index + 1) / options.size();
-    return new Bounds(left, bounds().y(), Math.max(0, right - left - 2), bounds().height());
+    return new Bounds(left, bounds().y(), Math.max(0, right - left - 1), bounds().height());
   }
 
   @Override
@@ -75,7 +75,7 @@ public final class SegmentedControl<T> extends UiComponent {
           option.label(),
           b.centerX() - UiText.width(context.font(), option.label(), context.theme()) / 2,
           b.centerY() - UiText.height(context) / 2,
-          enabled ? context.theme().palette().text() : context.theme().palette().mutedText());
+          context.theme().skin().buttonText(context.theme(),enabled,selected));
     }
   }
 

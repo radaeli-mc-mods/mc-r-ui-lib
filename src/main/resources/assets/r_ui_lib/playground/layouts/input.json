@@ -122,12 +122,12 @@
       {
         "type": "stepper",
         "text": "Near",
-        "maximum": 32.0,
-        "value": 4.0,
+        "maximum": 32,
+        "value": 4,
         "x": 16,
         "y": 324,
         "width": 200,
-        "height": 12
+        "height": 20
       },
       {
         "type": "stepper",
@@ -136,7 +136,27 @@
         "x": 16,
         "y": 340,
         "width": 200,
-        "height": 12
+        "height": 20
+      },
+      {
+        "type": "textfield",
+        "text": "Native text and cursor",
+        "x": 16,
+        "y": 520,
+        "width": 190,
+        "height": 20
+      },
+      {
+        "type": "slider",
+        "text": "Range",
+        "minimum": 0,
+        "maximum": 100,
+        "value": 20,
+        "upperValue": 80,
+        "x": 16,
+        "y": 552,
+        "width": 220,
+        "height": 22
       }
     ]
   }
